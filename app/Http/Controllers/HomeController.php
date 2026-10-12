@@ -21,12 +21,29 @@ final class HomeController extends Controller
         $categories = $this->toolRegistry->getCategories();
         $allTools = $this->toolRegistry->active();
 
+        $prodOrigin = rtrim(config('app.url', 'https://toolzeno.site'), '/');
+
+        $schema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'WebSite',
+            'name' => config('app.name', 'ToolZeno'),
+            'url' => $prodOrigin . '/' . $locale,
+            'description' => __('common.meta_description_default'),
+            'inLanguage' => ['en', 'bn'],
+            'potentialAction' => [
+                '@type' => 'SearchAction',
+                'target' => $prodOrigin . '/' . $locale . '/tools?q={search_term_string}',
+                'query-input' => 'required name=search_term_string',
+            ],
+        ];
+
         return view('pages.home', [
             'featuredTools' => $featuredTools,
             'popularTools' => $popularTools,
             'categories' => $categories,
             'allTools' => $allTools,
             'locale' => $locale,
+            'schema' => $schema,
         ]);
     }
 }

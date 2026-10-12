@@ -1,0 +1,151 @@
+name: Deploy ToolZeno via FTP
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Simulate FTP deployment without modifying server files (Dry Run)'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-deployment
+  cancel-in-progress: false
+
+jobs:
+  validate-and-build:
+    name: Build & Validate Artifacts
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@9e023768a3fb7e7e60408269e80b2a3c7482811a # v2.32.0
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pdo_mysql, bcmath, gd, zip, curl
+          coverage: none
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer Dependencies
+        uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # v4.2.2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer Dependencies (With Dev for Testing)
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Node.js Dependencies
+        run: npm ci
+
+      - name: Build Production Frontend Assets (Vite)
+        run: npm run build
+
+      - name: Verify Automated Test Suite
+        run: php artisan test
+
+      - name: Prune Dev Dependencies for Production
+        run: composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction --no-progress
+
+      - name: Package Production Deployment Payload
+        run: |
+          mkdir -p payload
+          # Copy core application files and pre-built public directory
+          cp -r app bootstrap config database lang public resources routes artisan composer.json composer.lock vendor payload/
+
+          # Prepare clean storage directory structure
+          mkdir -p payload/storage/app/public
+          mkdir -p payload/storage/framework/cache/data
+          mkdir -p payload/storage/framework/sessions
+          mkdir -p payload/storage/framework/views
+          mkdir -p payload/storage/logs
+
+          # Create directory placeholder markers
+          touch payload/storage/app/.gitignore
+          touch payload/storage/framework/cache/.gitignore
+          touch payload/storage/framework/sessions/.gitignore
+          touch payload/storage/framework/views/.gitignore
+          touch payload/storage/logs/.gitignore
+
+          # Strip raw uncompiled source assets (already built into public/build)
+          rm -rf payload/resources/css
+          rm -rf payload/resources/js
+
+      - name: Upload Production Artifact
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb99ba8141 # v4.4.0
+        with:
+          name: production-payload
+          path: payload/
+          retention-days: 1
+
+  deploy-ftp:
+    name: Deploy to AmarHoster via FTP
+    needs: validate-and-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Download Production Artifact
+        uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4.1.9
+        with:
+          name: production-payload
+          path: payload/
+
+      - name: Verify Required FTP Secrets
+        shell: bash
+        run: |
+          missing=()
+          [ -z "${{ secrets.FTP_SERVER }}" ] && missing+=("FTP_SERVER")
+          [ -z "${{ secrets.FTP_USERNAME }}" ] && missing+=("FTP_USERNAME")
+          [ -z "${{ secrets.FTP_PASSWORD }}" ] && missing+=("FTP_PASSWORD")
+
+          if [ ${#missing[@]} -ne 0 ]; then
+            echo "::error::Deployment halted: The following required FTP Secrets are missing: ${missing[*]}"
+            echo "Please configure these secrets in your repository under Settings > Secrets and variables > Actions."
+            echo "Refer to docs/FTP_DEPLOYMENT_GUIDE.md for step-by-step instructions."
+            exit 1
+          fi
+
+      - name: Deploy Code via FTP / FTPS
+        uses: SamKirkland/FTP-Deploy-Action@548324c2d16aa064f234471a01337444158428e2 # v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: ${{ secrets.FTP_PORT || 21 }}
+          protocol: ${{ secrets.FTP_PROTOCOL || 'ftp' }}
+          local-dir: ./payload/
+          server-dir: ${{ secrets.FTP_SERVER_DIR || './' }}
+          dry-run: ${{ inputs.dry_run == true }}
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.env*
+            **/storage/app/public/**
+            **/storage/logs/**
+            **/storage/framework/cache/**
+            **/storage/framework/sessions/**
+            **/storage/framework/views/**

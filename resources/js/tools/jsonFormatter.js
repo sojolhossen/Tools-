@@ -58,7 +58,7 @@ export default function jsonFormatter() {
 
         loadSample() {
             const sample = {
-                platform: "OmniTools",
+                platform: "ToolZeno",
                 version: "1.0.0",
                 features: ["Word Counter", "Case Converter", "JSON Formatter", "QR Code", "Image Tools"],
                 international: true,

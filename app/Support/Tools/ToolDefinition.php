@@ -25,6 +25,14 @@ final class ToolDefinition
         public readonly string $metaTitleKey,
         public readonly string $metaDescriptionKey,
         public readonly array $tags = [],
+        public readonly ?string $nameEn = null,
+        public readonly ?string $nameBn = null,
+        public readonly ?string $descriptionEn = null,
+        public readonly ?string $descriptionBn = null,
+        public readonly ?string $metaTitleEn = null,
+        public readonly ?string $metaTitleBn = null,
+        public readonly ?string $metaDescriptionEn = null,
+        public readonly ?string $metaDescriptionBn = null,
     ) {}
 
     /**
@@ -47,6 +55,14 @@ final class ToolDefinition
             metaTitleKey: (string) ($data['meta_title_key'] ?? ''),
             metaDescriptionKey: (string) ($data['meta_description_key'] ?? ''),
             tags: (array) ($data['tags'] ?? []),
+            nameEn: isset($data['name_en']) ? (string) $data['name_en'] : null,
+            nameBn: isset($data['name_bn']) ? (string) $data['name_bn'] : null,
+            descriptionEn: isset($data['description_en']) ? (string) $data['description_en'] : null,
+            descriptionBn: isset($data['description_bn']) ? (string) $data['description_bn'] : null,
+            metaTitleEn: isset($data['meta_title_en']) ? (string) $data['meta_title_en'] : null,
+            metaTitleBn: isset($data['meta_title_bn']) ? (string) $data['meta_title_bn'] : null,
+            metaDescriptionEn: isset($data['meta_description_en']) ? (string) $data['meta_description_en'] : null,
+            metaDescriptionBn: isset($data['meta_description_bn']) ? (string) $data['meta_description_bn'] : null,
         );
     }
 
@@ -60,23 +76,51 @@ final class ToolDefinition
         return in_array($locale, $this->supportedLocales, true);
     }
 
-    public function getName(): string
+    public function getName(?string $locale = null): string
     {
+        $locale = $locale ?? app()->getLocale();
+        if ($locale === 'bn' && !empty($this->nameBn)) {
+            return $this->nameBn;
+        }
+        if ($locale === 'en' && !empty($this->nameEn)) {
+            return $this->nameEn;
+        }
         return __($this->nameKey);
     }
 
-    public function getDescription(): string
+    public function getDescription(?string $locale = null): string
     {
+        $locale = $locale ?? app()->getLocale();
+        if ($locale === 'bn' && !empty($this->descriptionBn)) {
+            return $this->descriptionBn;
+        }
+        if ($locale === 'en' && !empty($this->descriptionEn)) {
+            return $this->descriptionEn;
+        }
         return __($this->descriptionKey);
     }
 
-    public function getMetaTitle(): string
+    public function getMetaTitle(?string $locale = null): string
     {
+        $locale = $locale ?? app()->getLocale();
+        if ($locale === 'bn' && !empty($this->metaTitleBn)) {
+            return $this->metaTitleBn;
+        }
+        if ($locale === 'en' && !empty($this->metaTitleEn)) {
+            return $this->metaTitleEn;
+        }
         return __($this->metaTitleKey);
     }
 
-    public function getMetaDescription(): string
+    public function getMetaDescription(?string $locale = null): string
     {
+        $locale = $locale ?? app()->getLocale();
+        if ($locale === 'bn' && !empty($this->metaDescriptionBn)) {
+            return $this->metaDescriptionBn;
+        }
+        if ($locale === 'en' && !empty($this->metaDescriptionEn)) {
+            return $this->metaDescriptionEn;
+        }
         return __($this->metaDescriptionKey);
     }
 

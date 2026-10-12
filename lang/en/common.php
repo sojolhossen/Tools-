@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'app_name' => 'OmniTools',
+    'app_name' => 'ToolZeno',
     'tagline' => 'Free, Fast & Secure Online Tools',
-    'meta_description_default' => 'Free, secure, browser-based online tools for everyone. Word counters, image tools, calculators, JSON formatters, and QR generators with zero installation.',
+    'meta_description_default' => 'Free, fast, and secure online tools for everyone. Word counters, image tools, calculators, JSON formatters, and QR generators with zero installation and 100% browser privacy.',
     
     // Navigation
     'nav' => [
@@ -90,7 +90,7 @@ return [
         'quick_links' => 'Quick Navigation',
         'categories_title' => 'Tool Categories',
         'legal_title' => 'Legal & Information',
-        'about' => 'About OmniTools',
+        'about' => 'About ToolZeno',
         'contact' => 'Contact Us',
         'privacy' => 'Privacy Policy',
         'terms' => 'Terms of Service',

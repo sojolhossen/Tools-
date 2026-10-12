@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /up
 
-Sitemap: /sitemap.xml
+Sitemap: https://toolzeno.site/sitemap.xml

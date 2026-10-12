@@ -29,9 +29,8 @@
             );
         }
     }"
-    @keydown.window.prevent.cmd.k="open = true"
-    @keydown.window.prevent.ctrl.k="open = true"
-    @open-search.window="open = true"
+    @keydown.window="(($event.ctrlKey || $event.metaKey) && $event.key.toLowerCase() === 'k') ? ($event.preventDefault(), open = true) : null"
+    @open-search.window="open = true; query = ''; $nextTick(() => { if ($refs.searchInput) $refs.searchInput.focus(); })"
     class="relative z-50"
     role="dialog"
     aria-modal="true"
@@ -47,10 +46,11 @@
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0"
         @click="open = false"
-        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+        class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm transition-opacity"
         x-cloak
     ></div>
 
+    <!-- Modal Dialog -->
     <div
         x-show="open"
         x-transition:enter="ease-out duration-200"
@@ -59,33 +59,37 @@
         x-transition:leave="ease-in duration-150"
         x-transition:leave-start="opacity-100 scale-100"
         x-transition:leave-end="opacity-0 scale-95"
-        class="fixed inset-0 z-10 overflow-y-auto p-4 sm:p-6 md:p-20"
+        class="fixed inset-0 z-50 overflow-y-auto p-3 sm:p-6 md:p-20 flex items-start justify-center pt-12 sm:pt-20"
         x-cloak
     >
-        <div class="mx-auto max-w-xl transform divide-y divide-slate-100 overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-slate-900/10 transition-all">
-            <div class="relative flex items-center px-4">
-                <svg class="pointer-events-none w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+        <div class="w-full max-w-xl transform divide-y divide-slate-100 overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-slate-900/10 transition-all">
+            <!-- Search Header & Input -->
+            <div class="relative flex items-center px-4 py-1">
+                <svg class="pointer-events-none w-5 h-5 text-indigo-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                 </svg>
                 <input
                     type="text"
                     x-model="query"
                     x-ref="searchInput"
-                    x-effect="if (open) $nextTick(() => $refs.searchInput.focus())"
-                    class="h-14 w-full border-0 bg-transparent pl-3 pr-4 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm focus:outline-none"
+                    class="h-14 w-full border-0 bg-transparent pl-3 pr-4 text-slate-900 placeholder:text-slate-400 focus:ring-0 text-sm sm:text-base focus:outline-none"
                     placeholder="{{ __('common.search.placeholder') }}"
                     @keydown.escape.window="open = false"
                 >
                 <button
                     type="button"
                     @click="open = false"
-                    class="rounded-lg p-1 text-slate-400 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                    class="rounded-xl p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-600 transition-colors shrink-0"
                     aria-label="{{ __('common.actions.close') }}"
                 >
-                    <span class="text-xs px-2 py-0.5 rounded bg-slate-100 text-slate-500 font-mono">ESC</span>
+                    <svg class="w-5 h-5 sm:hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                    <span class="hidden sm:inline-block text-xs px-2 py-0.5 rounded bg-slate-100 text-slate-500 font-mono">ESC</span>
                 </button>
             </div>
 
+            <!-- Results List -->
             <ul class="max-h-96 scroll-py-2 overflow-y-auto p-2 text-sm text-slate-700" role="listbox">
                 <template x-for="tool in filteredTools" :key="tool.slug">
                     <li class="cursor-pointer select-none rounded-xl p-3 hover:bg-indigo-50 hover:text-indigo-900 transition-colors">

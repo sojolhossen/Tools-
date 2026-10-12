@@ -1,25 +1,380 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\AdPlacement;
+use App\Models\Category;
+use App\Models\ContentPage;
+use App\Models\SiteSetting;
+use App\Models\Tool;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
     /**
      * Seed the application's database.
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // 1. Seed Categories
+        $categoriesData = [
+            'text' => [
+                'name_en' => 'Text & Writing',
+                'name_bn' => 'টেক্সট এবং রাইটিং',
+                'description_en' => 'Tools for counting, formatting, and converting text instantly.',
+                'description_bn' => 'টেক্সট গণনা, ফরম্যাটিং এবং কনভার্ট করার কার্যকরী টুলস।',
+                'icon' => 'document-text',
+                'color' => 'indigo',
+                'sort_order' => 1,
+            ],
+            'calculators' => [
+                'name_en' => 'Calculators',
+                'name_bn' => 'ক্যালকুলেটর',
+                'description_en' => 'Accurate calculators for percentages, discounts, and finances.',
+                'description_bn' => 'শতকরা, ছাড় এবং আর্থিক হিসেবের নির্ভুল ক্যালকুলেটর।',
+                'icon' => 'calculator',
+                'color' => 'emerald',
+                'sort_order' => 2,
+            ],
+            'developer' => [
+                'name_en' => 'Developer Tools',
+                'name_bn' => 'ডেভেলপার টুলস',
+                'description_en' => 'Formatters, validators, and essential utilities for programmers.',
+                'description_bn' => 'প্রোগ্রামারদের জন্য ফরম্যাটার, ভ্যালিডেটর এবং প্রয়োজনীয় ইউটিলিটি।',
+                'icon' => 'code-bracket',
+                'color' => 'amber',
+                'sort_order' => 3,
+            ],
+            'productivity' => [
+                'name_en' => 'Productivity',
+                'name_bn' => 'উৎপাদনশীলতা',
+                'description_en' => 'Smart utilities to streamline daily digital workflow and tasks.',
+                'description_bn' => 'দৈনন্দিন ডিজিটাল কাজের গতি বাড়ানোর স্মার্ট ইউটিলিটি।',
+                'icon' => 'qr-code',
+                'color' => 'sky',
+                'sort_order' => 4,
+            ],
+            'image' => [
+                'name_en' => 'Image Tools',
+                'name_bn' => 'ইমেজ টুলস',
+                'description_en' => 'Compress, resize, and convert images 100% in your browser.',
+                'description_bn' => 'ব্রাউজারেই নিরাপদে ছবি কম্প্রেস, রিসাইজ এবং কনভার্ট করুন।',
+                'icon' => 'photo',
+                'color' => 'violet',
+                'sort_order' => 5,
+            ],
+            'pdf' => [
+                'name_en' => 'PDF Utilities',
+                'name_bn' => 'পিডিএফ ইউটিলিটি',
+                'description_en' => 'Convert, merge, and organize PDF documents with privacy.',
+                'description_bn' => 'ব্যক্তিগত গোপনীয়তা বজায় রেখে পিডিএফ ডকুমেন্ট কনভার্ট করুন।',
+                'icon' => 'document-duplicate',
+                'color' => 'rose',
+                'sort_order' => 6,
+            ],
+        ];
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        foreach ($categoriesData as $slug => $data) {
+            Category::updateOrCreate(['slug' => $slug], $data);
+        }
+
+        // 2. Seed Tools (8 Phase 1 Tools)
+        $toolsData = [
+            'word-counter' => [
+                'category_slug' => 'text',
+                'name_en' => 'Word & Character Counter',
+                'name_bn' => 'ওয়ার্ড ও ক্যারেক্টার কাউন্টার',
+                'description_en' => 'Accurate real-time word counter with full Bangla Unicode support, reading time, and speaking time estimates.',
+                'description_bn' => 'বাংলা ইউনিকোড সাপোর্টেড রিয়েল-টাইম ওয়ার্ড কাউন্টার, ক্যারেক্টার গণনা ও রিডিং টাইম নির্দেশক।',
+                'meta_title_en' => 'Word Counter — Count Words and Characters | ToolZeno',
+                'meta_title_bn' => 'ওয়ার্ড কাউন্টার — অনলাইনে শব্দ ও ক্যারেক্টার গণনা | ToolZeno',
+                'meta_description_en' => 'Count words, characters, sentences, paragraphs, reading and speaking time in real time. Works directly in your browser with full English and Bangla support.',
+                'meta_description_bn' => 'বাংলা ও ইংরেজি শব্দের সংখ্যা, অক্ষর, বাক্য, অনুচ্ছেদ এবং পড়ার সময় হিসাব করুন রিয়েল-টাইমে। ব্রাউজারেই নিরাপদভাবে কাজ করে।',
+                'icon' => 'text-quote',
+                'view_handler' => 'tools.word-counter',
+                'route_name' => 'tools.show',
+                'status' => 'active',
+                'is_featured' => true,
+                'is_popular' => true,
+                'sort_order' => 1,
+                'tags' => ['word count', 'character count', 'reading time', 'bangla words', 'text statistics'],
+                'supported_locales' => ['en', 'bn'],
+            ],
+            'case-converter' => [
+                'category_slug' => 'text',
+                'name_en' => 'Text Case Converter',
+                'name_bn' => 'টেক্সট কেস কনভার্টার',
+                'description_en' => 'Easily transform text between UPPERCASE, lowercase, Title Case, camelCase, snake_case, and kebab-case.',
+                'description_bn' => 'যেকোনো লেখাকে আপারকেস, লোয়ারকেস, টাইটেল কেস, ক্যামেলকেস এবং স্নেক-কেসে রূপান্তর করুন।',
+                'meta_title_en' => 'Text Case Converter — Change Text Case Online | ToolZeno',
+                'meta_title_bn' => 'টেক্সট কেস কনভার্টার — অনলাইনে অক্ষরের কেস পরিবর্তন | ToolZeno',
+                'meta_description_en' => 'Convert text to uppercase, lowercase, title case, sentence case, camelCase, snake_case, and kebab-case instantly in your browser with zero server uploads.',
+                'meta_description_bn' => 'লেখা মুহূর্তেই UPPERCASE, lowercase, Title Case, camelCase কিংবা snake_case-এ পরিবর্তন করুন সরাসরি আপনার ব্রাউজারে।',
+                'icon' => 'arrows-up-down',
+                'view_handler' => 'tools.case-converter',
+                'route_name' => 'tools.show',
+                'status' => 'active',
+                'is_featured' => false,
+                'is_popular' => true,
+                'sort_order' => 2,
+                'tags' => ['uppercase', 'lowercase', 'title case', 'sentence case', 'camelCase', 'snake_case'],
+                'supported_locales' => ['en', 'bn'],
+            ],
+            'percentage-calculator' => [
+                'category_slug' => 'calculators',
+                'name_en' => 'Percentage & Discount Calculator',
+                'name_bn' => 'শতকরা ও ডিসকাউন্ট ক্যালকুলেটর',
+                'description_en' => 'Calculate percentage of a number, percentage increase or decrease, and shop discounts in seconds.',
+                'description_bn' => 'যেকোনো সংখ্যার শতকরা মান, বৃদ্ধি বা হ্রাস এবং শপিং ডিসকাউন্ট সহজে ও দ্রুত হিসাব করুন।',
+                'meta_title_en' => 'Percentage Calculator — Calculate Percentages Online | ToolZeno',
+                'meta_title_bn' => 'পার্সেন্টেজ ক্যালকুলেটর — অনলাইনে শতকরা ও ছাড় হিসাব | ToolZeno',
+                'meta_description_en' => 'Calculate percentage of numbers, percentage increase or decrease, and shopping discount savings with transparent formulas and instant calculations.',
+                'meta_description_bn' => 'যেকোনো সংখ্যার শতকরা মান, বৃদ্ধির হার, হ্রাসের হার এবং শপিং ডিসকাউন্ট সহজে ও দ্রুত হিসাব করুন সঠিক সূত্রের মাধ্যমে।',
+                'icon' => 'calculator',
+                'view_handler' => 'tools.percentage-calculator',
+                'route_name' => 'tools.show',
+                'status' => 'active',
+                'is_featured' => true,
+                'is_popular' => true,
+                'sort_order' => 3,
+                'tags' => ['percentage', 'discount', 'percentage increase', 'percent decrease', 'price calculator'],
+                'supported_locales' => ['en', 'bn'],
+            ],
+            'json-formatter' => [
+                'category_slug' => 'developer',
+                'name_en' => 'JSON Formatter & Validator',
+                'name_bn' => 'জেসন ফরম্যাটার ও ভ্যালিডেটর',
+                'description_en' => 'Format, validate, prettify, and minify your JSON data with clear syntax error detection and tree navigation.',
+                'description_bn' => 'জেসন ডেটা সুন্দরভাবে সাজান, যাচাই করুন ও মিনিফাই করুন। সিনট্যাক্স এরর চিহ্নিত করুন নিমেষেই।',
+                'meta_title_en' => 'JSON Formatter & Validator — Format JSON Online | ToolZeno',
+                'meta_title_bn' => 'JSON ফরম্যাটার ও ভ্যালিডেটর — অনলাইনে JSON ফরম্যাট করুন | ToolZeno',
+                'meta_description_en' => 'Format, validate, beautify, and minify JSON data directly in your browser. Detect syntax errors and customize tab or space indentation with 100% privacy.',
+                'meta_description_bn' => 'ব্রাউজারেই নিরাপদভাবে JSON ডেটা সাজান, যাচাই ও মিনিফাই করুন। সিনট্যাক্স ত্রুটি চিহ্নিত করে পরিষ্কার কোড কপি করুন।',
+                'icon' => 'code-bracket',
+                'view_handler' => 'tools.json-formatter',
+                'route_name' => 'tools.show',
+                'status' => 'active',
+                'is_featured' => true,
+                'is_popular' => true,
+                'sort_order' => 4,
+                'tags' => ['json format', 'json validator', 'json prettify', 'json minify', 'beautify json'],
+                'supported_locales' => ['en', 'bn'],
+            ],
+            'qr-generator' => [
+                'category_slug' => 'productivity',
+                'name_en' => 'QR Code Generator',
+                'name_bn' => 'কিউআর কোড জেনারেটর',
+                'description_en' => 'Create high-resolution QR codes for websites, WiFi networks, phone numbers, and plain text. Download as PNG or SVG.',
+                'description_bn' => 'ওয়েবসাইট, ওয়াইফাই এবং টেক্সটের জন্য হাই-রেজোলিউশন কিউআর কোড তৈরি ও ডাউনলোড করুন।',
+                'meta_title_en' => 'QR Code Generator — Create QR Codes Online | ToolZeno',
+                'meta_title_bn' => 'কিউআর কোড জেনারেটর — ফ্রিতে QR কোড তৈরি ও ডাউনলোড | ToolZeno',
+                'meta_description_en' => 'Generate high-resolution QR codes from URLs, text, or phone numbers. Select size and error correction, then download PNG or SVG files directly in your browser.',
+                'meta_description_bn' => 'যেকোনো ওয়েবসাইট লিংক বা টেক্সট থেকে হাই-রেজোলিউশন কিউআর কোড তৈরি করুন এবং PNG বা SVG ফরম্যাটে ফ্রিতে ডাউনলোড করুন।',
+                'icon' => 'qr-code',
+                'view_handler' => 'tools.qr-generator',
+                'route_name' => 'tools.show',
+                'status' => 'active',
+                'is_featured' => true,
+                'is_popular' => true,
+                'sort_order' => 5,
+                'tags' => ['qr code', 'free qr generator', 'create qr code', 'download qr', 'url qr code'],
+                'supported_locales' => ['en', 'bn'],
+            ],
+            'image-compressor' => [
+                'category_slug' => 'image',
+                'name_en' => 'Image Compressor',
+                'name_bn' => 'ইমেজ কম্প্রেসার',
+                'description_en' => 'Compress JPG, PNG, and WebP images directly in your browser. Reduce file size up to 80% without losing visual clarity.',
+                'description_bn' => 'গুণগত মান ঠিক রেখে জেপিজি ও পিএনজি ছবির সাইজ শতকরা ৮০ ভাগ পর্যন্ত ছোট করুন ব্রাউজারেই।',
+                'meta_title_en' => 'Image Compressor — Compress Images Online | ToolZeno',
+                'meta_title_bn' => 'ইমেজ কম্প্রেসার — অনলাইনে ছবির সাইজ কমান | ToolZeno',
+                'meta_description_en' => 'Compress JPEG, PNG, and WebP images online directly in your browser. Reduce file size without uploading photos to external servers.',
+                'meta_description_bn' => 'সার্ভারে ছবি আপলোড না করেই ব্রাউজারে JPEG, PNG ও WebP ছবির সাইজ কমান। ফাইলের মান ও সাইজ তুলনা করে ডাউনলোড করুন।',
+                'icon' => 'arrow-down-tray',
+                'view_handler' => 'tools.image-compressor',
+                'route_name' => 'tools.show',
+                'status' => 'active',
+                'is_featured' => true,
+                'is_popular' => true,
+                'sort_order' => 6,
+                'tags' => ['image compressor', 'compress jpg', 'reduce png size', 'webp compression', 'photo size reducer'],
+                'supported_locales' => ['en', 'bn'],
+            ],
+            'image-resizer' => [
+                'category_slug' => 'image',
+                'name_en' => 'Image Resizer',
+                'name_bn' => 'ইমেজ রিসাইজার',
+                'description_en' => 'Change image dimensions by exact pixels or percentage with aspect ratio lock and format conversion.',
+                'description_bn' => 'ছবির দৈর্ঘ্য ও প্রস্থ ইচ্ছামতো পিক্সেল বা পার্সেন্টেজে পরিবর্তন করুন অ্যাসপেক্ট রেশিও অক্ষুণ্ণ রেখে।',
+                'meta_title_en' => 'Image Resizer — Resize Images Online | ToolZeno',
+                'meta_title_bn' => 'ইমেজ রিসাইজার — অনলাইনে ছবির মাপ ও রেজোলিউশন পরিবর্তন | ToolZeno',
+                'meta_description_en' => 'Resize image dimensions by pixels or percentage scale while locking aspect ratio. Export to JPEG, PNG, or WebP locally in your browser.',
+                'meta_description_bn' => 'ছবির দৈর্ঘ্য ও প্রস্থ পিক্সেল বা পার্সেন্টেজে পরিবর্তন করুন অ্যাসপেক্ট রেশিও ঠিক রেখে। ব্রাউজারেই দ্রুত ও সম্পূর্ণ নিরাপদে।',
+                'icon' => 'arrows-pointing-out',
+                'view_handler' => 'tools.image-resizer',
+                'route_name' => 'tools.show',
+                'status' => 'active',
+                'is_featured' => false,
+                'is_popular' => false,
+                'sort_order' => 7,
+                'tags' => ['resize image', 'change dimensions', 'photo resizer', 'aspect ratio resize', 'convert image format'],
+                'supported_locales' => ['en', 'bn'],
+            ],
+            'image-to-pdf' => [
+                'category_slug' => 'pdf',
+                'name_en' => 'Image to PDF Converter',
+                'name_bn' => 'ইমেজ টু পিডিএফ কনভার্টার',
+                'description_en' => 'Combine multiple JPG, PNG, and WebP images into a single professional PDF document with custom margins and page sizes.',
+                'description_bn' => 'একাধিক ছবিকে একসাথে যুক্ত করে একটি পরিচ্ছন্ন পিডিএফ ফাইলে রূপান্তর ও ডাউনলোড করুন।',
+                'meta_title_en' => 'Image to PDF Converter — Convert Images to PDF | ToolZeno',
+                'meta_title_bn' => 'ইমেজ টু পিডিএফ কনভার্টার — ছবি থেকে পিডিএফ তৈরি করুন | ToolZeno',
+                'meta_description_en' => 'Combine multiple JPG, PNG, and WebP images into a single clean PDF document. Reorder pages and customize layout directly in your browser with zero server uploads.',
+                'meta_description_bn' => 'একাধিক JPG, PNG ও WebP ছবি একসাথে যুক্ত করে সিঙ্গেল পিডিএফ ফাইল তৈরি ও ডাউনলোড করুন ব্রাউজারেই ১০০% গোপনীয়তায়।',
+                'icon' => 'document-duplicate',
+                'view_handler' => 'tools.image-to-pdf',
+                'route_name' => 'tools.show',
+                'status' => 'active',
+                'is_featured' => true,
+                'is_popular' => true,
+                'sort_order' => 8,
+                'tags' => ['image to pdf', 'jpg to pdf', 'png to pdf', 'convert photo to pdf', 'free pdf maker'],
+                'supported_locales' => ['en', 'bn'],
+            ],
+        ];
+
+        foreach ($toolsData as $slug => $data) {
+            Tool::updateOrCreate(['slug' => $slug], $data);
+        }
+
+        // 3. Seed Content Pages
+        $pagesData = [
+            'about' => [
+                'title_en' => 'About ToolZeno',
+                'title_bn' => 'টুলজেনো সম্পর্কে',
+                'body_en' => "## Our Mission\n\nToolZeno is built to deliver free, high-speed, and secure online utilities for users worldwide. We believe everyday tasks like counting words, converting text cases, calculating percentages, and processing images should be seamless, private, and accessible on any device.\n\n## Client-Side First Philosophy\n\nUnlike traditional web utilities that upload your sensitive documents, photos, or text to external cloud servers, ToolZeno executes operations directly inside your web browser whenever possible. Your confidential text, private photos, and financial calculations remain 100% on your device.",
+                'body_bn' => "## আমাদের লক্ষ্য\n\nটুলজেনো বিশ্বের প্রতিটি মানুষের জন্য দ্রুত, সহজ ও সম্পূর্ণ সুরক্ষিত অনলাইন ইউটিলিটি টুলস প্রদান করার লক্ষ্যে তৈরি। শব্দ গণনা, টেক্সট কেস পরিবর্তন, ডিসকাউন্ট হিসাব কিংবা ছবি কনভার্ট করার মতো দৈনন্দিন কাজগুলো কোনো ঝামেলা ছাড়াই করার সুবিধা দিতে আমরা প্রতিশ্রুতিবদ্ধ।\n\n## ব্রাউজার-ভিত্তিক গোপনীয়তা\n\nআমাদের টুলগুলো সরাসরি আপনার ব্রাউজারের ভেতর কার্যকর হয়। আপনার কোনো ছবি, ডকুমেন্ট বা লেখা আমাদের সার্ভারে আপলোড হয় না, ফলে আপনার ব্যক্তিগত তথ্যের নিরাপত্তা থাকে সম্পূর্ণ অক্ষুণ্ণ।",
+                'meta_title_en' => 'About Us — ToolZeno Free Online Utilities',
+                'meta_title_bn' => 'আমাদের সম্পর্কে — টুলজেনো অনলাইন ইউটিলিটি',
+                'meta_description_en' => 'Learn about ToolZeno, our mission to build fast, client-side, privacy-respecting online utilities.',
+                'meta_description_bn' => 'টুলজেনোর লক্ষ্য, উদ্দেশ্য ও নিরাপদ ক্লায়েন্ট-সাইড টুলস সম্পর্কে বিস্তারিত জানুন।',
+                'status' => 'published',
+                'published_at' => now(),
+            ],
+            'contact' => [
+                'title_en' => 'Contact Us',
+                'title_bn' => 'যোগাযোগ করুন',
+                'body_en' => "Have questions, suggestions, or tool requests? We'd love to hear from you!\n\nEmail our support team directly at **support@example.com** or use the contact form on this page.",
+                'body_bn' => "কোনো প্রশ্ন, মতামত বা নতুন টুলের অনুরোধ জানাতে আমাদের সাথে সরাসরি যোগাযোগ করুন।\n\nআমাদের ইমেইল করতে পারেন: **support@example.com** অথবা নিচের ফরমটি পূরণ করুন।",
+                'meta_title_en' => 'Contact Us — ToolZeno Support & Feedback',
+                'meta_title_bn' => 'যোগাযোগ — টুলজেনো সাপোর্ট ও ফিডব্যাক',
+                'meta_description_en' => 'Get in touch with the ToolZeno engineering and support team.',
+                'meta_description_bn' => 'টুলজেনো টিমের সাথে যোগাযোগ করুন এবং আপনার মূল্যবান পরামর্শ দিন।',
+                'status' => 'published',
+                'published_at' => now(),
+            ],
+            'privacy-policy' => [
+                'title_en' => 'Privacy Policy',
+                'title_bn' => 'প্রাইভেসি পলিসি (গোপনীয়তা নীতি)',
+                'body_en' => "## 1. Information We Do Not Collect\n\nToolZeno is designed with a strict **privacy-first architecture**:\n\n- **Zero File Retention**: Images, documents, and PDFs processed through our Image Compressor, Image Resizer, or Image to PDF tools are processed locally inside your web browser via HTML5 Canvas and WebAssembly. They are **never** uploaded to our servers or stored on disk.\n- **Zero Text Storage**: Text inputs provided to the Word Counter, Case Converter, or JSON Validator remain on your device and are never recorded or logged.\n- **No Invasive Tracking**: We do not sell, rent, or trade personal information to third parties.\n\n## 2. Server Logs and Technical Data\n\nLike most websites, our web server may log standard HTTP request metadata (such as IP address, user-agent, request timestamp, and requested URL) solely for diagnostic monitoring, security protection, and DDoS prevention.\n\n## 3. Cookies and Local Storage\n\nWe use essential cookies strictly to maintain session integrity, CSRF security, and remember your language preference (`/en` or `/bn`). We do not use persistent cross-site tracking cookies.",
+                'body_bn' => "## ১. তথ্যের গোপনীয়তা রক্ষা\n\nটুলজেনো আপনার গোপনীয়তাকে সর্বোচ্চ অগ্রাধিকার দেয়:\n\n- **ফাইল আপলোড হয় না**: ইমেজ কম্প্রেসার, রিসাইজার এবং পিডিএফ কনভার্টারের সকল কাজ আপনার ডিভাইসের ব্রাউজারে সম্পন্ন হয়। কোনো ফাইল আমাদের সার্ভারে পাঠানো বা সংরক্ষণ করা হয় না।\n- **টেক্সট সেভ হয় না**: ওয়ার্ড কাউন্টার বা জেসন ভ্যালিডেটরে লেখা কোনো টেক্সট আমরা সংরক্ষণ বা নজরদারি করি না।\n- **তথ্য বিক্রি নয়**: আমরা কোনো ব্যবহারকারীর ব্যক্তিগত তথ্য কারো কাছে বিক্রি বা শেয়ার করি না।\n\n## ২. কুকিজ এবং লোকাল স্টোরেজ\n\nআমরা শুধুমাত্র সাইটের প্রাথমিক কার্যকারিতা এবং ভাষা পছন্দ (বাংলা/ইংরেজি) মনে রাখার জন্য প্রয়োজনীয় কুকিজ ব্যবহার করি।",
+                'meta_title_en' => 'Privacy Policy — ToolZeno Data Protection & Transparency',
+                'meta_title_bn' => 'গোপনীয়তা নীতি — টুলজেনো প্রাইভেসি পলিসি',
+                'meta_description_en' => 'Read our transparent privacy policy explaining client-side processing and zero file storage.',
+                'meta_description_bn' => 'আমাদের প্রাইভেসি পলিসি পড়ুন এবং জানুন কীভাবে আপনার ফাইল ও তথ্যের পূর্ণ নিরাপত্তা বজায় রাখা হয়।',
+                'status' => 'published',
+                'published_at' => now(),
+            ],
+            'terms-of-service' => [
+                'title_en' => 'Terms of Service',
+                'title_bn' => 'ব্যবহারের শর্তাবলী',
+                'body_en' => "## 1. Acceptance of Terms\n\nBy accessing and using ToolZeno, you agree to comply with and be bound by these Terms of Service.\n\n## 2. Permitted Use\n\nYou may use our online tools for personal, educational, or commercial purposes free of charge. You agree not to abuse, disrupt, or attempt unauthorized access to our infrastructure through automated scraping, denial-of-service attacks, or malicious scripts.\n\n## 3. Intellectual Property\n\nAll tools, branding, and user interface elements are the property of ToolZeno. Content and files processed by you remain exclusively your own intellectual property.",
+                'body_bn' => "## ১. শর্তাবলী গ্রহণ\n\nটুলজেনো ওয়েবসাইট ব্যবহার করার মাধ্যমে আপনি আমাদের ব্যবহারের সকল শর্তাবলী মেনে নিতে সম্মতি প্রদান করছেন।\n\n## ২. ব্যবহারের অনুমতি\n\nআপনি ব্যক্তিগত, প্রাতিষ্ঠানিক বা বাণিজ্যিক কাজে আমাদের সকল ফ্রি টুল ব্যবহার করতে পারেন। তবে কোনো সাইবার আক্রমণ বা ক্ষতিকর কার্যকলাপে এটি ব্যবহার করা সম্পূর্ণ নিষিদ্ধ।\n\n## ৩. বুদ্ধিবৃত্তিক অধিকার\n\nআপনার প্রসেস করা ফাইল বা লেখার পূর্ণ মালিকানা কেবল আপনার নিজেরই থাকবে।",
+                'meta_title_en' => 'Terms of Service — ToolZeno Usage Agreement',
+                'meta_title_bn' => 'ব্যবহারের শর্তাবলী — টুলজেনো টার্মস অফ সার্ভিস',
+                'meta_description_en' => 'Terms and conditions for utilizing ToolZeno free online web tools.',
+                'meta_description_bn' => 'টুলজেনোর ওয়েবসাইট ও সেবা ব্যবহারের নিয়মাবলী ও শর্তসমূহ।',
+                'status' => 'published',
+                'published_at' => now(),
+            ],
+            'disclaimer' => [
+                'title_en' => 'Disclaimer',
+                'title_bn' => 'দাবিত্যাগ (Disclaimer)',
+                'body_en' => "## General Information Disclaimer\n\nThe tools, calculations, and information provided on ToolZeno are for general informational and productivity purposes only. While we rigorously test algorithms for accuracy, calculations (such as percentages or financial discounts) should not be considered formal financial, legal, or professional advice.\n\n## Limitation of Liability\n\nToolZeno is provided on an 'as is' and 'as available' basis without warranties of any kind. Users are advised to review converted files and calculation results before relying on them for critical operations.",
+                'body_bn' => "## সাধারণ দাবিত্যাগ\n\nটুলজেনোর সকল হিসাব ও ফলাফল শুধুমাত্র সাধারণ ব্যবহার এবং সুবিধার জন্য প্রদান করা হয়। কোনো গুরুত্বপূর্ণ আর্থিক বা ব্যবসায়িক সিদ্ধান্তে চূড়ান্ত পদক্ষেপ নেওয়ার পূর্বে ফলাফল পুনরায় যাচাই করে নেওয়ার অনুরোধ করা হচ্ছে।\n\n## দায়বদ্ধতার সীমাবদ্ধতা\n\nআমাদের প্ল্যাটফর্ম কোনো প্রকার গ্যারান্টি ছাড়া সম্পূর্ণ উন্মুক্ত সেবা হিসেবে প্রদান করা হয়।",
+                'meta_title_en' => 'Disclaimer — ToolZeno Accuracy & Liability Notice',
+                'meta_title_bn' => 'দাবিত্যাগ — টুলজেনো নির্ভুলতা ও দায়বদ্ধতা বিজ্ঞপ্তি',
+                'meta_description_en' => 'Read our general information and calculation accuracy disclaimer.',
+                'meta_description_bn' => 'টুলজেনোর সেবার নির্ভুলতা ও তথ্য সংক্রান্ত সাধারণ দাবিত্যাগ বিজ্ঞপ্তি।',
+                'status' => 'published',
+                'published_at' => now(),
+            ],
+        ];
+
+        foreach ($pagesData as $slug => $data) {
+            ContentPage::updateOrCreate(['slug' => $slug], $data);
+        }
+
+        // 4. Seed Default Site Settings
+        $settingsData = [
+            'site_name' => ['value' => 'ToolZeno', 'group' => 'general', 'type' => 'string', 'description' => 'Platform brand name'],
+            'contact_email' => ['value' => 'support@example.com', 'group' => 'general', 'type' => 'string', 'description' => 'Inquiry and feedback contact email'],
+            'meta_description_default_en' => ['value' => 'Free, lightning-fast online tools for Bangladesh and worldwide. Text utilities, calculators, developer formats, and private file conversion.', 'group' => 'seo', 'type' => 'string', 'description' => 'Default meta description in English'],
+            'meta_description_default_bn' => ['value' => 'বাংলাদেশ ও বিশ্বের সবার জন্য ফ্রি ও সুরক্ষিত অনলাইন টুলস। ওয়ার্ড কাউন্টার, ক্যালকুলেটর, কিউআর জেনারেটর এবং ব্রাউজারে নিরাপদ ছবি রূপান্তর।', 'group' => 'seo', 'type' => 'string', 'description' => 'Default meta description in Bangla'],
+            'sitemap_enabled' => ['value' => '1', 'group' => 'seo', 'type' => 'boolean', 'description' => 'Enable public XML sitemap generation'],
+            'analytics_enabled' => ['value' => '0', 'group' => 'analytics', 'type' => 'boolean', 'description' => 'Google Analytics 4 integration toggle (disabled by default)'],
+            'analytics_measurement_id' => ['value' => '', 'group' => 'analytics', 'type' => 'string', 'description' => 'Google Analytics 4 Measurement ID (e.g. G-XXXXXXXXXX)'],
+            'adsense_enabled' => ['value' => '0', 'group' => 'ads', 'type' => 'boolean', 'description' => 'Global advertising integration toggle (disabled by default)'],
+            'adsense_publisher_id' => ['value' => '', 'group' => 'ads', 'type' => 'string', 'description' => 'AdSense Publisher ID (e.g. ca-pub-XXXXXXXXXXXXXXXX)'],
+        ];
+
+        foreach ($settingsData as $key => $data) {
+            SiteSetting::updateOrCreate(['key' => $key], $data);
+        }
+
+        // 5. Seed Default Ad Placements
+        $placementsData = [
+            'header-leaderboard' => [
+                'name' => 'Header Leaderboard (728x90)',
+                'page_location' => 'all',
+                'provider' => 'adsense',
+                'slot_id' => '',
+                'format' => 'horizontal',
+                'is_active' => false,
+                'notes' => 'Discreet leaderboard displayed above main content when enabled.',
+            ],
+            'tool-top' => [
+                'name' => 'Tool Page Top Banner',
+                'page_location' => 'tool-view',
+                'provider' => 'adsense',
+                'slot_id' => '',
+                'format' => 'responsive',
+                'is_active' => false,
+                'notes' => 'Non-intrusive placement placed above tool workspace.',
+            ],
+            'tool-bottom' => [
+                'name' => 'Tool Page Bottom Banner',
+                'page_location' => 'tool-view',
+                'provider' => 'adsense',
+                'slot_id' => '',
+                'format' => 'responsive',
+                'is_active' => false,
+                'notes' => 'Placement below related tools and tool instructions.',
+            ],
+            'footer-banner' => [
+                'name' => 'Global Footer Banner',
+                'page_location' => 'all',
+                'provider' => 'adsense',
+                'slot_id' => '',
+                'format' => 'responsive',
+                'is_active' => false,
+                'notes' => 'Displayed just above the site footer.',
+            ],
+        ];
+
+        foreach ($placementsData as $identifier => $data) {
+            AdPlacement::updateOrCreate(['identifier' => $identifier], array_merge(['identifier' => $identifier], $data));
+        }
     }
 }

@@ -3,15 +3,34 @@
     'description' => null,
     'canonical' => null,
     'ogType' => 'website',
+    'schema' => null,
 ])
 
 @php
     $locale = app()->getLocale();
-    $pageTitle = $title 
-        ? $title . ' — ' . config('app.name', 'OmniTools') 
-        : config('app.name', 'OmniTools') . ' — ' . __('common.tagline');
+    $appName = config('app.name', 'ToolZeno');
+    
+    // Title deduplication: avoid duplicate branding if title already contains ToolZeno
+    if ($title) {
+        if (str_contains($title, $appName) || str_contains($title, 'ToolZeno')) {
+            $pageTitle = $title;
+        } else {
+            $pageTitle = $title . ' — ' . $appName;
+        }
+    } else {
+        $pageTitle = $appName . ' — ' . __('common.tagline');
+    }
+
     $pageDesc = $description ?? __('common.meta_description_default');
-    $currentUrl = $canonical ?? url()->current();
+    
+    // Canonical URL with production origin normalization
+    $prodOrigin = rtrim(config('app.url', 'https://toolzeno.site'), '/');
+    if (empty($canonical)) {
+        $path = request()->path();
+        $currentUrl = $prodOrigin . '/' . ltrim($path, '/');
+    } else {
+        $currentUrl = preg_replace('#^https?://[^/]+#', $prodOrigin, $canonical);
+    }
 
     // Hreflang URLs
     $currentRoute = Route::currentRouteName() ?? 'home';
@@ -20,9 +39,11 @@
     try {
         $enUrl = route($currentRoute, array_merge($params, ['locale' => 'en']));
         $bnUrl = route($currentRoute, array_merge($params, ['locale' => 'bn']));
+        $enUrl = preg_replace('#^https?://[^/]+#', $prodOrigin, $enUrl);
+        $bnUrl = preg_replace('#^https?://[^/]+#', $prodOrigin, $bnUrl);
     } catch (\Throwable $e) {
-        $enUrl = url('/en');
-        $bnUrl = url('/bn');
+        $enUrl = $prodOrigin . '/en';
+        $bnUrl = $prodOrigin . '/bn';
     }
 @endphp
 
@@ -35,6 +56,7 @@
 
     <title>{{ $pageTitle }}</title>
     <meta name="description" content="{{ $pageDesc }}">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- Canonical & Multilingual SEO -->
     <link rel="canonical" href="{{ $currentUrl }}">
@@ -47,13 +69,15 @@
     <meta property="og:description" content="{{ $pageDesc }}">
     <meta property="og:url" content="{{ $currentUrl }}">
     <meta property="og:type" content="{{ $ogType }}">
-    <meta property="og:site_name" content="{{ config('app.name', 'OmniTools') }}">
+    <meta property="og:site_name" content="{{ $appName }}">
     <meta property="og:locale" content="{{ $locale === 'bn' ? 'bn_BD' : 'en_US' }}">
+    <meta property="og:locale:alternate" content="{{ $locale === 'bn' ? 'en_US' : 'bn_BD' }}">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="{{ $pageTitle }}">
     <meta name="twitter:description" content="{{ $pageDesc }}">
+    <meta name="twitter:url" content="{{ $currentUrl }}">
 
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -64,6 +88,29 @@
         [x-cloak] { display: none !important; }
         body { font-family: 'Inter', 'Noto Sans Bengali', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
     </style>
+
+    @php
+        $gaEnabled = (bool) \App\Models\SiteSetting::get('analytics_enabled', false);
+        $gaId = (string) \App\Models\SiteSetting::get('analytics_measurement_id', '');
+    @endphp
+    @if($gaEnabled && !empty($gaId))
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ $gaId }}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '{{ $gaId }}', { 'anonymize_ip': true });
+        </script>
+    @endif
+
+    @if(isset($schema) && !empty($schema))
+        <!-- Structured Data (JSON-LD) -->
+        <script type="application/ld+json">
+            {!! json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+        </script>
+    @endif
+    @stack('schema')
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>

@@ -1,6 +1,7 @@
 <x-layouts.app
     :title="$tool->getMetaTitle()"
     :description="$tool->getMetaDescription()"
+    :schema="$schema ?? null"
 >
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <!-- Breadcrumbs -->
@@ -98,7 +99,7 @@
             </div>
 
             <!-- Validation Status Banner -->
-            <div x-show="isValid !== null" class="transition-all" x-cloak>
+            <div x-show="isValid !== null" class="transition-all" role="status" aria-live="polite" x-cloak>
                 <div x-show="isValid === true" class="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2">
                     <svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
@@ -137,45 +138,8 @@
         <!-- Ad Slot -->
         <x-ad-slot slot="tool-bottom" />
 
-        <!-- Educational & Informational Guide -->
-        <div class="mt-12 pt-10 border-t border-slate-200/80 space-y-8">
-            <section>
-                <h2 class="text-xl font-bold text-slate-900 mb-3">
-                    {{ __('tools.json_formatter.how_to_title') }}
-                </h2>
-                <ul class="list-disc list-inside space-y-2 text-sm text-slate-600">
-                    @foreach(__('tools.json_formatter.how_to_steps') as $step)
-                        <li>{{ $step }}</li>
-                    @endforeach
-                </ul>
-            </section>
-
-            <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="p-5 rounded-2xl bg-white border border-slate-200/80">
-                    <h3 class="text-sm font-bold text-slate-900 mb-2 flex items-center gap-2">
-                        <svg class="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
-                        </svg>
-                        <span>{{ __('tools.json_formatter.security_title') }}</span>
-                    </h3>
-                    <p class="text-xs text-slate-600 leading-relaxed">
-                        {{ __('tools.json_formatter.security_text') }}
-                    </p>
-                </div>
-
-                <div class="p-5 rounded-2xl bg-white border border-slate-200/80">
-                    <h3 class="text-sm font-bold text-slate-900 mb-2 flex items-center gap-2">
-                        <svg class="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
-                        </svg>
-                        <span>{{ __('tools.json_formatter.privacy_title') }}</span>
-                    </h3>
-                    <p class="text-xs text-slate-600 leading-relaxed">
-                        {{ __('tools.json_formatter.privacy_text') }}
-                    </p>
-                </div>
-            </section>
-        </div>
+        <!-- Educational & Informational Guide (SEO Optimized) -->
+        <x-tool-guide tool-key="json_formatter" related-slug="case-converter" />
 
         <!-- Related Tools -->
         @if($relatedTools->count() > 0)

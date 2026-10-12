@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -9,8 +11,8 @@ return [
     'word_counter' => [
         'name' => 'Word & Character Counter',
         'short_desc' => 'Count words, characters, sentences, paragraphs, and reading time in real-time with full Unicode and Bangla support.',
-        'meta_title' => 'Free Word & Character Counter Online | Reading Time & Bangla Support',
-        'meta_desc' => 'Accurate, real-time word counter and character counter. Counts characters with/without spaces, sentences, paragraphs, and reading time. Fully supports Bangla and international Unicode text.',
+        'meta_title' => 'Word Counter — Count Words and Characters | ToolZeno',
+        'meta_desc' => 'Count words, characters, sentences, paragraphs, reading and speaking time in real time. Works directly in your browser with full English and Bangla support.',
         'input_label' => 'Enter or paste your text below',
         'input_placeholder' => 'Start typing or paste your content here to inspect real-time word and character counts (Bangla and Unicode fully supported)...',
         'metrics' => [
@@ -30,6 +32,48 @@ return [
             'Review estimated reading and speaking times for speeches, essays, or social posts.',
             'Click "Copy Statistics" or "Clear" when you are finished.',
         ],
+        'specs_title' => 'Technical Specifications & Limits',
+        'specs' => [
+            'Supported Scripts' => 'Universal Unicode (Latin, Bengali / বাংলা, Arabic, Devanagari, CJK, Emoji)',
+            'Punctuation Recognition' => 'Standard (. ! ?) and Indic / Bengali Danda (।)',
+            'Whitespace Tokenizer' => 'Unicode whitespace boundary regex (\s+)',
+            'Reading Pace Benchmark' => '200 Words Per Minute (standard adult silent reading)',
+            'Speaking Pace Benchmark' => '130 Words Per Minute (speech & podcast delivery)',
+            'Server Data Transmission' => '0 bytes (100% processed in browser memory)',
+        ],
+        'examples_title' => 'Realistic Usage Examples',
+        'examples' => [
+            [
+                'label' => 'English Sentence',
+                'input' => 'ToolZeno provides free, privacy-first online tools for everyone.',
+                'output' => '8 Words | 65 Characters (58 no spaces) | 1 Sentence | 2.4s Reading Time',
+            ],
+            [
+                'label' => 'Bangla Sentence',
+                'input' => 'টুলজেনো একটি সম্পূর্ণ ব্রাউজার-ভিত্তিক ফ্রি অনলাইন টুলস প্ল্যাটফর্ম।',
+                'output' => '৭টি শব্দ | ৬০টি অক্ষর (৫৪ স্পেস ছাড়া) | ১টি বাক্য | ২.১ সে. রিডিং টাইম',
+            ],
+        ],
+        'faq_title' => 'Frequently Asked Questions',
+        'faq' => [
+            [
+                'q' => 'How does the counter handle hyphenated words and contractions?',
+                'a' => 'Common contractions (such as "don\'t" and "it\'s") and hyphenated compound words (such as "state-of-the-art") are counted as single words in accordance with standard typographic rules.',
+            ],
+            [
+                'q' => 'Does this word counter count Bengali words accurately?',
+                'a' => 'Yes, our tokenizer respects Unicode character boundaries and correctly handles complex Bengali conjunct characters (যুক্তবর্ণ) without artificially inflating word or character counts.',
+            ],
+            [
+                'q' => 'Is my text transmitted or saved on any server?',
+                'a' => 'No. All counting logic executes strictly in your web browser using client-side JavaScript. Your confidential documents, essays, or drafts never leave your device.',
+            ],
+            [
+                'q' => 'What is the difference between reading time and speaking time?',
+                'a' => 'Reading time calculates how long a typical adult takes to read silently at 200 words per minute (WPM). Speaking time calculates presentation or podcast delivery time at a steady 130 WPM.',
+            ],
+        ],
+        'related_context' => 'Need to adjust letter casing or capitalize headlines? Open our :link to switch between uppercase, lowercase, and title case.',
         'limitations_title' => 'Linguistic Notes & Limitations',
         'limitations_text' => 'Sentence segmentation relies on punctuation markers (. ! ? and Bengali dari ।). Text with informal punctuation or abbreviations (e.g., e.g., Mr., Dr.) may register approximate sentence counts.',
         'privacy_title' => 'Client-Side Privacy Guarantee',
@@ -44,8 +88,8 @@ return [
     'case_converter' => [
         'name' => 'Text Case Converter',
         'short_desc' => 'Easily switch between UPPERCASE, lowercase, Title Case, Sentence case, camelCase, snake_case, and kebab-case.',
-        'meta_title' => 'Free Text Case Converter Online | Uppercase, Lowercase, Title Case',
-        'meta_desc' => 'Instantly convert text to UPPERCASE, lowercase, Title Case, Sentence case, camelCase, snake_case, and kebab-case. Fast, safe, and works in your browser.',
+        'meta_title' => 'Text Case Converter — Change Text Case Online | ToolZeno',
+        'meta_desc' => 'Convert text to uppercase, lowercase, title case, sentence case, camelCase, snake_case, and kebab-case instantly in your browser with zero server uploads.',
         'input_label' => 'Input Text',
         'input_placeholder' => 'Type or paste the text you want to transform...',
         'output_label' => 'Transformed Result',
@@ -64,6 +108,47 @@ return [
             'Click on any conversion button to apply the formatting instantly.',
             'Click "Copy Result" to copy the transformed output to your clipboard.',
         ],
+        'specs_title' => 'Supported Formats & Behavior',
+        'specs' => [
+            'Supported Alphabets' => 'Bicameral writing systems (Latin, Cyrillic, Greek)',
+            'Preserved Scripts' => 'Unicameral scripts (Bangla, Arabic, Devanagari) remain completely intact',
+            'Maximum Input Size' => 'Up to 500,000 characters per conversion pass',
+            'Supported Cases' => '7 standard formats (Upper, Lower, Title, Sentence, Camel, Snake, Kebab)',
+            'Processing Engine' => 'Immediate client-side JavaScript regex transformations',
+        ],
+        'examples_title' => 'Transformation Examples',
+        'examples' => [
+            [
+                'label' => 'Raw Input',
+                'input' => 'free online tools platform',
+                'output' => 'UPPERCASE: FREE ONLINE TOOLS PLATFORM | Title Case: Free Online Tools Platform | camelCase: freeOnlineToolsPlatform | snake_case: free_online_tools_platform',
+            ],
+            [
+                'label' => 'Programming Identifier',
+                'input' => 'user_profile_photo_url',
+                'output' => 'camelCase: userProfilePhotoUrl | Title Case: User Profile Photo Url | kebab-case: user-profile-photo-url',
+            ],
+        ],
+        'faq_title' => 'Frequently Asked Questions',
+        'faq' => [
+            [
+                'q' => 'Why does case conversion leave Bengali or Arabic text unchanged?',
+                'a' => 'Languages such as Bengali, Arabic, and Hindi use unicameral alphabets without capital or lowercase letterforms. The tool safely preserves these characters while correctly formatting any mixed Latin words.',
+            ],
+            [
+                'q' => 'How does Title Case handle articles and prepositions?',
+                'a' => 'Our title case engine capitalizes principal words while leaving standard short prepositions (in, on, at), conjunctions (and, but), and articles (the, a, an) in lowercase unless they begin the sentence.',
+            ],
+            [
+                'q' => 'What is the practical difference between camelCase and snake_case?',
+                'a' => 'camelCase concatenates words with inner capitals (common in JavaScript, Java, and TypeScript), whereas snake_case joins words with lowercase underscores (standard in Python, Ruby, and SQL databases).',
+            ],
+            [
+                'q' => 'Is there any character limit for text conversion?',
+                'a' => 'You can process long documents with hundreds of thousands of characters. Because conversion runs locally on your computer\'s processor, results appear in milliseconds.',
+            ],
+        ],
+        'related_context' => 'After formatting your text casing, verify word counts and reading length with our :link, or format programming payloads with our :link2.',
         'limitations_title' => 'Script & Language Specifics',
         'limitations_text' => 'Case conversion applies to alphabets with bicameral letters (such as Latin, Cyrillic, and Greek). Unicameral writing systems such as Bangla, Arabic, or Devanagari do not possess uppercase or lowercase letters and will remain intact without corruption.',
         'privacy_title' => '100% Client-Side Processing',
@@ -78,8 +163,8 @@ return [
     'percentage_calculator' => [
         'name' => 'Percentage & Discount Calculator',
         'short_desc' => 'Calculate percentages of numbers, percentage increase/decrease, and discount savings with clear formulas.',
-        'meta_title' => 'Free Percentage & Discount Calculator | Step-by-Step Formulas',
-        'meta_desc' => 'Accurate percentage calculator for everyday math, shopping discounts, profit margins, and percentage changes. Includes clear formula explanations.',
+        'meta_title' => 'Percentage Calculator — Calculate Percentages Online | ToolZeno',
+        'meta_desc' => 'Calculate percentage of numbers, percentage increase or decrease, and shopping discount savings with transparent formulas and instant calculations.',
         'tabs' => [
             'simple' => 'Percentage of a Number',
             'change' => 'Percentage Increase / Decrease',
@@ -118,6 +203,52 @@ return [
             'Type your numerical values into the input fields.',
             'The calculated result and formula breakdown will update automatically.',
         ],
+        'specs_title' => 'Calculation Specifications',
+        'specs' => [
+            'Arithmetic Precision' => 'IEEE 754 64-bit double precision floating point',
+            'Rounding Standard' => 'Rounded to 2 decimal places for financial readability',
+            'Negative Values' => 'Fully supported for percentage decrease and difference metrics',
+            'Division by Zero Guard' => 'Safely intercepted with descriptive validation notice',
+            'Network Requirement' => 'Zero network calls; computed in browser memory',
+        ],
+        'examples_title' => 'Step-by-Step Calculation Examples',
+        'examples' => [
+            [
+                'label' => 'Percentage of Number',
+                'input' => 'What is 15% of $80?',
+                'output' => 'Formula: (15 ÷ 100) × 80 = $12.00',
+            ],
+            [
+                'label' => 'Retail Discount',
+                'input' => 'Original price $120 with a 25% discount',
+                'output' => 'Savings: $30.00 | Final Price to Pay: $90.00',
+            ],
+            [
+                'label' => 'Percentage Change',
+                'input' => 'Initial value $50 increased to $75',
+                'output' => 'Difference: +$25.00 | Percentage Change: +50.00% (Increase)',
+            ],
+        ],
+        'faq_title' => 'Frequently Asked Questions',
+        'faq' => [
+            [
+                'q' => 'How is a retail shopping discount calculated?',
+                'a' => 'Multiply the original price by the discount percentage divided by 100 to get total savings. Subtract that savings amount from the original price to determine what you pay.',
+            ],
+            [
+                'q' => 'Why does calculating percentage change from zero return an error?',
+                'a' => 'Percentage change requires dividing by the initial value. In mathematics, division by zero is undefined, so the calculator warns you rather than producing an incorrect result.',
+            ],
+            [
+                'q' => 'Can this calculator determine percentage decreases?',
+                'a' => 'Yes. Whenever the final value is lower than the starting value (such as a drop from 100 to 75), the calculator automatically detects a negative change (-25%) and labels it as a decrease.',
+            ],
+            [
+                'q' => 'Are my numbers or financial estimates stored anywhere?',
+                'a' => 'No. All calculations are executed locally inside your device browser without sending any numbers or session history to external servers.',
+            ],
+        ],
+        'related_context' => 'Need to generate scannable links for promotions or price tags? Create free QR codes with our :link, or inspect text metrics with our :link2.',
         'limitations_title' => 'Precision & Safety',
         'limitations_text' => 'Calculations use standard 64-bit IEEE floating-point arithmetic. Division by zero is trapped safely. Financial figures are rounded to 2 decimal places for clarity.',
         'privacy_title' => 'Instant & Private',
@@ -132,8 +263,8 @@ return [
     'json_formatter' => [
         'name' => 'JSON Formatter & Validator',
         'short_desc' => 'Format, beautify, validate, and minify JSON data with instant syntax error detection and indentation controls.',
-        'meta_title' => 'Free Online JSON Formatter & Validator | Beautify & Minify JSON',
-        'meta_desc' => 'Format, validate, beautify, and minify your JSON data directly in your browser. Spot syntax errors, format with custom tabs or spaces, and copy cleanly.',
+        'meta_title' => 'JSON Formatter & Validator — Format JSON Online | ToolZeno',
+        'meta_desc' => 'Format, validate, beautify, and minify JSON data directly in your browser. Detect syntax errors and customize tab or space indentation with 100% privacy.',
         'input_label' => 'JSON Input',
         'input_placeholder' => 'Paste raw JSON code here to format and validate...',
         'indent_label' => 'Indentation:',
@@ -151,6 +282,42 @@ return [
             'Check the status badge to confirm validity or locate syntax errors.',
             'Click "Copy" to save the cleaned JSON to your clipboard.',
         ],
+        'specs_title' => 'Technical Specifications',
+        'specs' => [
+            'Parser Standard' => 'RFC 8259 Standard ECMAScript JSON Parser',
+            'Indentation Styles' => '2 Spaces, 4 Spaces, or Tab character',
+            'Validation Diagnostics' => 'Line and character offset syntax error localization',
+            'Execution Security' => 'Sandboxed JSON.parse() (zero JavaScript eval or script execution)',
+            'Maximum Tested Payload' => 'Up to 10 MB payload directly in browser memory',
+        ],
+        'examples_title' => 'Formatting Demonstration',
+        'examples' => [
+            [
+                'label' => 'Raw Minified Input',
+                'input' => '{"brand":"ToolZeno","free":true,"tools":8,"locale":["en","bn"]}',
+                'output' => "{\n  \"brand\": \"ToolZeno\",\n  \"free\": true,\n  \"tools\": 8,\n  \"locale\": [\n    \"en\",\n    \"bn\"\n  ]\n}",
+            ],
+        ],
+        'faq_title' => 'Frequently Asked Questions',
+        'faq' => [
+            [
+                'q' => 'How does the validator pinpoint syntax mistakes?',
+                'a' => 'Our validator parses JSON through the browser\'s native parsing engine, detecting unescaped quotes, trailing commas, missing colons, and unclosed brackets with exact error messages.',
+            ],
+            [
+                'q' => 'Is it safe to format proprietary API responses containing secrets?',
+                'a' => 'Yes. Because processing executes 100% client-side in your browser, your payloads, customer tokens, and configuration keys are never transmitted to our servers.',
+            ],
+            [
+                'q' => 'Why does JSON minification matter?',
+                'a' => 'Minifying JSON removes all line breaks and indentation spaces, reducing HTTP payload transfer sizes and saving bandwidth in REST and GraphQL API communication.',
+            ],
+            [
+                'q' => 'Does this tool accept comments in JSON code?',
+                'a' => 'Strict JSON specification (RFC 8259) does not permit comments. If your payload includes JavaScript-style comments (// or /* */), the parser will flag them as syntax errors as required by JSON standards.',
+            ],
+        ],
+        'related_context' => 'Need to standardize variable or key names across your payloads? Use our :link to switch between camelCase, snake_case, and kebab-case.',
         'security_title' => 'Security & Sandboxing',
         'security_text' => 'This tool parses JSON strictly using standard browser JSON.parse(). It never evaluates, executes, or renders arbitrary JavaScript, ensuring safe inspection of untrusted API payloads.',
         'privacy_title' => 'Local Processing',
@@ -165,8 +332,8 @@ return [
     'qr_generator' => [
         'name' => 'QR Code Generator',
         'short_desc' => 'Generate high-resolution QR codes from text, links, or contacts with customizable dimensions and instant download.',
-        'meta_title' => 'Free QR Code Generator Online | Download PNG & SVG QR Codes',
-        'meta_desc' => 'Create custom QR codes from any URL or text. Select size, error correction, and download clean PNG or SVG files. 100% free and client-side.',
+        'meta_title' => 'QR Code Generator — Create QR Codes Online | ToolZeno',
+        'meta_desc' => 'Generate high-resolution QR codes from URLs, text, or phone numbers. Select size and error correction, then download PNG or SVG files directly in your browser.',
         'input_label' => 'Text or Website URL',
         'input_placeholder' => 'Enter a website URL (e.g., https://example.com) or any plain text...',
         'size_label' => 'Output Dimensions',
@@ -188,6 +355,47 @@ return [
             'Preview the rendered QR code instantly on your screen.',
             'Click "Download PNG" or "Download SVG" to save your image file.',
         ],
+        'specs_title' => 'Supported Encodings & Exports',
+        'specs' => [
+            'Payload Support' => 'Website URLs (https://), plain text, phone numbers (tel:), mailto: links, WiFi configs',
+            'Export Formats' => 'Raster PNG (150px to 600px) and Vector SVG (infinitely scalable)',
+            'Error Correction Levels' => 'Level L (7%), Level M (15%), Level Q (25%), Level H (30%)',
+            'Maximum Alphanumeric Length' => 'Up to 2,953 alphanumeric characters',
+            'Code Longevity' => 'Permanent static QR code (no expiration, no middleman redirects)',
+        ],
+        'examples_title' => 'Common QR Payload Formats',
+        'examples' => [
+            [
+                'label' => 'Website URL',
+                'input' => 'https://toolzeno.site/en/tools/qr-generator',
+                'output' => 'Opens web browser directly to the specified destination URL.',
+            ],
+            [
+                'label' => 'WiFi Network Access',
+                'input' => 'WIFI:T:WPA;S:HomeNetwork;P:MyPassword;;',
+                'output' => 'Prompts smartphones to automatically connect to the local WiFi.',
+            ],
+        ],
+        'faq_title' => 'Frequently Asked Questions',
+        'faq' => [
+            [
+                'q' => 'Which error correction level should I select?',
+                'a' => 'For screens, websites, and emails, Medium (15%) is ideal. For printed posters, packaging, or business cards subject to wear or imperfect lighting, choose High (30%) for maximum scan reliability.',
+            ],
+            [
+                'q' => 'What is the advantage of downloading SVG instead of PNG?',
+                'a' => 'PNG is a fixed raster image ideal for websites and digital sharing. SVG is a vector format that can be scaled up to billboard size in print software without losing any sharpness.',
+            ],
+            [
+                'q' => 'Do these QR codes ever expire or require a subscription?',
+                'a' => 'No. All QR codes generated on ToolZeno are 100% static. Your URL or text is baked directly into the black and white pixel matrix, so it works forever without third-party redirection.',
+            ],
+            [
+                'q' => 'Why is testing physical test prints recommended?',
+                'a' => 'Different mobile camera lenses have varying focal ranges and contrast thresholds. Always scan a test print under typical room lighting before mass printing.',
+            ],
+        ],
+        'related_context' => 'Need to optimize promotional images or resize graphics for printed QR flyers? Explore our :link and :link2.',
         'privacy_title' => 'Direct Browser Generation',
         'privacy_text' => 'The QR code matrix is calculated and drawn client-side using JavaScript. We do not transmit or store the URLs or messages you encode.',
     ],
@@ -200,8 +408,8 @@ return [
     'image_compressor' => [
         'name' => 'Image Compressor',
         'short_desc' => 'Reduce JPEG, PNG, and WebP file sizes in your browser with adjustable quality controls and instant side-by-side preview.',
-        'meta_title' => 'Free Image Compressor Online | Reduce JPEG, PNG & WebP File Size',
-        'meta_desc' => 'Compress images directly in your browser without uploading files to a server. Adjust compression quality, inspect file savings, and download optimized photos.',
+        'meta_title' => 'Image Compressor — Compress Images Online | ToolZeno',
+        'meta_desc' => 'Compress JPEG, PNG, and WebP images online directly in your browser. Reduce file size without uploading photos to external servers.',
         'drop_label' => 'Drop your JPEG, PNG, or WebP image here, or click to browse',
         'supported_formats' => 'Supported formats: JPEG, PNG, WebP (Max size: 25 MB)',
         'quality_label' => 'Compression Quality Level',
@@ -217,6 +425,47 @@ return [
             'Compare the original and processed file sizes and previews.',
             'Click "Download Compressed Image" to retrieve your optimized file.',
         ],
+        'specs_title' => 'Image Compression Specifications',
+        'specs' => [
+            'Supported Formats' => 'JPEG (.jpg, .jpeg), PNG (.png), and WebP (.webp)',
+            'Maximum Input Size' => '25 MB per single image file',
+            'Compression Method' => 'Lossy Canvas resampling with adjustable quality factor (1% to 100%)',
+            'Metadata Handling' => 'Strips unnecessary EXIF camera tags to minimize byte size',
+            'Privacy Architecture' => '100% Client-side HTML5 Canvas API (zero server upload)',
+        ],
+        'examples_title' => 'Compression Benchmark Examples',
+        'examples' => [
+            [
+                'label' => 'Smartphone Photo (JPEG)',
+                'input' => '4.8 MB High-Resolution Camera Capture (4032 × 3024 px)',
+                'output' => 'At 75% quality: 780 KB (~84% size reduction) with virtually identical visual appearance.',
+            ],
+            [
+                'label' => 'Website Screenshot (PNG)',
+                'input' => '2.1 MB PNG Graphic with flat colors',
+                'output' => 'At 80% quality: 520 KB (~75% reduction) with sharp typography.',
+            ],
+        ],
+        'faq_title' => 'Frequently Asked Questions',
+        'faq' => [
+            [
+                'q' => 'How does in-browser compression work without uploading files?',
+                'a' => 'Your device browser reads the photo directly into memory using FileReader and redraws it onto an off-screen HTML5 Canvas. The canvas re-encodes the image at your selected quality level entirely on your device CPU/GPU.',
+            ],
+            [
+                'q' => 'Why do some PNG images compress less than JPEGs?',
+                'a' => 'PNG is a lossless format designed for crisp illustrations and transparency. If a PNG contains photographic colors, re-encoding without format conversion yields modest savings compared to JPEG or WebP.',
+            ],
+            [
+                'q' => 'Will compressing my photo alter its width and height in pixels?',
+                'a' => 'No. Compression optimizes encoding tables and removes excess metadata while keeping the original pixel dimensions completely unchanged.',
+            ],
+            [
+                'q' => 'What is the recommended quality setting for blogs and websites?',
+                'a' => 'A quality slider setting between 70% and 80% delivers the sweet spot between crisp image fidelity and lightweight file size for rapid page load times.',
+            ],
+        ],
+        'related_context' => 'Need to change the pixel dimensions or crop margins of your photo? Launch our :link, or package multiple photos into a clean document with our :link2.',
         'limitations_title' => 'Compression Behavior & Transparency',
         'limitations_text' => 'Some pre-optimized images or complex PNGs with alpha transparency may not achieve significant reduction without format changes. Canvas re-compression preserves essential visual quality while discarding unneeded metadata.',
         'privacy_title' => 'Zero-Server Uploads',
@@ -231,8 +480,8 @@ return [
     'image_resizer' => [
         'name' => 'Image Resizer',
         'short_desc' => 'Resize photos to exact pixel dimensions or percentage scales while maintaining aspect ratio and choosing output format.',
-        'meta_title' => 'Free Online Image Resizer | Change Dimensions & Maintain Aspect Ratio',
-        'meta_desc' => 'Resize pictures to exact width and height or scale by percentage. Lock aspect ratio, select output format (JPEG, PNG, WebP), and download instantly.',
+        'meta_title' => 'Image Resizer — Resize Images Online | ToolZeno',
+        'meta_desc' => 'Resize image dimensions by pixels or percentage scale while locking aspect ratio. Export to JPEG, PNG, or WebP locally in your browser.',
         'drop_label' => 'Drop your image here or click to choose from your device',
         'width_label' => 'Width (pixels)',
         'height_label' => 'Height (pixels)',
@@ -251,6 +500,47 @@ return [
             'Keep "Lock Aspect Ratio" checked to prevent image distortion.',
             'Pick your preferred output file format and click "Download Resized Image".',
         ],
+        'specs_title' => 'Resizing Specifications',
+        'specs' => [
+            'Supported Formats' => 'JPEG (.jpg, .jpeg), PNG (.png), and WebP (.webp)',
+            'Dimension Boundaries' => '1 × 1 px minimum up to 8,192 × 8,192 px maximum (device memory guard)',
+            'Aspect Ratio Constraints' => 'Dynamic bidirectional proportional locking',
+            'Preset Percentage Scales' => '25%, 50%, and 75% quick reduction buttons',
+            'Output Conversion' => 'Convert format simultaneously during resizing (JPEG, PNG, WebP)',
+        ],
+        'examples_title' => 'Common Resizing Use Cases',
+        'examples' => [
+            [
+                'label' => 'Social Media Open Graph Banner',
+                'input' => 'Original 4000 × 3000 px photo resized to 1200 × 630 px',
+                'output' => 'Perfect dimensions for Facebook, LinkedIn, and Twitter card previews.',
+            ],
+            [
+                'label' => 'Passport / ID Application Photo',
+                'input' => 'Cropped square portrait resized to 600 × 600 px',
+                'output' => 'Standard specification for online visa and identity portals.',
+            ],
+        ],
+        'faq_title' => 'Frequently Asked Questions',
+        'faq' => [
+            [
+                'q' => 'What does "Lock Aspect Ratio" do?',
+                'a' => 'Locking aspect ratio ensures that whenever you change the width, the height calculates automatically (and vice versa), preventing your picture from stretching or looking distorted.',
+            ],
+            [
+                'q' => 'Can I enlarge a small photo without losing quality?',
+                'a' => 'Upscaling an image beyond its native resolution cannot restore missing optical detail; pixels will look softer. For best results, downscale or keep dimensions close to original size.',
+            ],
+            [
+                'q' => 'Can I convert an image format while resizing?',
+                'a' => 'Yes. You can select WebP, JPEG, or PNG as your export format, allowing you to resize dimensions and convert formats in a single step.',
+            ],
+            [
+                'q' => 'Is my private photo uploaded to any cloud server?',
+                'a' => 'Never. All resampling calculations take place on your local device graphics pipeline, ensuring medical records, IDs, and family photos remain 100% confidential.',
+            ],
+        ],
+        'related_context' => 'After setting your image dimensions, reduce its byte size with our :link, or assemble multiple photos into a PDF with our :link2.',
         'limitations_title' => 'Resolution Limits & Quality Advice',
         'limitations_text' => 'Upscaling an image beyond its original resolution will not restore missing detail or improve optical sharpness. For device memory safety, maximum dimensions are capped at 8,192 × 8,192 pixels.',
         'privacy_title' => 'Private & Device-Local',
@@ -265,8 +555,8 @@ return [
     'image_to_pdf' => [
         'name' => 'Image to PDF Converter',
         'short_desc' => 'Combine multiple JPEG, PNG, and WebP images into a single clean PDF document with custom page sizes and orientations.',
-        'meta_title' => 'Free Image to PDF Converter Online | Convert JPG & PNG to PDF',
-        'meta_desc' => 'Convert multiple images into a single downloadable PDF document right in your browser. Reorder images, choose page size (A4, Letter), and download securely.',
+        'meta_title' => 'Image to PDF Converter — Convert Images to PDF | ToolZeno',
+        'meta_desc' => 'Combine multiple JPG, PNG, and WebP images into a single clean PDF document. Reorder pages and customize layout directly in your browser with zero server uploads.',
         'drop_label' => 'Drop multiple images here or click to browse',
         'reorder_hint' => 'Drag or use arrows to reorder pages. Remove unwanted images before generating.',
         'page_size' => 'Page Size',
@@ -294,6 +584,48 @@ return [
             'Select your desired page dimensions, orientation, and margin spacing.',
             'Click "Generate PDF Document" and download your newly compiled file.',
         ],
+        'specs_title' => 'PDF Compilation Specifications',
+        'specs' => [
+            'Supported Image Formats' => 'JPEG (.jpg, .jpeg), PNG (.png), and WebP (.webp)',
+            'Page Layout Standards' => 'ISO A4 (210 × 297 mm), US Letter (8.5 × 11 in), or Fit to Image',
+            'Page Orientations' => 'Portrait and Landscape modes',
+            'Margin Options' => 'Full Bleed (0 mm), Small (10 mm), and Standard (20 mm)',
+            'Batch Processing Limit' => 'Up to 30 images per compilation pass (for mobile browser RAM stability)',
+            'Confidentiality Guard' => 'Zero server uploads; compiled completely in browser sandbox',
+        ],
+        'examples_title' => 'Typical Document Workflows',
+        'examples' => [
+            [
+                'label' => 'Document / Homework Submission',
+                'input' => '4 scanned pages of assignments in JPG format',
+                'output' => 'Compiled into a single structured A4 Portrait PDF file ready for email or school portal upload.',
+            ],
+            [
+                'label' => 'Expense Receipts & Invoices',
+                'input' => 'Photos of 3 store receipts with various dimensions',
+                'output' => 'Unified into a single Letter document with neat 10mm margins for accounting records.',
+            ],
+        ],
+        'faq_title' => 'Frequently Asked Questions',
+        'faq' => [
+            [
+                'q' => 'How do I rearrange the order of pages before downloading?',
+                'a' => 'Each uploaded image card features "Move Up" and "Move Down" buttons in the preview grid, allowing you to sequence pages in your exact preferred order.',
+            ],
+            [
+                'q' => 'What does the "Fit to Image" page size setting do?',
+                'a' => 'Rather than stretching photos onto fixed A4 or Letter page dimensions, "Fit to Image" matches each page\'s dimensions to the exact aspect ratio of the underlying photo, eliminating blank margins.',
+            ],
+            [
+                'q' => 'Can I convert PNG images with transparent backgrounds?',
+                'a' => 'Yes. Transparent PNG areas are automatically rendered onto a crisp white background during PDF synthesis to ensure clean printing and reading.',
+            ],
+            [
+                'q' => 'Are my scanned IDs or financial receipts uploaded to your servers?',
+                'a' => 'No. All PDF generation and byte synthesis happen entirely within your local browser memory using JavaScript. Your sensitive documents never travel across the web.',
+            ],
+        ],
+        'related_context' => 'Need to optimize your photos before compiling them into a PDF? Compress them first with our :link or adjust dimensions with our :link2.',
         'limitations_title' => 'Memory & Page Count Guidelines',
         'limitations_text' => 'Browser-side generation processes each page in memory. For optimal stability on mobile devices, compiling batches of up to 30 high-resolution images at a time is recommended.',
         'privacy_title' => 'Strict Document Confidentiality',

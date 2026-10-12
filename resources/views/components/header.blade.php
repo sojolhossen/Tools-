@@ -30,7 +30,7 @@
                     </div>
                     <div>
                         <span class="text-xl font-black tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors">
-                            {{ config('app.name', 'OmniTools') }}
+                            {{ config('app.name', 'ToolZeno') }}
                         </span>
                     </div>
                 </a>
@@ -86,7 +86,7 @@
             </div>
 
             <!-- Header Right Controls -->
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1.5 sm:gap-3">
                 <!-- Search Button (Cmd+K) -->
                 <button
                     type="button"
@@ -105,7 +105,7 @@
                 <button
                     type="button"
                     @click="$dispatch('open-search')"
-                    class="sm:hidden p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100"
+                    class="sm:hidden p-2 text-slate-600 hover:text-indigo-600 rounded-xl hover:bg-indigo-50/70 transition-colors"
                     aria-label="{{ __('common.actions.search') }}"
                 >
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
@@ -116,11 +116,11 @@
                 <!-- Language Switcher -->
                 <a
                     href="{{ $switchUrl }}"
-                    class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-xl border border-slate-200 bg-slate-50 text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600"
+                    class="inline-flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 text-xs font-bold rounded-xl border border-slate-200 bg-slate-50 text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 shadow-2xs"
                     title="{{ $locale === 'en' ? 'বাংলা ভাষায় পরিবর্তন করুন' : 'Switch to English' }}"
                     aria-label="{{ __('common.nav.language') }}: {{ $targetLanguageLabel }}"
                 >
-                    <svg class="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                    <svg class="w-3.5 h-3.5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3" />
                     </svg>
                     <span>{{ $targetLanguageLabel }}</span>
@@ -131,7 +131,7 @@
                     type="button"
                     @click="mobileMenuOpen = !mobileMenuOpen"
                     :aria-expanded="mobileMenuOpen"
-                    class="md:hidden p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600"
+                    class="md:hidden p-2 text-slate-600 hover:text-indigo-600 rounded-xl hover:bg-indigo-50/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 transition-colors"
                     aria-label="{{ __('common.nav.open_menu') }}"
                 >
                     <svg x-show="!mobileMenuOpen" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">

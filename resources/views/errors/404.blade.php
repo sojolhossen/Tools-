@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>404 — {{ __('Page Not Found') }} | {{ config('app.name', 'OmniTools') }}</title>
+    <title>404 — {{ __('Page Not Found') }} | {{ config('app.name', 'ToolZeno') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="h-full flex flex-col justify-between bg-slate-50 text-slate-800 antialiased">

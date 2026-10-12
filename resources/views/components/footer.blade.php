@@ -31,7 +31,7 @@
                         </svg>
                     </div>
                     <span class="text-xl font-bold tracking-tight text-slate-900">
-                        {{ config('app.name', 'OmniTools') }}
+                        {{ config('app.name', 'ToolZeno') }}
                     </span>
                 </a>
                 
@@ -116,7 +116,7 @@
 
         <div class="mt-12 pt-8 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
             <p>
-                &copy; {{ date('Y') }} {{ config('app.name', 'OmniTools') }}. {{ __('common.footer.all_rights_reserved') }}
+                &copy; {{ date('Y') }} {{ config('app.name', 'ToolZeno') }}. {{ __('common.footer.all_rights_reserved') }}
             </p>
 
             <div class="flex items-center gap-4">

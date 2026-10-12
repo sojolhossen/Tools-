@@ -1,6 +1,7 @@
 <x-layouts.app
     :title="$tool->getMetaTitle()"
     :description="$tool->getMetaDescription()"
+    :schema="$schema ?? null"
 >
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <!-- Breadcrumbs -->
@@ -37,7 +38,12 @@
             <!-- Dropzone (When no file is selected) -->
             <div
                 x-show="!originalUrl"
-                class="bg-white rounded-3xl border-2 border-dashed border-slate-300 hover:border-indigo-500 p-8 sm:p-12 text-center transition-colors cursor-pointer group"
+                tabindex="0"
+                role="button"
+                aria-label="{{ __('tools.image_compressor.drop_label') }}"
+                @keydown.enter.prevent="$refs.fileInput.click()"
+                @keydown.space.prevent="$refs.fileInput.click()"
+                class="bg-white rounded-3xl border-2 border-dashed border-slate-300 hover:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600 p-8 sm:p-12 text-center transition-colors cursor-pointer group"
                 @click="$refs.fileInput.click()"
                 @dragover.prevent=""
                 @drop.prevent="handleFileSelect($event)"
@@ -70,7 +76,7 @@
             </div>
 
             <!-- Error Banner -->
-            <div x-show="errorMessage" class="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium" x-text="errorMessage"></div>
+            <div x-show="errorMessage" role="alert" aria-live="polite" class="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium" x-text="errorMessage"></div>
 
             <!-- Active File Interface -->
             <div x-show="originalUrl" class="space-y-6" x-cloak>
@@ -89,6 +95,7 @@
                                     step="5"
                                     x-model="quality"
                                     @input="compress()"
+                                    aria-label="{{ __('tools.image_compressor.quality_label') }}"
                                     class="w-48 sm:w-64 accent-indigo-600 cursor-pointer"
                                 >
                                 <span class="text-sm font-black text-indigo-600 w-12" x-text="quality + '%'">75%</span>
@@ -176,45 +183,8 @@
         <!-- Ad Slot -->
         <x-ad-slot slot="tool-bottom" />
 
-        <!-- Educational & Informational Guide -->
-        <div class="mt-12 pt-10 border-t border-slate-200/80 space-y-8">
-            <section>
-                <h2 class="text-xl font-bold text-slate-900 mb-3">
-                    {{ __('tools.image_compressor.how_to_title') }}
-                </h2>
-                <ul class="list-disc list-inside space-y-2 text-sm text-slate-600">
-                    @foreach(__('tools.image_compressor.how_to_steps') as $step)
-                        <li>{{ $step }}</li>
-                    @endforeach
-                </ul>
-            </section>
-
-            <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="p-5 rounded-2xl bg-white border border-slate-200/80">
-                    <h3 class="text-sm font-bold text-slate-900 mb-2 flex items-center gap-2">
-                        <svg class="w-4 h-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
-                        </svg>
-                        <span>{{ __('tools.image_compressor.limitations_title') }}</span>
-                    </h3>
-                    <p class="text-xs text-slate-600 leading-relaxed">
-                        {{ __('tools.image_compressor.limitations_text') }}
-                    </p>
-                </div>
-
-                <div class="p-5 rounded-2xl bg-white border border-slate-200/80">
-                    <h3 class="text-sm font-bold text-slate-900 mb-2 flex items-center gap-2">
-                        <svg class="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
-                        </svg>
-                        <span>{{ __('tools.image_compressor.privacy_title') }}</span>
-                    </h3>
-                    <p class="text-xs text-slate-600 leading-relaxed">
-                        {{ __('tools.image_compressor.privacy_text') }}
-                    </p>
-                </div>
-            </section>
-        </div>
+        <!-- Educational & On-Page SEO Guide -->
+        <x-tool-guide tool-key="image_compressor" related-slug="image-resizer" related-slug2="image-to-pdf" />
 
         <!-- Related Tools -->
         @if($relatedTools->count() > 0)

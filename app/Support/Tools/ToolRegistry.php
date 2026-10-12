@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Support\Tools;
 
+use App\Models\Category;
+use App\Models\Tool;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Schema;
 
 final class ToolRegistry
 {
@@ -14,15 +17,61 @@ final class ToolRegistry
     private ?Collection $tools = null;
 
     /**
+     * Clear cached registry instance (used on admin updates and testing).
+     */
+    public function refresh(): void
+    {
+        $this->tools = null;
+    }
+
+    /**
      * @return Collection<string, ToolDefinition>
      */
     public function all(): Collection
     {
         if ($this->tools === null) {
-            $items = config('tools.items', []);
-            $this->tools = collect($items)->mapWithKeys(function (array $data, string $key) {
+            $configItems = config('tools.items', []);
+            $dbTools = collect();
+
+            try {
+                if (Schema::hasTable('tools')) {
+                    $dbTools = Tool::all()->keyBy('slug');
+                }
+            } catch (\Throwable $e) {
+                // Graceful fallback to config file if DB is not available yet
+            }
+
+            $merged = collect($configItems)->mapWithKeys(function (array $data, string $key) use ($dbTools) {
+                /** @var Tool|null $dbRecord */
+                $dbRecord = $dbTools->get($key);
+
+                if ($dbRecord !== null) {
+                    // Only apply if view_handler is an allowlisted implementation
+                    if (in_array($dbRecord->view_handler, Tool::ALLOWLISTED_VIEWS, true)) {
+                        $data['status'] = $dbRecord->status;
+                        $data['is_featured'] = $dbRecord->is_featured;
+                        $data['is_popular'] = $dbRecord->is_popular;
+                        $data['sort_order'] = $dbRecord->sort_order;
+                        $data['category'] = $dbRecord->category_slug;
+                        $data['icon'] = $dbRecord->icon;
+                        $data['name_en'] = $dbRecord->name_en;
+                        $data['name_bn'] = $dbRecord->name_bn;
+                        $data['description_en'] = $dbRecord->description_en;
+                        $data['description_bn'] = $dbRecord->description_bn;
+                        $data['meta_title_en'] = $dbRecord->meta_title_en;
+                        $data['meta_title_bn'] = $dbRecord->meta_title_bn;
+                        $data['meta_description_en'] = $dbRecord->meta_description_en;
+                        $data['meta_description_bn'] = $dbRecord->meta_description_bn;
+                        if (!empty($dbRecord->tags)) {
+                            $data['tags'] = $dbRecord->tags;
+                        }
+                    }
+                }
+
                 return [$key => ToolDefinition::fromArray($data)];
             });
+
+            $this->tools = $merged;
         }
 
         return $this->tools;
@@ -70,6 +119,29 @@ final class ToolRegistry
      */
     public function getCategories(): array
     {
+        try {
+            if (Schema::hasTable('categories')) {
+                $dbCategories = Category::where('is_active', true)
+                    ->orderBy('sort_order')
+                    ->get();
+
+                if ($dbCategories->isNotEmpty()) {
+                    $result = [];
+                    foreach ($dbCategories as $cat) {
+                        $result[$cat->slug] = [
+                            'icon' => $cat->icon,
+                            'color' => $cat->color,
+                            'name_en' => $cat->name_en,
+                            'name_bn' => $cat->name_bn,
+                        ];
+                    }
+                    return $result;
+                }
+            }
+        } catch (\Throwable $e) {
+            // Fallback
+        }
+
         return config('tools.categories', []);
     }
 
@@ -85,11 +157,9 @@ final class ToolRegistry
             return collect();
         }
 
-        // First find in same category
         $sameCategory = $this->active()
             ->filter(fn (ToolDefinition $t) => $t->slug !== $slug && $t->category === $current->category);
 
-        // If not enough, fill with other active tools
         if ($sameCategory->count() < $limit) {
             $remaining = $this->active()
                 ->filter(fn (ToolDefinition $t) => $t->slug !== $slug && $t->category !== $current->category);
