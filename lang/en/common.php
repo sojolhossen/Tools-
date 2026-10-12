@@ -16,6 +16,9 @@ return [
         'close_menu' => 'Close menu',
         'language' => 'Language',
         'skip_to_content' => 'Skip to content',
+        'theme' => 'Theme',
+        'dark_mode' => 'Dark Mode',
+        'light_mode' => 'Light Mode',
     ],
 
     // Categories

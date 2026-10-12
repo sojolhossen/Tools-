@@ -16,6 +16,9 @@ return [
         'close_menu' => 'মেনু বন্ধ করুন',
         'language' => 'ভাষা (Language)',
         'skip_to_content' => 'মূল বিষয়ে যান',
+        'theme' => 'থিম',
+        'dark_mode' => 'ডার্ক মোড',
+        'light_mode' => 'লাইট মোড',
     ],
 
     // Categories

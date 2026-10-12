@@ -58,6 +58,20 @@
     <meta name="description" content="{{ $pageDesc }}">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
+    <!-- Dark Mode Initializer (Zero-FOUC) -->
+    <script>
+        (function() {
+            try {
+                const stored = localStorage.getItem('theme');
+                if (stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            } catch (_) {}
+        })();
+    </script>
+
     <!-- Canonical & Multilingual SEO -->
     <link rel="canonical" href="{{ $currentUrl }}">
     <link rel="alternate" hreflang="en" href="{{ $enUrl }}">
@@ -114,7 +128,7 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="flex flex-col min-h-screen bg-slate-50/70 text-slate-800 antialiased selection:bg-indigo-500 selection:text-white">
+<body class="flex flex-col min-h-screen bg-slate-50/70 text-slate-800 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-indigo-500 selection:text-white transition-colors duration-200">
     <!-- Skip to Content for Accessibility -->
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-indigo-600 focus:text-white focus:rounded-lg focus:shadow-lg focus:outline-none">
         {{ __('common.nav.skip_to_content') }}
