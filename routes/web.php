@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 // Root URL redirects to canonical default English locale
 Route::get('/', function () {
-    return redirect()->to('/en', 302);
+    return redirect()->route('home', ['locale' => 'en']);
 })->name('root');
 
 // XML Sitemap

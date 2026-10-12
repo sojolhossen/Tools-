@@ -1,0 +1,12 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /tools/
+
+    # Prevent direct access to sensitive files
+    RewriteRule ^(\.env|\.git|composer\.|package\.|tests|storage|database|app|bootstrap|config) - [F,L,NC]
+
+    # Redirect any request not prefixed with public/ to public/
+    RewriteRule ^$ public/ [L,R=302]
+    RewriteRule ^((?!public/).*)$ public/$1 [L,NC,R=302]
+</IfModule>
+
