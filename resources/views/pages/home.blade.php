@@ -54,16 +54,16 @@
                 </button>
             </div>
 
-            <!-- Swipeable Mobile Category Chips / Desktop Centered Pills -->
+            <!-- Category Chips: Wrapped and Fully Visible Without Horizontal Scroll -->
             <div class="mt-5 sm:mt-8">
-                <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 px-1 -mx-4 sm:mx-0 sm:flex-wrap sm:justify-center scroll-smooth snap-x">
+                <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 max-w-4xl mx-auto py-1">
                     @foreach($categories as $catKey => $catData)
                         @php
                             $catCount = $allTools->where('category', $catKey)->count();
                         @endphp
                         <a
                             href="{{ route('tools.category', ['locale' => $locale, 'category' => $catKey]) }}"
-                            class="group inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:border-indigo-400 dark:hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 shadow-2xs hover:shadow-xs active:scale-95 transition-all shrink-0 snap-start"
+                            class="group inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:border-indigo-400 dark:hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 shadow-2xs hover:shadow-xs active:scale-95 transition-all"
                         >
                             <x-icon :name="$catData['icon']" class="w-3.5 h-3.5 text-indigo-500 shrink-0" />
                             <span>{{ __('common.categories.' . $catKey) }}</span>
