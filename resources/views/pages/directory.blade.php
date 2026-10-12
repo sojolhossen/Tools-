@@ -10,10 +10,10 @@
 
         <!-- Header -->
         <div class="max-w-3xl mb-8">
-            <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">
+            <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 {{ __('common.nav.tools') }}
             </h1>
-            <p class="mt-2 text-base text-slate-600">
+            <p class="mt-2 text-base text-slate-600 dark:text-slate-400">
                 {{ $locale === 'bn' 
                     ? 'আমাদের সকল কার্যকরী ব্রাউজার-ভিত্তিক টুলসের সম্পূর্ণ ডিরেক্টরি। কোনো রেজিস্ট্রেশন ছাড়াই ব্যবহার করুন।' 
                     : 'Browse our complete catalog of browser-based utilities for text, calculations, developer formatting, and media.' }}
@@ -21,10 +21,10 @@
         </div>
 
         <!-- Filter & Search Bar -->
-        <div class="mb-8 p-4 rounded-2xl bg-white border border-slate-200/80 shadow-2xs space-y-4">
+        <div class="mb-8 p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-2xs space-y-4">
             <form method="GET" action="{{ route('tools.index', ['locale' => $locale]) }}" class="flex flex-col sm:flex-row gap-3">
                 <div class="relative flex-grow">
-                    <svg class="pointer-events-none absolute left-3.5 top-3.5 w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <svg class="pointer-events-none absolute left-3.5 top-3.5 w-4 h-4 text-slate-400 dark:text-slate-500" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                     </svg>
                     <input
@@ -32,7 +32,7 @@
                         name="q"
                         value="{{ $searchQuery }}"
                         placeholder="{{ __('common.nav.search_placeholder') }}"
-                        class="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                        class="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-600"
                     >
                 </div>
 
@@ -48,7 +48,7 @@
                 @if($searchQuery || $currentCategory !== 'all')
                     <a
                         href="{{ route('tools.index', ['locale' => $locale]) }}"
-                        class="px-4 py-2.5 bg-slate-100 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-200 transition-colors text-center"
+                        class="px-4 py-2.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 text-sm font-medium rounded-xl transition-colors text-center"
                     >
                         {{ __('common.actions.clear') }}
                     </a>
@@ -97,16 +97,16 @@
                 @endforeach
             </div>
         @else
-            <div class="p-12 text-center rounded-2xl bg-white border border-slate-200">
-                <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 mx-auto flex items-center justify-center mb-4">
+            <div class="p-12 text-center rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                <div class="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 mx-auto flex items-center justify-center mb-4">
                     <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                     </svg>
                 </div>
-                <h3 class="text-base font-bold text-slate-900 mb-1">
+                <h3 class="text-base font-bold text-slate-900 dark:text-white mb-1">
                     {{ __('common.search.no_results') }}
                 </h3>
-                <p class="text-sm text-slate-500 max-w-sm mx-auto mb-6">
+                <p class="text-sm text-slate-500 dark:text-slate-400 max-w-sm mx-auto mb-6">
                     {{ $locale === 'bn' ? 'দয়া করে অন্য কোনো শব্দ দিয়ে অনুসন্ধান করুন অথবা সকল ক্যাটেগরি নির্বাচন করুন।' : 'Try adjusting your search terms or filter by a different category.' }}
                 </p>
                 <a
