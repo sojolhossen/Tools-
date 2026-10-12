@@ -39,17 +39,8 @@
         <div class="flex items-center justify-between h-16">
             <!-- Brand Logo -->
             <div class="flex items-center gap-8">
-                <a href="{{ route('home', ['locale' => $locale]) }}" class="flex items-center gap-2.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 rounded-lg p-1">
-                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-500 flex items-center justify-center text-white shadow-sm shadow-indigo-200 group-hover:scale-105 transition-transform">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <span class="text-xl font-black tracking-tight text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                            {{ config('app.name', 'ToolZeno') }}
-                        </span>
-                    </div>
+                <a href="{{ route('home', ['locale' => $locale]) }}" class="group focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 rounded-lg p-0.5 transition-transform group-hover:scale-[1.02]">
+                    <x-logo size="md" />
                 </a>
 
                 <!-- Desktop Navigation Links -->

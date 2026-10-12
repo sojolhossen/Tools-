@@ -24,15 +24,8 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
             <!-- Brand Column -->
             <div class="lg:col-span-2 space-y-4">
-                <a href="{{ route('home', ['locale' => $locale]) }}" class="inline-flex items-center gap-2 group">
-                    <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white shadow-xs">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
-                        </svg>
-                    </div>
-                    <span class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
-                        {{ config('app.name', 'ToolZeno') }}
-                    </span>
+                <a href="{{ route('home', ['locale' => $locale]) }}" class="inline-flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 rounded-lg p-0.5 transition-transform group-hover:scale-[1.02]">
+                    <x-logo size="md" />
                 </a>
                 
                 <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed max-w-sm">

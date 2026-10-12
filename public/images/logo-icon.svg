@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%">
+  <defs>
+    <linearGradient id="tzBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1"/>
+      <stop offset="50%" stop-color="#4F46E5"/>
+      <stop offset="100%" stop-color="#4338CA"/>
+    </linearGradient>
+    <linearGradient id="tzGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#A5B4FC"/>
+    </linearGradient>
+    <linearGradient id="tzWhite" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#F1F5F9"/>
+    </linearGradient>
+    <filter id="tzShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#312E81" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Squircle Base with Shadow -->
+  <rect x="8" y="8" width="112" height="112" rx="30" fill="url(#tzBg)" filter="url(#tzShadow)"/>
+  
+  <!-- Subtle Inner Border Glow -->
+  <rect x="9" y="9" width="110" height="110" rx="29" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="2"/>
+
+  <!-- Geometric Interlocking Monogram: Z + Tool Lightning -->
+  <!-- Top bar of Z -->
+  <path d="M34 38 C34 34.686 36.686 32 40 32 L88 32 C91.314 32 93.314 35.6 91.5 38.5 L78 60 L62 60 L78 38 L40 38 C36.686 38 34 35.5 34 38 Z" fill="url(#tzWhite)"/>
+  
+  <!-- Dynamic Lightning Bolt Cut through Z (Symbol of Speed & Utilities) -->
+  <path d="M68 26 L42 62 L60 62 L44 98 L86 54 L66 54 Z" fill="url(#tzWhite)" filter="drop-shadow(0 2px 4px rgba(30,27,75,0.3))"/>
+  
+  <!-- Cyan Accent Core -->
+  <path d="M66 32 L46 60 L62 60 L49 88 L80 56 L64 56 Z" fill="url(#tzGlow)" opacity="0.95"/>
+
+  <!-- Bottom bar of Z -->
+  <path d="M40 96 C36.686 96 34.686 92.4 36.5 89.5 L46 74 L60 74 L46 96 Z" fill="url(#tzWhite)"/>
+  <path d="M52 90 L88 90 C91.314 90 94 92.686 94 96 L48 96 Z" fill="url(#tzWhite)"/>
+</svg>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 56" width="260" height="56">
+  <defs>
+    <linearGradient id="logoBgDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1"/>
+      <stop offset="100%" stop-color="#4F46E5"/>
+    </linearGradient>
+    <linearGradient id="zenoGradDark" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#818CF8"/>
+      <stop offset="100%" stop-color="#C084FC"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Icon Mark -->
+  <g transform="translate(4, 4)">
+    <rect width="48" height="48" rx="13" fill="url(#logoBgDark)"/>
+    <rect x="0.75" y="0.75" width="46.5" height="46.5" rx="12.25" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+    <!-- Bolt Symbol -->
+    <path d="M28 8 L14 26 L23 26 L16 40 L35 21 L25 21 Z" fill="#FFFFFF"/>
+    <circle cx="34" cy="13" r="2.5" fill="#38BDF8"/>
+  </g>
+
+  <!-- Typography -->
+  <text x="64" y="36" font-family="'Inter', -apple-system, sans-serif" font-size="28" font-weight="800" fill="#FFFFFF" letter-spacing="-0.5">Tool</text>
+  <text x="127" y="36" font-family="'Inter', -apple-system, sans-serif" font-size="28" font-weight="800" fill="url(#zenoGradDark)" letter-spacing="-0.5">Zeno</text>
+  <circle cx="204" cy="32" r="3.5" fill="#818CF8"/>
+</svg>

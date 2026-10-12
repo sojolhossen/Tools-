@@ -72,6 +72,14 @@
         })();
     </script>
 
+    <!-- Favicon & Brand Icons -->
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+    <meta name="theme-color" content="#4F46E5">
+
     <!-- Canonical & Multilingual SEO -->
     <link rel="canonical" href="{{ $currentUrl }}">
     <link rel="alternate" hreflang="en" href="{{ $enUrl }}">
@@ -86,12 +94,14 @@
     <meta property="og:site_name" content="{{ $appName }}">
     <meta property="og:locale" content="{{ $locale === 'bn' ? 'bn_BD' : 'en_US' }}">
     <meta property="og:locale:alternate" content="{{ $locale === 'bn' ? 'en_US' : 'bn_BD' }}">
+    <meta property="og:image" content="{{ asset('android-chrome-512x512.png') }}">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="{{ $pageTitle }}">
     <meta name="twitter:description" content="{{ $pageDesc }}">
     <meta name="twitter:url" content="{{ $currentUrl }}">
+    <meta name="twitter:image" content="{{ asset('android-chrome-512x512.png') }}">
 
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
