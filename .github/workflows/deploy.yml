@@ -97,6 +97,10 @@ jobs:
           rm -rf payload/resources/css
           rm -rf payload/resources/js
 
+          # Optimize vendor payload: strip non-production tests, documentation, and markdown
+          find payload/vendor -type d \( -name "tests" -o -name "Tests" -o -name "test" -o -name "docs" -o -name "doc" -o -name ".github" \) -exec rm -rf {} + 2>/dev/null || true
+          find payload/vendor -type f \( -name "*.md" -o -name "*.txt" -o -name "*.dist" -o -name "phpunit*.xml" -o -name ".php-cs-fixer*" -o -name ".editorconfig" \) -delete 2>/dev/null || true
+
       - name: Upload Production Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -108,7 +112,7 @@ jobs:
     name: Deploy to AmarHoster via FTP
     needs: validate-and-build
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 60
     if: github.ref == 'refs/heads/main'
 
     steps:
@@ -143,6 +147,7 @@ jobs:
           protocol: ${{ secrets.FTP_PROTOCOL || 'ftp' }}
           local-dir: ./payload/
           server-dir: ${{ secrets.FTP_SERVER_DIR || './' }}
+          timeout: 300000
           dry-run: ${{ inputs.dry_run == true }}
           dangerous-clean-slate: false
           exclude: |
