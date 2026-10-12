@@ -27,10 +27,10 @@ jobs:
 
     steps:
       - name: Checkout Source Code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@v4
 
       - name: Setup PHP Environment
-        uses: shivammathur/setup-php@9e023768a3fb7e7e60408269e80b2a3c7482811a # v2.32.0
+        uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
           extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pdo_mysql, bcmath, gd, zip, curl
@@ -41,7 +41,7 @@ jobs:
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache Composer Dependencies
-        uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # v4.2.2
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -51,7 +51,7 @@ jobs:
         run: composer install --prefer-dist --no-interaction --no-progress
 
       - name: Setup Node.js Environment
-        uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
@@ -93,7 +93,7 @@ jobs:
           rm -rf payload/resources/js
 
       - name: Upload Production Artifact
-        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb99ba8141 # v4.4.0
+        uses: actions/upload-artifact@v4
         with:
           name: production-payload
           path: payload/
@@ -108,7 +108,7 @@ jobs:
 
     steps:
       - name: Download Production Artifact
-        uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4.1.9
+        uses: actions/download-artifact@v4
         with:
           name: production-payload
           path: payload/
@@ -129,7 +129,7 @@ jobs:
           fi
 
       - name: Deploy Code via FTP / FTPS
-        uses: SamKirkland/FTP-Deploy-Action@548324c2d16aa064f234471a01337444158428e2 # v4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
