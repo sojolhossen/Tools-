@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ContentPageController;
+use App\Http\Controllers\Admin\AnalyticsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DiagnosticController;
 use App\Http\Controllers\Admin\MediaController;
@@ -111,6 +112,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/media', [MediaController::class, 'index'])->name('admin.media.index');
         Route::post('/media', [MediaController::class, 'store'])->name('admin.media.store');
         Route::delete('/media/{media}', [MediaController::class, 'destroy'])->name('admin.media.destroy');
+
+        // Audience Analytics
+        Route::get('/analytics', [AnalyticsController::class, 'index'])->name('admin.analytics.index');
 
         // Audit Trail
         Route::get('/audit-logs', [AuditLogController::class, 'index'])->name('admin.audit.index');
