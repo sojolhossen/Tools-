@@ -63,6 +63,11 @@ jobs:
         run: npm run build
 
       - name: Verify Automated Test Suite
+        env:
+          APP_ENV: testing
+          APP_KEY: base64:u3Jm9p384JVQSGA52/6i/VamjaNgBQo+7Xj9iDR3DSg=
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ':memory:'
         run: php artisan test
 
       - name: Prune Dev Dependencies for Production
