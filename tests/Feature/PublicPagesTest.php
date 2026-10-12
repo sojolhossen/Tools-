@@ -1,0 +1,103 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature;
+
+use Tests\TestCase;
+
+final class PublicPagesTest extends TestCase
+{
+    public function test_root_url_redirects_to_default_locale(): void
+    {
+        $response = $this->get('/');
+        $response->assertRedirect('/en');
+    }
+
+    public function test_homepage_loads_in_english_and_bangla(): void
+    {
+        $responseEn = $this->get('/en');
+        $responseEn->assertStatus(200);
+        $responseEn->assertSee('Free, Fast & Secure Online Tools');
+
+        $responseBn = $this->get('/bn');
+        $responseBn->assertStatus(200);
+        $responseBn->assertSee('ফ্রি, দ্রুত ও নিরাপদ অনলাইন টুলস');
+    }
+
+    public function test_directory_loads_in_english_and_bangla(): void
+    {
+        $responseEn = $this->get('/en/tools');
+        $responseEn->assertStatus(200);
+        $responseEn->assertSee('All Tools');
+
+        $responseBn = $this->get('/bn/tools');
+        $responseBn->assertStatus(200);
+        $responseBn->assertSee('সকল টুলস');
+    }
+
+    public function test_category_pages_render_and_validate(): void
+    {
+        $responseValid = $this->get('/en/tools/category/text');
+        $responseValid->assertStatus(200);
+        $responseValid->assertSee('Word & Character Counter');
+
+        $responseInvalid = $this->get('/en/tools/category/unknown-category');
+        $responseInvalid->assertStatus(404);
+    }
+
+    public function test_informational_pages_load_successfully(): void
+    {
+        $pages = ['about', 'contact', 'privacy-policy', 'terms-of-service', 'disclaimer'];
+
+        foreach ($pages as $page) {
+            $respEn = $this->get("/en/{$page}");
+            $respEn->assertStatus(200);
+
+            $respBn = $this->get("/bn/{$page}");
+            $respBn->assertStatus(200);
+        }
+    }
+
+    public function test_contact_form_validates_required_fields(): void
+    {
+        $response = $this->post('/en/contact', [
+            'name' => '',
+            'email' => 'invalid-email',
+            'subject' => '',
+            'message' => '',
+        ]);
+
+        $response->assertSessionHasErrors(['name', 'email', 'subject', 'message']);
+    }
+
+    public function test_contact_form_accepts_valid_submission(): void
+    {
+        $response = $this->post('/en/contact', [
+            'name' => 'John Doe',
+            'email' => 'john@example.com',
+            'subject' => 'Tool Suggestion',
+            'message' => 'Please add an SVG optimizer tool in Phase 2.',
+        ]);
+
+        $response->assertRedirect('/en/contact');
+        $response->assertSessionHas('success');
+    }
+
+    public function test_sitemap_xml_returns_valid_response(): void
+    {
+        $response = $this->get('/sitemap.xml');
+        $response->assertStatus(200);
+        $response->assertHeader('Content-Type', 'application/xml; charset=UTF-8');
+        $response->assertSee('<urlset', false);
+        $response->assertSee('/en/tools/word-counter', false);
+        $response->assertSee('/bn/tools/word-counter', false);
+        $response->assertSee('hreflang="bn"', false);
+    }
+
+    public function test_unknown_routes_return_proper_404(): void
+    {
+        $response = $this->get('/en/some-random-page-that-does-not-exist');
+        $response->assertStatus(404);
+    }
+}
