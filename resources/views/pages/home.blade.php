@@ -58,12 +58,18 @@
             <div class="mt-5 sm:mt-8">
                 <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 px-1 -mx-4 sm:mx-0 sm:flex-wrap sm:justify-center scroll-smooth snap-x">
                     @foreach($categories as $catKey => $catData)
+                        @php
+                            $catCount = $allTools->where('category', $catKey)->count();
+                        @endphp
                         <a
                             href="{{ route('tools.category', ['locale' => $locale, 'category' => $catKey]) }}"
-                            class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:border-indigo-400 dark:hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 shadow-2xs hover:shadow-xs active:scale-95 transition-all shrink-0 snap-start"
+                            class="group inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:border-indigo-400 dark:hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 shadow-2xs hover:shadow-xs active:scale-95 transition-all shrink-0 snap-start"
                         >
                             <x-icon :name="$catData['icon']" class="w-3.5 h-3.5 text-indigo-500 shrink-0" />
                             <span>{{ __('common.categories.' . $catKey) }}</span>
+                            <span class="inline-flex items-center justify-center min-w-4.5 h-4.5 px-1.5 rounded-full text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-950/80 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                                {{ $catCount }}
+                            </span>
                         </a>
                     @endforeach
                 </div>

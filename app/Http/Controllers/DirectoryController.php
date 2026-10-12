@@ -29,6 +29,7 @@ final class DirectoryController extends Controller
 
         return view('pages.directory', [
             'tools' => $tools,
+            'allTools' => $this->toolRegistry->active(),
             'categories' => $this->toolRegistry->getCategories(),
             'currentCategory' => $selectedCategory ?: 'all',
             'searchQuery' => $search ?: '',
@@ -47,6 +48,7 @@ final class DirectoryController extends Controller
 
         return view('pages.directory', [
             'tools' => $tools,
+            'allTools' => $this->toolRegistry->active(),
             'categories' => $categories,
             'currentCategory' => $category,
             'searchQuery' => '',
