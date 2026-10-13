@@ -40,9 +40,9 @@ class AnalyticsController extends Controller
         $uniqueVisitors = (clone $query)->distinct('session_hash')->count('session_hash');
         $avgViewsPerVisitor = $uniqueVisitors > 0 ? round($totalPageviews / $uniqueVisitors, 1) : 0;
 
-        // Real-time active in last 30 minutes
+        // Real-time active in last 5 minutes (Industry standard live concurrency window)
         $realtimeVisitors = PageView::humans()
-            ->activeRecent(30)
+            ->activeRecent(5)
             ->distinct('session_hash')
             ->count('session_hash');
 

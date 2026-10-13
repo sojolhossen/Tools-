@@ -9,7 +9,7 @@
                 <div class="flex items-center gap-2 mb-1">
                     <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-400">
                         <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                        {{ $realtimeVisitors }} Active now (last 30m)
+                        {{ $realtimeVisitors }} Active now (last 5m)
                     </span>
                     <span class="text-xs text-slate-400">• Privacy-First Analytics</span>
                 </div>
@@ -79,7 +79,7 @@
             </div>
             <div class="mt-3 flex items-baseline gap-2">
                 <span class="text-3xl font-black text-emerald-400">{{ $realtimeVisitors }}</span>
-                <span class="text-xs text-slate-400">in last 30 mins</span>
+                <span class="text-xs text-slate-400">in last 5 mins</span>
             </div>
             <p class="mt-1 text-[11px] text-slate-500">Live audience browsing right now</p>
         </div>

@@ -40,9 +40,9 @@ class PageView extends Model
     }
 
     /**
-     * Active in the last N minutes.
+     * Active in the last N minutes (defaults to 5 minutes for live concurrency).
      */
-    public function scopeActiveRecent(Builder $query, int $minutes = 30): Builder
+    public function scopeActiveRecent(Builder $query, int $minutes = 5): Builder
     {
         return $query->where('created_at', '>=', now()->subMinutes($minutes));
     }

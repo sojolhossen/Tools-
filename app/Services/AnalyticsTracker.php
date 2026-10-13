@@ -20,6 +20,21 @@ class AnalyticsTracker
             return;
         }
 
+        // Ignore AJAX, JSON, and prefetch requests
+        if ($request->ajax() || $request->wantsJson() || $request->header('Sec-Purpose') === 'prefetch') {
+            return;
+        }
+
+        $contentType = (string) $response->headers->get('Content-Type', '');
+        if ($contentType !== '' && !str_contains(strtolower($contentType), 'text/html')) {
+            return;
+        }
+
+        // Ignore authenticated admin users to avoid polluting traffic metrics with internal activity
+        if ($request->user() && method_exists($request->user(), 'isAdmin') && $request->user()->isAdmin()) {
+            return;
+        }
+
         $path = trim($request->path(), '/');
 
         // Ignore admin panel, internal health checks, API endpoints, and live assets
@@ -40,7 +55,16 @@ class AnalyticsTracker
         }
 
         // Anonymized daily visitor hash (GDPR compliant, zero raw IP storage)
-        $ip = $request->ip() ?? '127.0.0.1';
+        // Extract genuine visitor IP behind Cloudflare and reverse proxies
+        $ip = $request->header('CF-Connecting-IP')
+            ?: ($request->header('X-Forwarded-For')
+                ?: ($request->header('X-Real-IP') ?: ($request->ip() ?? '127.0.0.1')));
+
+        if (is_string($ip) && str_contains($ip, ',')) {
+            $ip = trim(explode(',', $ip)[0]);
+        }
+        $ip = is_string($ip) && trim($ip) !== '' ? trim($ip) : '127.0.0.1';
+
         $userAgent = $request->userAgent() ?? '';
         $salt = (string) config('app.key', 'ToolZenoSalt') . '-' . date('Y-m-d');
         $sessionHash = hash('sha256', $ip . '|' . $userAgent . '|' . $salt);
@@ -98,7 +122,12 @@ class AnalyticsTracker
 
     private function detectBot(string $ua): bool
     {
-        $botPattern = '/bot|crawl|spider|slurp|facebookexternalhit|whatsapp|telegram|preview|curl|wget|python|postman|headless/i';
+        if (trim($ua) === '') {
+            return true;
+        }
+
+        $botPattern = '/bot|crawl|spider|slurp|facebookexternalhit|whatsapp|telegram|preview|curl|wget|python|postman|headless|lighthouse|pagespeed|uptime|pingdom|monitor|check_http|nagios|datadog|semrush|ahrefs|dotbot|petalbot|yandex|baidu|bingbot|duckduck|screaming frog|claudebot|gptbot|chatgpt|anthropic|applebot|amazonbot|ccbot|bytespider|phantomjs|selenium|playwright|puppeteer|httpclient|guzzle|okhttp|java\/|go-http-client|aiohttp|axios|node-fetch|scanner|censys|shodan/i';
+
         return (bool) preg_match($botPattern, $ua);
     }
 
