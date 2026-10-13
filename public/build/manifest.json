@@ -1,0 +1,54 @@
+{
+  "_alpine-BQX-7wDH.js": {
+    "file": "assets/alpine-BQX-7wDH.js",
+    "name": "alpine"
+  },
+  "_pdf-engine-EJCSOesT.js": {
+    "file": "assets/pdf-engine-EJCSOesT.js",
+    "name": "pdf-engine",
+    "dynamicImports": [
+      "node_modules/dompurify/dist/purify.es.mjs",
+      "node_modules/canvg/lib/index.es.js"
+    ]
+  },
+  "_qr-engine-BqTd-3GH.js": {
+    "file": "assets/qr-engine-BqTd-3GH.js",
+    "name": "qr-engine"
+  },
+  "node_modules/canvg/lib/index.es.js": {
+    "file": "assets/index.es-DYx3pxNR.js",
+    "name": "index.es",
+    "src": "node_modules/canvg/lib/index.es.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_qr-engine-BqTd-3GH.js",
+      "_pdf-engine-EJCSOesT.js"
+    ]
+  },
+  "node_modules/dompurify/dist/purify.es.mjs": {
+    "file": "assets/purify.es-BPuvlvQ_.js",
+    "name": "purify.es",
+    "src": "node_modules/dompurify/dist/purify.es.mjs",
+    "isDynamicEntry": true
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-BSJYHPCO.css",
+    "src": "resources/css/app.css",
+    "isEntry": true,
+    "name": "app",
+    "names": [
+      "app.css"
+    ]
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-ZhbEwfJx.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "imports": [
+      "_alpine-BQX-7wDH.js",
+      "_qr-engine-BqTd-3GH.js",
+      "_pdf-engine-EJCSOesT.js"
+    ]
+  }
+}

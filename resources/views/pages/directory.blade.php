@@ -81,9 +81,22 @@
                         href="{{ route('tools.index', ['locale' => $locale, 'q' => $searchQuery, 'category' => 'all']) }}"
                         class="group flex sm:inline-flex items-center justify-between sm:justify-start gap-1.5 px-2.5 py-2 sm:px-3.5 sm:py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all min-w-0 {{ $currentCategory === 'all' ? 'bg-indigo-600 text-white shadow-2xs' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700' }}"
                     >
-                        <div class="flex items-center gap-1.5 min-w-0">
+                        <div 
+                            x-data="categoryTicker()"
+                            @mouseenter="isHovered = true"
+                            @mouseleave="isHovered = false"
+                            @touchstart="isHovered = true"
+                            @touchend="setTimeout(() => isHovered = false, 1500)"
+                            class="flex items-center gap-1.5 min-w-0 flex-1 overflow-hidden"
+                        >
                             <x-icon name="squares-2x2" class="w-3.5 h-3.5 {{ $currentCategory === 'all' ? 'text-white' : 'text-slate-400' }} shrink-0" />
-                            <span class="truncate">{{ __('common.categories.all') }}</span>
+                            <div 
+                                x-ref="ticker"
+                                class="min-w-0 flex-1 overflow-x-auto no-scrollbar whitespace-nowrap text-left"
+                                title="{{ __('common.categories.all') }}"
+                            >
+                                <span class="inline-block whitespace-nowrap">{{ __('common.categories.all') }}</span>
+                            </div>
                         </div>
                         @if(isset($allTools))
                             <span class="inline-flex items-center justify-center min-w-4.5 h-4.5 px-1.5 rounded-full text-[10px] font-bold {{ $currentCategory === 'all' ? 'bg-indigo-700 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-400' }} shrink-0">
@@ -106,9 +119,22 @@
                             @endif
                             class="group flex sm:inline-flex items-center justify-between sm:justify-start gap-1.5 px-2.5 py-2 sm:px-3.5 sm:py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all min-w-0 {{ $currentCategory === $catKey ? 'bg-indigo-600 text-white shadow-2xs' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700' }}"
                         >
-                            <div class="flex items-center gap-1.5 min-w-0">
+                            <div 
+                                x-data="categoryTicker()"
+                                @mouseenter="isHovered = true"
+                                @mouseleave="isHovered = false"
+                                @touchstart="isHovered = true"
+                                @touchend="setTimeout(() => isHovered = false, 1500)"
+                                class="flex items-center gap-1.5 min-w-0 flex-1 overflow-hidden"
+                            >
                                 <x-icon :name="$catData['icon']" class="w-3.5 h-3.5 {{ $currentCategory === $catKey ? 'text-white' : 'text-slate-400' }} shrink-0" />
-                                <span class="truncate">{{ __('common.categories.' . $catKey) }}</span>
+                                <div 
+                                    x-ref="ticker"
+                                    class="min-w-0 flex-1 overflow-x-auto no-scrollbar whitespace-nowrap text-left"
+                                    title="{{ __('common.categories.' . $catKey) }}"
+                                >
+                                    <span class="inline-block whitespace-nowrap">{{ __('common.categories.' . $catKey) }}</span>
+                                </div>
                             </div>
                             @if($catCount !== null)
                                 <span class="inline-flex items-center justify-center min-w-4.5 h-4.5 px-1.5 rounded-full text-[10px] font-bold {{ $currentCategory === $catKey ? 'bg-indigo-700 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-400' }} shrink-0">

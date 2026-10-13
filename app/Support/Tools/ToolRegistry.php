@@ -119,8 +119,34 @@ final class ToolRegistry
      */
     public function getCategories(): array
     {
+        $configCategories = config('tools.categories', []);
+
         try {
             if (Schema::hasTable('categories')) {
+                // Ensure all configured categories exist in the database table
+                $existingSlugs = Category::pluck('slug')->all();
+                $order = count($existingSlugs);
+
+                foreach ($configCategories as $slug => $data) {
+                    if (!in_array($slug, $existingSlugs, true)) {
+                        try {
+                            Category::create([
+                                'slug' => $slug,
+                                'name_en' => __('common.categories.' . $slug, [], 'en'),
+                                'name_bn' => __('common.categories.' . $slug, [], 'bn'),
+                                'description_en' => __('common.category_descriptions.' . $slug, [], 'en'),
+                                'description_bn' => __('common.category_descriptions.' . $slug, [], 'bn'),
+                                'icon' => $data['icon'] ?? 'squares-2x2',
+                                'color' => $data['color'] ?? 'indigo',
+                                'sort_order' => ++$order,
+                                'is_active' => true,
+                            ]);
+                        } catch (\Throwable $ignored) {
+                            // Suppress unique constraint / concurrency collisions
+                        }
+                    }
+                }
+
                 $dbCategories = Category::where('is_active', true)
                     ->orderBy('sort_order')
                     ->get();
@@ -135,6 +161,19 @@ final class ToolRegistry
                             'name_bn' => $cat->name_bn,
                         ];
                     }
+
+                    // Guarantee all categories from config are present
+                    foreach ($configCategories as $slug => $data) {
+                        if (!isset($result[$slug])) {
+                            $result[$slug] = [
+                                'icon' => $data['icon'] ?? 'squares-2x2',
+                                'color' => $data['color'] ?? 'indigo',
+                                'name_en' => __('common.categories.' . $slug, [], 'en'),
+                                'name_bn' => __('common.categories.' . $slug, [], 'bn'),
+                            ];
+                        }
+                    }
+
                     return $result;
                 }
             }
@@ -142,7 +181,7 @@ final class ToolRegistry
             // Fallback
         }
 
-        return config('tools.categories', []);
+        return $configCategories;
     }
 
     /**
