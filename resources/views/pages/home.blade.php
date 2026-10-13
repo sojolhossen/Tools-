@@ -54,11 +54,11 @@
                 </button>
             </div>
 
-            <!-- Category Chips: Wrapped on Desktop, Truncated with +More on Mobile -->
+            <!-- Category Chips: Balanced 2-Column Grid on Mobile, Wrapped Flex on Desktop -->
             <div class="mt-5 sm:mt-8">
-                <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 max-w-4xl mx-auto py-1">
+                <div class="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-2.5 max-w-4xl mx-auto py-1">
                     @php
-                        $mobileLimit = 10;
+                        $mobileLimit = 9;
                         $totalCategories = count($categories);
                         $remainingCount = max(0, $totalCategories - $mobileLimit);
                         $catIndex = 0;
@@ -71,11 +71,13 @@
                         @endphp
                         <a
                             href="{{ route('tools.category', ['locale' => $locale, 'category' => $catKey]) }}"
-                            class="group {{ $isMobileHidden ? 'hidden sm:inline-flex' : 'inline-flex' }} items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:border-indigo-400 dark:hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 shadow-2xs hover:shadow-xs active:scale-95 transition-all"
+                            class="group {{ $isMobileHidden ? 'hidden sm:inline-flex' : 'flex' }} sm:inline-flex items-center justify-between sm:justify-start gap-1.5 sm:gap-2 px-2.5 py-2 sm:px-3.5 sm:py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:border-indigo-400 dark:hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 shadow-2xs hover:shadow-xs active:scale-95 transition-all min-w-0"
                         >
-                            <x-icon :name="$catData['icon']" class="w-3.5 h-3.5 text-indigo-500 shrink-0" />
-                            <span>{{ __('common.categories.' . $catKey) }}</span>
-                            <span class="inline-flex items-center justify-center min-w-4.5 h-4.5 px-1.5 rounded-full text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-950/80 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                            <div class="flex items-center gap-1.5 min-w-0">
+                                <x-icon :name="$catData['icon']" class="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+                                <span class="truncate">{{ __('common.categories.' . $catKey) }}</span>
+                            </div>
+                            <span class="inline-flex items-center justify-center min-w-4.5 h-4.5 px-1.5 rounded-full text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-950/80 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors shrink-0">
                                 {{ $catCount }}
                             </span>
                         </a>
@@ -84,11 +86,11 @@
                     @if($remainingCount > 0)
                         <a
                             href="{{ route('tools.index', ['locale' => $locale]) }}"
-                            class="sm:hidden group inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-indigo-500/10 via-indigo-600/15 to-violet-600/10 dark:from-indigo-950/80 dark:to-violet-950/80 border border-indigo-300/80 dark:border-indigo-700/60 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 shadow-2xs active:scale-95 transition-all"
+                            class="sm:hidden group flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-xl bg-gradient-to-r from-indigo-500/15 via-indigo-600/20 to-violet-600/15 dark:from-indigo-950 dark:to-violet-950 border border-indigo-300 dark:border-indigo-700 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 shadow-2xs active:scale-95 transition-all"
                             title="{{ $locale === 'bn' ? 'সকল ক্যাটেগরি ও টুলস দেখুন' : 'View all categories and tools' }}"
                         >
                             <span>+{{ $remainingCount }} {{ $locale === 'bn' ? 'আরো' : 'More' }}</span>
-                            <svg class="w-3.5 h-3.5 text-indigo-500 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                            <svg class="w-3.5 h-3.5 text-indigo-500 group-hover:translate-x-0.5 transition-transform shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                             </svg>
                         </a>
