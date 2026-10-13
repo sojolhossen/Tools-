@@ -10,7 +10,7 @@ return [
         'home' => 'Home',
         'tools' => 'All Tools',
         'categories' => 'Categories',
-        'search_placeholder' => 'Search 8+ free tools (e.g., word counter, image compressor)...',
+        'search_placeholder' => 'Search :count+ free tools (e.g., word counter, image compressor)...',
         'search_shortcut' => 'Quick Search',
         'open_menu' => 'Open navigation menu',
         'close_menu' => 'Close menu',

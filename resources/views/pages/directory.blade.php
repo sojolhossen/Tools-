@@ -27,11 +27,17 @@
                     <svg class="pointer-events-none absolute left-3.5 top-3.5 w-4 h-4 text-slate-400 dark:text-slate-500" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                     </svg>
+                    @php
+                        $totalToolsCount = $allTools->count();
+                        $formattedCount = $locale === 'bn' 
+                            ? str_replace(['0','1','2','3','4','5','6','7','8','9'], ['০','১','২','৩','৪','৫','৬','৭','৮','৯'], (string) $totalToolsCount) 
+                            : (string) $totalToolsCount;
+                    @endphp
                     <input
                         type="text"
                         name="q"
                         value="{{ $searchQuery }}"
-                        placeholder="{{ __('common.nav.search_placeholder') }}"
+                        placeholder="{{ __('common.nav.search_placeholder', ['count' => $formattedCount]) }}"
                         class="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-600"
                     >
                 </div>

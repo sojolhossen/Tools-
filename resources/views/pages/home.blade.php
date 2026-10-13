@@ -28,6 +28,13 @@
                 {{ __('common.meta_description_default') }}
             </p>
 
+            @php
+                $totalToolsCount = $allTools->count();
+                $formattedCount = $locale === 'bn' 
+                    ? str_replace(['0','1','2','3','4','5','6','7','8','9'], ['০','১','২','৩','৪','৫','৬','৭','৮','৯'], (string) $totalToolsCount) 
+                    : (string) $totalToolsCount;
+            @endphp
+
             <!-- Prominent App-Style Search Box -->
             <div x-data class="mt-5 sm:mt-8 max-w-xl mx-auto">
                 <button
@@ -35,7 +42,7 @@
                     @click="$dispatch('open-search')"
                     onclick="window.dispatchEvent(new CustomEvent('open-search'))"
                     class="w-full flex items-center justify-between p-2 sm:p-2.5 text-left bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm hover:bg-white dark:hover:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-500/50 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-600 group cursor-pointer"
-                    aria-label="{{ __('common.nav.search_placeholder') }}"
+                    aria-label="{{ __('common.nav.search_placeholder', ['count' => $formattedCount]) }}"
                 >
                     <span class="flex items-center gap-2.5 sm:gap-3 min-w-0">
                         <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
@@ -44,7 +51,7 @@
                             </svg>
                         </span>
                         <span class="text-xs sm:text-sm text-slate-400 dark:text-slate-500 font-normal truncate">
-                            {{ __('common.nav.search_placeholder') }}
+                            {{ __('common.nav.search_placeholder', ['count' => $formattedCount]) }}
                         </span>
                     </span>
                     <span class="hidden sm:inline-flex px-2 py-0.5 text-xs font-mono font-medium bg-slate-50 dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-700 text-slate-400">Ctrl K</span>
@@ -114,7 +121,7 @@
             <!-- Micro Trust & Platform Highlights Grid -->
             <div class="mt-6 sm:mt-10 grid grid-cols-3 gap-2 sm:gap-4 max-w-md mx-auto pt-5 sm:pt-6 border-t border-slate-200/60 dark:border-slate-800 text-center">
                 <div class="p-2 sm:p-3 rounded-xl bg-white/70 dark:bg-slate-900/70 border border-slate-200/60 dark:border-slate-800 shadow-2xs">
-                    <div class="text-base sm:text-xl font-black text-indigo-600 dark:text-indigo-400">8+</div>
+                    <div class="text-base sm:text-xl font-black text-indigo-600 dark:text-indigo-400">{{ $formattedCount }}+</div>
                     <div class="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400">{{ $locale === 'bn' ? 'ফ্রি টুলস' : 'Free Tools' }}</div>
                 </div>
                 <div class="p-2 sm:p-3 rounded-xl bg-white/70 dark:bg-slate-900/70 border border-slate-200/60 dark:border-slate-800 shadow-2xs">
