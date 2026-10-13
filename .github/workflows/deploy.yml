@@ -21,4 +21,4 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: toolzeno.site/ # লাইভ সার্ভারের ডিরেক্টরি পাথ
+          server-dir: ./ # লাইভ সার্ভারের ডিরেক্টরি পাথ
