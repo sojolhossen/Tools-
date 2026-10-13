@@ -114,10 +114,11 @@
     </style>
 
     @php
-        $gaEnabled = (bool) \App\Models\SiteSetting::get('analytics_enabled', false);
-        $gaId = (string) \App\Models\SiteSetting::get('analytics_measurement_id', '');
+        $gaId = (string) (\App\Models\SiteSetting::get('analytics_measurement_id') ?: env('ANALYTICS_MEASUREMENT_ID', 'G-HJ4N0PWKP7'));
+        $gaEnabled = \App\Models\SiteSetting::get('analytics_enabled');
+        $gaActive = ($gaEnabled === null || $gaEnabled === '' || (bool) $gaEnabled);
     @endphp
-    @if($gaEnabled && !empty($gaId))
+    @if($gaActive && !empty($gaId))
         <!-- Google tag (gtag.js) -->
         <script async src="https://www.googletagmanager.com/gtag/js?id={{ $gaId }}"></script>
         <script>

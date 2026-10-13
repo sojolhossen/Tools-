@@ -449,8 +449,8 @@ class DatabaseSeeder extends Seeder
             'meta_description_default_en' => ['value' => 'Free, lightning-fast online tools for Bangladesh and worldwide. Text utilities, calculators, developer formats, and private file conversion.', 'group' => 'seo', 'type' => 'string', 'description' => 'Default meta description in English'],
             'meta_description_default_bn' => ['value' => 'বাংলাদেশ ও বিশ্বের সবার জন্য ফ্রি ও সুরক্ষিত অনলাইন টুলস। ওয়ার্ড কাউন্টার, ক্যালকুলেটর, কিউআর জেনারেটর এবং ব্রাউজারে নিরাপদ ছবি রূপান্তর।', 'group' => 'seo', 'type' => 'string', 'description' => 'Default meta description in Bangla'],
             'sitemap_enabled' => ['value' => '1', 'group' => 'seo', 'type' => 'boolean', 'description' => 'Enable public XML sitemap generation'],
-            'analytics_enabled' => ['value' => '0', 'group' => 'analytics', 'type' => 'boolean', 'description' => 'Google Analytics 4 integration toggle (disabled by default)'],
-            'analytics_measurement_id' => ['value' => '', 'group' => 'analytics', 'type' => 'string', 'description' => 'Google Analytics 4 Measurement ID (e.g. G-XXXXXXXXXX)'],
+            'analytics_enabled' => ['value' => '1', 'group' => 'analytics', 'type' => 'boolean', 'description' => 'Google Analytics 4 integration toggle'],
+            'analytics_measurement_id' => ['value' => 'G-HJ4N0PWKP7', 'group' => 'analytics', 'type' => 'string', 'description' => 'Google Analytics 4 Measurement ID'],
             'adsense_enabled' => ['value' => '0', 'group' => 'ads', 'type' => 'boolean', 'description' => 'Global advertising integration toggle (disabled by default)'],
             'adsense_publisher_id' => ['value' => '', 'group' => 'ads', 'type' => 'string', 'description' => 'AdSense Publisher ID (e.g. ca-pub-XXXXXXXXXXXXXXXX)'],
         ];
