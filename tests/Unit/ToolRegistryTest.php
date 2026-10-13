@@ -20,7 +20,7 @@ final class ToolRegistryTest extends TestCase
     public function test_it_loads_all_tools(): void
     {
         $tools = $this->registry->all();
-        $this->assertCount(8, $tools);
+        $this->assertCount(count(config('tools.items')), $tools);
     }
 
     public function test_it_finds_tool_by_slug(): void

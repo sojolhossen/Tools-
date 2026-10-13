@@ -35,6 +35,39 @@ final class ToolRegistry
 
             try {
                 if (Schema::hasTable('tools')) {
+                    $existingSlugs = Tool::pluck('slug')->all();
+                    $order = count($existingSlugs);
+
+                    foreach ($configItems as $slug => $data) {
+                        if (!in_array($slug, $existingSlugs, true)) {
+                            try {
+                                Tool::create([
+                                    'slug' => $slug,
+                                    'category_slug' => $data['category'],
+                                    'name_en' => __($data['name_key'], [], 'en'),
+                                    'name_bn' => __($data['name_key'], [], 'bn'),
+                                    'description_en' => __($data['description_key'], [], 'en'),
+                                    'description_bn' => __($data['description_key'], [], 'bn'),
+                                    'meta_title_en' => __($data['meta_title_key'], [], 'en'),
+                                    'meta_title_bn' => __($data['meta_title_key'], [], 'bn'),
+                                    'meta_description_en' => __($data['meta_description_key'], [], 'en'),
+                                    'meta_description_bn' => __($data['meta_description_key'], [], 'bn'),
+                                    'icon' => $data['icon'] ?? 'code-bracket',
+                                    'view_handler' => $data['view'],
+                                    'route_name' => $data['route_name'] ?? 'tools.show',
+                                    'status' => $data['status'] ?? 'active',
+                                    'is_featured' => $data['is_featured'] ?? false,
+                                    'is_popular' => $data['is_popular'] ?? false,
+                                    'sort_order' => ++$order,
+                                    'tags' => $data['tags'] ?? [],
+                                    'supported_locales' => $data['supported_locales'] ?? ['en', 'bn'],
+                                ]);
+                            } catch (\Throwable $ignored) {
+                                // Ignore concurrency collisions
+                            }
+                        }
+                    }
+
                     $dbTools = Tool::all()->keyBy('slug');
                 }
             } catch (\Throwable $e) {

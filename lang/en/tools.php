@@ -631,4 +631,172 @@ return [
         'privacy_title' => 'Strict Document Confidentiality',
         'privacy_text' => 'Your scanned IDs, receipts, and photos are never uploaded to any cloud server. PDF generation occurs entirely within your browser sandbox.',
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Developer Tools: Group 1 (Code Formatters & Beautifiers)
+    |--------------------------------------------------------------------------
+    */
+    'html_css_js_beautifier' => [
+        'name' => 'HTML/CSS/JS Beautifier',
+        'short_desc' => 'Format, indent, and prettify messy HTML, CSS, and JavaScript code instantly in your browser.',
+        'meta_title' => 'HTML/CSS/JS Beautifier — Format Frontend Code Online | ToolZeno',
+        'meta_desc' => 'Clean up messy HTML, CSS, and JavaScript code with customizable indentation. Fast, secure, and 100% in-browser.',
+    ],
+    'sql_formatter' => [
+        'name' => 'SQL Formatter',
+        'short_desc' => 'Format, indent, and uppercase keywords in complex SQL queries for maximum readability.',
+        'meta_title' => 'SQL Formatter — Format and Beautify SQL Queries | ToolZeno',
+        'meta_desc' => 'Prettify SQL queries online with proper indentation and capitalized keywords. Supports MySQL, PostgreSQL, SQLite, and standard SQL.',
+    ],
+    'xml_formatter' => [
+        'name' => 'XML Formatter & Beautifier',
+        'short_desc' => 'Format and indent raw XML strings with syntax validation and proper tag hierarchy.',
+        'meta_title' => 'XML Formatter — Indent & Beautify XML Code Online | ToolZeno',
+        'meta_desc' => 'Format XML online with customizable indentation and instant syntax error detection. 100% private in-browser tool.',
+    ],
+    'yaml_json_converter' => [
+        'name' => 'YAML to JSON / JSON to YAML Converter',
+        'short_desc' => 'Seamlessly convert between YAML and JSON configuration formats with syntax validation.',
+        'meta_title' => 'YAML to JSON Converter — Bidirectional Config Converter | ToolZeno',
+        'meta_desc' => 'Convert YAML to JSON and JSON to YAML in real time. Validate syntax and format config files instantly.',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Developer Tools: Group 2 (Minifiers & Optimizers)
+    |--------------------------------------------------------------------------
+    */
+    'css_minifier' => [
+        'name' => 'CSS Minifier',
+        'short_desc' => 'Minify and compress CSS stylesheets by removing comments and whitespace to accelerate web performance.',
+        'meta_title' => 'CSS Minifier — Compress CSS Online | ToolZeno',
+        'meta_desc' => 'Compress and minify CSS code online. Remove comments and spaces to optimize page load speeds.',
+    ],
+    'js_minifier' => [
+        'name' => 'JavaScript Minifier',
+        'short_desc' => 'Compress JavaScript code by removing comments, blank lines, and unnecessary spaces.',
+        'meta_title' => 'JavaScript Minifier — Minify JS Code Online | ToolZeno',
+        'meta_desc' => 'Minify JavaScript code online to reduce bundle size and optimize web application performance.',
+    ],
+    'html_minifier' => [
+        'name' => 'HTML Minifier',
+        'short_desc' => 'Minify HTML code by stripping comments and redundant whitespace for faster webpage rendering.',
+        'meta_title' => 'HTML Minifier — Compress HTML Code Online | ToolZeno',
+        'meta_desc' => 'Minify HTML markup online to reduce page size and improve site loading speeds.',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Developer Tools: Group 3 (Converters & Encoders/Decoders)
+    |--------------------------------------------------------------------------
+    */
+    'base64_encoder_decoder' => [
+        'name' => 'Base64 Encoder/Decoder',
+        'short_desc' => 'Encode and decode UTF-8 text or convert image files to Base64 data URIs securely in your browser.',
+        'meta_title' => 'Base64 Encoder and Decoder — Text & Image to Base64 | ToolZeno',
+        'meta_desc' => 'Encode and decode Base64 strings with full UTF-8 support. Convert images to Base64 data URIs in your browser.',
+    ],
+    'url_encoder_decoder' => [
+        'name' => 'URL Encoder/Decoder',
+        'short_desc' => 'Encode and decode URLs, query strings, and URI components with full Unicode support.',
+        'meta_title' => 'URL Encoder/Decoder — Encode & Decode URIs Online | ToolZeno',
+        'meta_desc' => 'Encode and decode URLs, query parameters, and special characters online with full UTF-8 Unicode support.',
+    ],
+    'html_entities_encoder' => [
+        'name' => 'HTML Entities Encoder/Decoder',
+        'short_desc' => 'Convert special characters to HTML entities and decode escaped HTML back to plain text.',
+        'meta_title' => 'HTML Entities Encoder & Decoder Online | ToolZeno',
+        'meta_desc' => 'Encode text to safe HTML entities or decode HTML entities back to raw text. Protect against XSS and display symbols.',
+    ],
+    'jwt_decoder' => [
+        'name' => 'JWT Decoder & Inspector',
+        'short_desc' => 'Decode, inspect, and verify JSON Web Token headers, payloads, and expiration times safely.',
+        'meta_title' => 'JWT Decoder — Inspect JSON Web Tokens Online | ToolZeno',
+        'meta_desc' => 'Decode and inspect JWT headers, claims, and timestamps in your browser without sending secrets to any server.',
+    ],
+    'hex_binary_text_converter' => [
+        'name' => 'Hex to ASCII / Binary to Text Converter',
+        'short_desc' => 'Convert between plain text, hexadecimal, and binary number systems seamlessly.',
+        'meta_title' => 'Hex & Binary to Text Converter Online | ToolZeno',
+        'meta_desc' => 'Convert text to Hex, Hex to ASCII, text to binary, and binary to text. Real-time bidirectional converter.',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Developer Tools: Group 4 (Testing & Regex)
+    |--------------------------------------------------------------------------
+    */
+    'regex_tester' => [
+        'name' => 'Regex Tester & Debugger',
+        'short_desc' => 'Test and debug regular expressions in real-time with match highlighting and capture group extraction.',
+        'meta_title' => 'Regex Tester & Debugger — Test Regular Expressions Online | ToolZeno',
+        'meta_desc' => 'Test JavaScript regular expressions in real time. Visual match highlights, capture group inspection, and cheat sheet.',
+    ],
+    'cron_generator' => [
+        'name' => 'Crontab (Cron Expression) Generator',
+        'short_desc' => 'Visually create, customize, and understand cron job schedule expressions with plain-English explanations.',
+        'meta_title' => 'Cron Expression Generator — Build Crontab Schedules Online | ToolZeno',
+        'meta_desc' => 'Generate and validate cron schedule expressions with an interactive builder. Includes common presets and syntax explanations.',
+    ],
+    'chmod_calculator' => [
+        'name' => 'Chmod Permissions Calculator',
+        'short_desc' => 'Calculate Linux/Unix file permissions with visual checkboxes, octal values (755, 644), and symbolic modes.',
+        'meta_title' => 'Chmod Permissions Calculator — Linux File Permissions | ToolZeno',
+        'meta_desc' => 'Calculate Linux chmod permissions interactively. Get numeric octal (e.g. 755), symbolic (-rwxr-xr-x), and terminal commands.',
+    ],
+    'curl_converter' => [
+        'name' => 'cURL to Fetch / PHP / Axios / Python Converter',
+        'short_desc' => 'Convert cURL terminal commands into modern JavaScript fetch, Axios, PHP cURL, and Python requests code.',
+        'meta_title' => 'cURL Converter — Convert cURL to Fetch, Axios, PHP, Python | ToolZeno',
+        'meta_desc' => 'Convert cURL requests into JavaScript fetch, Axios, PHP, and Python code instantly in your browser.',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Developer Tools: Group 5 (ID & Data Generators)
+    |--------------------------------------------------------------------------
+    */
+    'uuid_generator' => [
+        'name' => 'UUID / GUID Generator',
+        'short_desc' => 'Generate cryptographically random UUID v4 identifiers individually or in bulk with custom formatting.',
+        'meta_title' => 'UUID Generator — Generate Bulk v4 UUIDs / GUIDs Online | ToolZeno',
+        'meta_desc' => 'Generate random v4 UUIDs (GUIDs) using Web Crypto API. Support for bulk generation, uppercase, and hyphen options.',
+    ],
+    'nanoid_generator' => [
+        'name' => 'NanoID Generator',
+        'short_desc' => 'Generate cryptographically secure, URL-friendly unique IDs with custom lengths and alphabets.',
+        'meta_title' => 'NanoID Generator — Secure URL-Friendly Unique IDs | ToolZeno',
+        'meta_desc' => 'Generate secure NanoID strings with customizable length and character sets using client-side Web Crypto.',
+    ],
+    'dummy_json_generator' => [
+        'name' => 'Dummy / Mock JSON Generator',
+        'short_desc' => 'Generate mock JSON test data with realistic user profiles, emails, addresses, and timestamps for API testing.',
+        'meta_title' => 'Dummy JSON Generator — Mock Data for API Testing | ToolZeno',
+        'meta_desc' => 'Generate realistic dummy JSON data for frontend prototyping and backend testing. Fast and customizable.',
+    ],
+    'bcrypt_hash_generator' => [
+        'name' => 'Bcrypt & Cryptographic Hash Generator',
+        'short_desc' => 'Generate SHA-256, SHA-512, SHA-1, MD5, and Bcrypt cryptographic hashes directly in your browser.',
+        'meta_title' => 'Hash & Bcrypt Generator — SHA256, SHA512, MD5 Online | ToolZeno',
+        'meta_desc' => 'Generate cryptographic hashes (SHA-256, SHA-512, SHA-1, MD5) and bcrypt strings client-side with Web Crypto.',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Developer Tools: Group 6 (Diff & Inspection)
+    |--------------------------------------------------------------------------
+    */
+    'code_diff_checker' => [
+        'name' => 'Code Diff Checker',
+        'short_desc' => 'Compare two snippets of code or text to highlight added, removed, and modified lines side-by-side.',
+        'meta_title' => 'Code Diff Checker — Compare Text and Code Online | ToolZeno',
+        'meta_desc' => 'Compare two text or code files online. Visual line-by-line diff with added, removed, and changed highlights.',
+    ],
+    'string_escape_unescape' => [
+        'name' => 'String Escape / Unescape Tool',
+        'short_desc' => 'Escape and unescape special characters, quotes, and backslashes for JSON, JavaScript, SQL, and HTML.',
+        'meta_title' => 'String Escape & Unescape Tool Online | ToolZeno',
+        'meta_desc' => 'Escape or unescape string literals for JSON, JavaScript, PHP, Python, and SQL strings in your browser.',
+    ],
 ];

@@ -25,6 +25,28 @@ class Tool extends Model
         'tools.image-compressor',
         'tools.image-resizer',
         'tools.image-to-pdf',
+        'tools.html-css-js-beautifier',
+        'tools.sql-formatter',
+        'tools.xml-formatter',
+        'tools.yaml-json-converter',
+        'tools.css-minifier',
+        'tools.js-minifier',
+        'tools.html-minifier',
+        'tools.base64-encoder-decoder',
+        'tools.url-encoder-decoder',
+        'tools.html-entities-encoder',
+        'tools.jwt-decoder',
+        'tools.hex-binary-text-converter',
+        'tools.regex-tester',
+        'tools.cron-generator',
+        'tools.chmod-calculator',
+        'tools.curl-converter',
+        'tools.uuid-generator',
+        'tools.nanoid-generator',
+        'tools.dummy-json-generator',
+        'tools.bcrypt-hash-generator',
+        'tools.code-diff-checker',
+        'tools.string-escape-unescape',
     ];
 
     protected $fillable = [
@@ -80,6 +102,11 @@ class Tool extends Model
     {
         $locale = $locale ?? app()->getLocale();
         return $locale === 'bn' ? ($this->description_bn ?: $this->description_en) : ($this->description_en ?: '');
+    }
+
+    public function getShortDescription(?string $locale = null): string
+    {
+        return $this->getDescription($locale);
     }
 
     public function getMetaTitle(?string $locale = null): string

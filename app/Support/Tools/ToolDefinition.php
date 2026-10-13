@@ -100,6 +100,11 @@ final class ToolDefinition
         return __($this->descriptionKey);
     }
 
+    public function getShortDescription(?string $locale = null): string
+    {
+        return $this->getDescription($locale);
+    }
+
     public function getMetaTitle(?string $locale = null): string
     {
         $locale = $locale ?? app()->getLocale();
