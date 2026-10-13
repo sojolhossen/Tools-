@@ -321,4 +321,13 @@ final class ToolsPageTest extends TestCase
             'isp' => 'Carnival Internet',
         ]);
     }
+
+    public function test_ip_lookup_endpoint_returns_json(): void
+    {
+        $response = $this->get('/api/tools/ip-lookup?query=8.8.8.8');
+        $response->assertStatus(200);
+        $response->assertJson([
+            'success' => true,
+        ]);
+    }
 }

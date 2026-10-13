@@ -1,5 +1,15 @@
+@php
+    $rawIp = request()->header('CF-Connecting-IP') ?: (request()->header('X-Forwarded-For') ?: request()->ip());
+    if ($rawIp && str_contains($rawIp, ',')) {
+        $rawIp = trim(explode(',', $rawIp)[0]);
+    }
+    if ($rawIp === '127.0.0.1' || $rawIp === '::1') {
+        $rawIp = '';
+    }
+@endphp
+
 <x-layouts.app :title="$tool->getMetaTitle()" :description="$tool->getMetaDescription()" :schema="$schema ?? null">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10" x-data="ipLookupApp()">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10" x-data="ipLookupApp('{{ $rawIp }}')">
         <x-breadcrumbs :items="[
             __('common.nav.tools') => route('tools.index', ['locale' => $locale]),
             __('common.categories.' . $tool->category) => route('tools.category', ['locale' => $locale, 'category' => $tool->category]),
@@ -51,7 +61,7 @@
                     </div>
                     <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
                         <span class="text-xs text-slate-500 uppercase tracking-wider block mb-1">City & Region</span>
-                        <span class="font-bold text-sm text-slate-900 dark:text-slate-100" x-text="(result?.city || '-') + ', ' + (result?.region || '-')"></span>
+                        <span class="font-bold text-sm text-slate-900 dark:text-slate-100" x-text="(result?.city || '-') + (result?.region ? ', ' + result.region : '')"></span>
                     </div>
                     <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
                         <span class="text-xs text-slate-500 uppercase tracking-wider block mb-1">Postal Code</span>
@@ -77,9 +87,9 @@
         </div>
 
         <script>
-        function ipLookupApp() {
+        function ipLookupApp(initialIp) {
             return {
-                query: '',
+                query: initialIp || '',
                 loading: false,
                 error: null,
                 result: null,
@@ -87,22 +97,72 @@
                     this.lookup();
                 },
                 async lookup() {
+                    const target = this.query.trim();
                     this.loading = true;
                     this.error = null;
+
+                    const fetchTimeout = (url, ms = 5000) => {
+                        const controller = new AbortController();
+                        const timer = setTimeout(() => controller.abort(), ms);
+                        return fetch(url, { signal: controller.signal, cache: 'no-store' })
+                            .finally(() => clearTimeout(timer));
+                    };
+
                     try {
-                        const target = this.query.trim();
-                        const url = target ? 'https://ipwho.is/' + encodeURIComponent(target) : 'https://ipwho.is/';
-                        const res = await fetch(url).then(r => r.json());
-                        if (res.success === false) {
-                            this.error = res.message || 'Invalid IP or domain address.';
-                            this.result = null;
-                        } else {
-                            this.result = res;
-                        }
-                    } catch (e) {
-                        this.error = 'Network request failed. Please check connection.';
+                        // 1. Same-Origin internal proxy (Unblockable by adblockers, bypasses CORS & ISP restrictions)
+                        try {
+                            const apiUrl = '/api/tools/ip-lookup' + (target ? '?query=' + encodeURIComponent(target) : '');
+                            const res = await fetchTimeout(apiUrl, 5000);
+                            const data = await res.json();
+                            if (res.ok && data && data.success !== false) {
+                                this.result = data;
+                                return;
+                            } else if (data && data.message) {
+                                this.error = data.message;
+                                this.result = null;
+                                return;
+                            }
+                        } catch (e) {}
+
+                        // 2. Client-side fallback to ipwho.is
+                        try {
+                            const url = target ? 'https://ipwho.is/' + encodeURIComponent(target) : 'https://ipwho.is/';
+                            const res = await fetchTimeout(url, 3000).then(r => r.json());
+                            if (res && res.success !== false) {
+                                this.result = res;
+                                return;
+                            } else if (res && res.message) {
+                                this.error = res.message;
+                                this.result = null;
+                                return;
+                            }
+                        } catch (e) {}
+
+                        // 3. Client-side fallback to freeipapi
+                        try {
+                            const url2 = 'https://freeipapi.com/api/json/' + (target ? encodeURIComponent(target) : '');
+                            const res2 = await fetchTimeout(url2, 3000).then(r => r.json());
+                            if (res2 && res2.ipAddress) {
+                                this.result = {
+                                    ip: res2.ipAddress,
+                                    country: res2.countryName,
+                                    city: res2.cityName,
+                                    region: res2.regionName,
+                                    postal: res2.zipCode,
+                                    latitude: res2.latitude,
+                                    longitude: res2.longitude,
+                                    timezone: res2.timeZone,
+                                    connection: { isp: res2.isp || '', asn: '' }
+                                };
+                                return;
+                            }
+                        } catch (e) {}
+
+                        this.error = 'Unable to resolve IP geolocation for "' + (target || 'current IP') + '". Please verify the address.';
+                        this.result = null;
+                    } finally {
+                        this.loading = false;
                     }
-                    this.loading = false;
                 }
             };
         }

@@ -84,6 +84,96 @@ Route::get('/api/tools/ip-info', function () {
     ]);
 })->name('tools.api.ip_info');
 
+// Internal IP Geolocation Lookup proxy endpoint (immune to adblockers, CORS, ISP blocks)
+Route::get('/api/tools/ip-lookup', function () {
+    $query = trim((string) request()->query('query', ''));
+
+    if ($query === '') {
+        $rawIp = request()->header('CF-Connecting-IP') ?: (request()->header('X-Forwarded-For') ?: request()->ip());
+        if ($rawIp && str_contains($rawIp, ',')) {
+            $rawIp = trim(explode(',', $rawIp)[0]);
+        }
+        $query = (string) $rawIp;
+    }
+
+    $clean = preg_replace('#^https?://#i', '', $query);
+    $clean = trim(explode('/', $clean)[0]);
+    $clean = trim(explode(':', $clean)[0]);
+
+    if ($clean === '' || $clean === '127.0.0.1' || $clean === '::1' || $clean === 'localhost') {
+        $clean = '8.8.8.8';
+    }
+
+    // 1. Primary: Server-side query to ipwho.is
+    try {
+        $res = \Illuminate\Support\Facades\Http::timeout(5)->get('https://ipwho.is/' . urlencode($clean));
+        if ($res->successful()) {
+            $data = $res->json();
+            if (is_array($data) && ($data['success'] ?? false) !== false) {
+                return response()->json($data);
+            }
+        }
+    } catch (\Throwable $e) {}
+
+    // 2. Secondary: Fallback to freeipapi.com
+    try {
+        $res2 = \Illuminate\Support\Facades\Http::timeout(5)->get('https://freeipapi.com/api/json/' . urlencode($clean));
+        if ($res2->successful()) {
+            $d = $res2->json();
+            if (is_array($d)) {
+                return response()->json([
+                    'success' => true,
+                    'ip' => $d['ipAddress'] ?? $clean,
+                    'type' => $d['ipVersion'] ?? 'IPv4',
+                    'country' => $d['countryName'] ?? '',
+                    'country_code' => $d['countryCode'] ?? '',
+                    'region' => $d['regionName'] ?? '',
+                    'city' => $d['cityName'] ?? '',
+                    'postal' => $d['zipCode'] ?? '',
+                    'latitude' => $d['latitude'] ?? null,
+                    'longitude' => $d['longitude'] ?? null,
+                    'timezone' => $d['timeZone'] ?? '',
+                    'connection' => [
+                        'isp' => $d['isp'] ?? '',
+                        'asn' => '',
+                    ],
+                ]);
+            }
+        }
+    } catch (\Throwable $e) {}
+
+    // 3. Tertiary: Fallback to ip-api.com
+    try {
+        $res3 = \Illuminate\Support\Facades\Http::timeout(5)->get('http://ip-api.com/json/' . urlencode($clean));
+        if ($res3->successful()) {
+            $d3 = $res3->json();
+            if (is_array($d3) && ($d3['status'] ?? '') === 'success') {
+                return response()->json([
+                    'success' => true,
+                    'ip' => $d3['query'] ?? $clean,
+                    'country' => $d3['country'] ?? '',
+                    'country_code' => $d3['countryCode'] ?? '',
+                    'region' => $d3['regionName'] ?? '',
+                    'city' => $d3['city'] ?? '',
+                    'postal' => $d3['zip'] ?? '',
+                    'latitude' => $d3['lat'] ?? null,
+                    'longitude' => $d3['lon'] ?? null,
+                    'timezone' => $d3['timezone'] ?? '',
+                    'connection' => [
+                        'isp' => $d3['isp'] ?? ($d3['org'] ?? ''),
+                        'asn' => $d3['as'] ?? '',
+                    ],
+                ]);
+            }
+        }
+    } catch (\Throwable $e) {}
+
+    return response()->json([
+        'success' => false,
+        'message' => 'Unable to locate IP geolocation details for ' . $clean . '. Please check the address.',
+    ], 404);
+})->name('tools.api.ip_lookup');
+
 /*
 |--------------------------------------------------------------------------
 | Localized Public Routes (en, bn)
