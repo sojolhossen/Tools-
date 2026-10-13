@@ -15,11 +15,19 @@
                 <span>{{ __('common.badges.privacy_first') }}</span>
             </div>
 
-            <!-- Main Heading with Modern Gradient Accent -->
-            <h1 class="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight max-w-3xl mx-auto leading-snug sm:leading-tight">
-                {{ $locale === 'bn' ? 'ফ্রি, দ্রুত এবং নিরাপদ' : 'Free, Fast & Secure' }}
-                <span class="bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 bg-clip-text text-transparent block sm:inline mt-1 sm:mt-0">
-                    {{ $locale === 'bn' ? 'অনলাইন টুলস' : 'Online Tools' }}
+            <!-- Main Heading with Modern Gradient Accent & Typewriter Animation -->
+            <h1 
+                x-data="heroTypewriter"
+                class="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight max-w-4xl mx-auto leading-snug sm:leading-tight min-h-[3.25rem] sm:min-h-[4.5rem] lg:min-h-[5.5rem]"
+                aria-label="{{ $locale === 'bn' ? 'ফ্রি, দ্রুত এবং নিরাপদ অনলাইন টুলস' : 'Free, Fast & Secure Online Tools' }}"
+            >
+                <span class="sr-only">{{ $locale === 'bn' ? 'ফ্রি, দ্রুত এবং নিরাপদ অনলাইন টুলস' : 'Free, Fast & Secure Online Tools' }}</span>
+                <span aria-hidden="true">
+                    <span class="inline" x-text="typedPrefix">{{ $locale === 'bn' ? 'ফ্রি, দ্রুত এবং নিরাপদ ' : 'Free, Fast & Secure ' }}</span><span class="bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent inline"><span x-text="typedSuffix">{{ $locale === 'bn' ? 'অনলাইন টুলস' : 'Online Tools' }}</span></span><span 
+                        class="inline-block w-[3px] sm:w-[4px] h-[0.85em] bg-indigo-600 dark:bg-indigo-400 align-middle ml-1 -mt-1 rounded-xs shadow-xs shadow-indigo-500/50"
+                        :class="cursorVisible ? 'opacity-100' : 'opacity-0'"
+                        style="transition: opacity 0.1s ease;"
+                    ></span>
                 </span>
             </h1>
 
@@ -283,4 +291,95 @@
             </div>
         </div>
     </section>
+
+    <!-- Hero Typewriter Script -->
+    <script>
+        (function () {
+            function registerHeroTypewriter() {
+                if (!window.Alpine) {
+                    document.addEventListener('alpine:init', registerHeroTypewriter, { once: true });
+                    return;
+                }
+
+                window.Alpine.data('heroTypewriter', () => ({
+                    fullPrefix: {!! json_encode($locale === 'bn' ? 'ফ্রি, দ্রুত এবং নিরাপদ ' : 'Free, Fast & Secure ') !!},
+                    words: {!! json_encode($locale === 'bn' 
+                        ? ['অনলাইন টুলস', 'ডেভেলপার টুলস', 'পিডিএফ ও ইমেজ টুলস', 'কনভার্টার ও ক্যালকুলেটর', 'প্রাইভেসি ও ওয়েব টুলস'] 
+                        : ['Online Tools', 'Developer Tools', 'PDF & Image Tools', 'Converters & Calculators', 'Privacy & Web Tools'], JSON_UNESCAPED_UNICODE) !!},
+                    typedPrefix: '',
+                    typedSuffix: '',
+                    wordIndex: 0,
+                    isDeletingSuffix: false,
+                    cursorVisible: true,
+                    cursorTimer: null,
+
+                    init() {
+                        // Accessibility: respect reduced motion preferences
+                        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                            this.typedPrefix = this.fullPrefix;
+                            this.typedSuffix = this.words[0];
+                            this.cursorVisible = false;
+                            return;
+                        }
+
+                        // Blinking cursor
+                        this.cursorTimer = setInterval(() => {
+                            this.cursorVisible = !this.cursorVisible;
+                        }, 500);
+
+                        // Start typing prefix after brief delay
+                        setTimeout(() => {
+                            this.stepPrefix();
+                        }, 200);
+                    },
+
+                    destroy() {
+                        if (this.cursorTimer) {
+                            clearInterval(this.cursorTimer);
+                        }
+                    },
+
+                    stepPrefix() {
+                        if (this.typedPrefix.length < this.fullPrefix.length) {
+                            this.typedPrefix = this.fullPrefix.substring(0, this.typedPrefix.length + 1);
+                            setTimeout(() => this.stepPrefix(), 35);
+                        } else {
+                            setTimeout(() => this.stepSuffix(), 90);
+                        }
+                    },
+
+                    stepSuffix() {
+                        const currentWord = this.words[this.wordIndex];
+
+                        if (this.isDeletingSuffix) {
+                            this.typedSuffix = currentWord.substring(0, this.typedSuffix.length - 1);
+                            if (this.typedSuffix === '') {
+                                this.isDeletingSuffix = false;
+                                this.wordIndex = (this.wordIndex + 1) % this.words.length;
+                                setTimeout(() => this.stepSuffix(), 320);
+                                return;
+                            }
+                            setTimeout(() => this.stepSuffix(), 40);
+                        } else {
+                            this.typedSuffix = currentWord.substring(0, this.typedSuffix.length + 1);
+                            if (this.typedSuffix === currentWord) {
+                                // First phrase 'Online Tools' pauses 3.2s, subsequent phrases pause 2.2s
+                                const pauseTime = (this.wordIndex === 0) ? 3200 : 2200;
+                                this.isDeletingSuffix = true;
+                                setTimeout(() => this.stepSuffix(), pauseTime);
+                                return;
+                            }
+                            setTimeout(() => this.stepSuffix(), 70);
+                        }
+                    }
+                }));
+            }
+
+            if (window.Alpine) {
+                registerHeroTypewriter();
+            } else {
+                document.addEventListener('alpine:init', registerHeroTypewriter, { once: true });
+            }
+        })();
+    </script>
 </x-layouts.app>
