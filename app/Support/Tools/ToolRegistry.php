@@ -101,6 +101,8 @@ final class ToolRegistry
                     }
                 }
 
+                $data['slug'] = $data['slug'] ?? $key;
+
                 return [$key => ToolDefinition::fromArray($data)];
             });
 
