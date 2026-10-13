@@ -4,4 +4,27 @@ Disallow: /admin
 Disallow: /admin/
 Disallow: /up
 
+# Explicitly allow Google & Bing indexing crawlers
+User-agent: Googlebot
+Allow: /
+Allow: /build/
+Allow: /*.js$
+Allow: /*.css$
+
+User-agent: Bingbot
+Allow: /
+Allow: /build/
+Allow: /*.js$
+Allow: /*.css$
+
+# Allow LLM / AI Search Indexers (ChatGPT, Perplexity, Claude, Copilot)
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
 Sitemap: https://toolzeno.site/sitemap.xml

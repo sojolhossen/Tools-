@@ -57,6 +57,20 @@
     <title>{{ $pageTitle }}</title>
     <meta name="description" content="{{ $pageDesc }}">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="author" content="ToolZeno">
+    <meta name="theme-color" content="#4f46e5" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
+    <meta name="application-name" content="{{ $appName }}">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="{{ $appName }}">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    @if(\App\Models\SiteSetting::get('google_verification_code'))
+        <meta name="google-site-verification" content="{{ \App\Models\SiteSetting::get('google_verification_code') }}">
+    @endif
+    @if(\App\Models\SiteSetting::get('bing_verification_code'))
+        <meta name="msvalidate.01" content="{{ \App\Models\SiteSetting::get('bing_verification_code') }}">
+    @endif
 
     <!-- Dark Mode Initializer (Zero-FOUC) -->
     <script>
