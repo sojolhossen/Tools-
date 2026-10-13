@@ -799,4 +799,112 @@ return [
         'meta_title' => 'String Escape & Unescape Tool Online | ToolZeno',
         'meta_desc' => 'Escape or unescape string literals for JSON, JavaScript, PHP, Python, and SQL strings in your browser.',
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Developer Tools: Additional Tools (Data Models, APIs, DevOps, Converters)
+    |--------------------------------------------------------------------------
+    */
+    'json_to_kotlin' => [
+        'name' => 'JSON to Kotlin Data Class Generator',
+        'short_desc' => 'Convert raw JSON payloads into clean, idiomatic Kotlin data classes with null-safety and serialization annotations.',
+        'meta_title' => 'JSON to Kotlin Data Class Generator Online | ToolZeno',
+        'meta_desc' => 'Convert JSON into type-safe Kotlin data classes for Android and multiplatform applications instantly.',
+    ],
+    'json_to_java_pojo' => [
+        'name' => 'JSON to Java POJO Class Generator',
+        'short_desc' => 'Generate Java POJO classes with getters, setters, constructors, and Jackson/Gson annotations from JSON.',
+        'meta_title' => 'JSON to Java POJO Generator Online | ToolZeno',
+        'meta_desc' => 'Convert JSON into clean Java POJO classes with Lombok or standard getters/setters in your browser.',
+    ],
+    'json_to_dart' => [
+        'name' => 'JSON to Dart/Flutter Model Generator',
+        'short_desc' => 'Convert JSON objects into Flutter Dart model classes with fromJson and toJson serialization methods.',
+        'meta_title' => 'JSON to Dart Model Generator for Flutter | ToolZeno',
+        'meta_desc' => 'Generate Dart model classes with fromJson and toJson methods from JSON for Flutter applications.',
+    ],
+    'json_to_typescript' => [
+        'name' => 'JSON to TypeScript Interface Generator',
+        'short_desc' => 'Generate type-safe TypeScript interfaces and types from JSON objects and arrays in real time.',
+        'meta_title' => 'JSON to TypeScript Interface & Type Generator | ToolZeno',
+        'meta_desc' => 'Convert JSON into clean TypeScript interfaces with nested types and optional fields support.',
+    ],
+    'http_status_lookup' => [
+        'name' => 'HTTP Status Code Lookup',
+        'short_desc' => 'Quickly search and reference all HTTP status codes (1xx, 2xx, 3xx, 4xx, 5xx) with RFC specifications and causes.',
+        'meta_title' => 'HTTP Status Code Lookup & Reference Guide | ToolZeno',
+        'meta_desc' => 'Comprehensive HTTP status code directory with explanations, RFC standards, and developer troubleshooting tips.',
+    ],
+    'query_string_json_converter' => [
+        'name' => 'Query String to JSON Converter',
+        'short_desc' => 'Parse URL query parameter strings into structured JSON objects and convert JSON back into encoded query strings.',
+        'meta_title' => 'Query String to JSON & URL Params Converter | ToolZeno',
+        'meta_desc' => 'Bi-directional converter between URL query strings and JSON objects with nested key handling.',
+    ],
+    'api_payload_tester' => [
+        'name' => 'Webhook & API Payload Tester UI',
+        'short_desc' => 'Construct, test, and send mock HTTP REST requests (GET, POST, PUT, DELETE) with headers and JSON payloads directly in-browser.',
+        'meta_title' => 'API Payload Tester & In-Browser REST Client | ToolZeno',
+        'meta_desc' => 'Test API endpoints, webhooks, and HTTP requests with customizable headers, body, and status inspection.',
+    ],
+    'url_path_normalizer' => [
+        'name' => 'URL & Path Normalizer',
+        'short_desc' => 'Normalize and sanitize messy URLs by resolving relative dots, trailing slashes, duplicate separators, and sort query parameters.',
+        'meta_title' => 'URL & Path Normalizer — Clean & Standardize URLs | ToolZeno',
+        'meta_desc' => 'Normalize URLs, remove tracking parameters, decode safe characters, and generate canonical clean URLs.',
+    ],
+    'htaccess_generator' => [
+        'name' => '.htaccess Generator & Tester',
+        'short_desc' => 'Generate production-ready Apache .htaccess rules for 301 redirects, HTTPS enforcement, Gzip compression, and security headers.',
+        'meta_title' => '.htaccess Generator — Apache Redirects & Security | ToolZeno',
+        'meta_desc' => 'Visual .htaccess file generator for SSL redirects, 301 redirects, caching, custom error pages, and hotlink protection.',
+    ],
+    'nginx_config_generator' => [
+        'name' => 'Nginx Config Generator',
+        'short_desc' => 'Generate optimized Nginx server blocks for PHP-FPM, reverse proxies, static SPAs, SSL certificates, and gzip compression.',
+        'meta_title' => 'Nginx Server Block Config Generator | ToolZeno',
+        'meta_desc' => 'Generate clean Nginx configuration files for Laravel, Node.js, reverse proxy, and SSL websites.',
+    ],
+    'gitignore_generator' => [
+        'name' => '.gitignore Generator',
+        'short_desc' => 'Generate customized, curated .gitignore templates for Laravel, Node.js, Python, Flutter, Go, and IDE environments.',
+        'meta_title' => '.gitignore Generator for Popular Frameworks & OS | ToolZeno',
+        'meta_desc' => 'Create comprehensive .gitignore files combining operating systems, IDEs, and languages with one click.',
+    ],
+    'hmac_generator' => [
+        'name' => 'HMAC Generator (SHA-256 / SHA-512)',
+        'short_desc' => 'Generate Hash-based Message Authentication Codes (HMAC) using cryptographic secret keys and SHA algorithms for API signature verification.',
+        'meta_title' => 'HMAC Generator — SHA256 & SHA512 API Signatures | ToolZeno',
+        'meta_desc' => 'Calculate HMAC signatures online with SHA-256, SHA-384, and SHA-512 using Web Crypto API.',
+    ],
+    'xml_json_converter' => [
+        'name' => 'XML to JSON & JSON to XML Converter',
+        'short_desc' => 'Bi-directionally convert XML documents to structured JSON and JSON data into valid, properly indented XML tags.',
+        'meta_title' => 'XML to JSON / JSON to XML Converter Online | ToolZeno',
+        'meta_desc' => 'Convert XML to JSON and JSON to XML instantly with attribute parsing and clean indentation.',
+    ],
+    'csv_to_sql' => [
+        'name' => 'CSV to SQL Insert Query Generator',
+        'short_desc' => 'Convert raw CSV or TSV tabular data into batch SQL INSERT statements with custom table names and escaped values.',
+        'meta_title' => 'CSV to SQL Generator — Convert CSV to INSERT Statements | ToolZeno',
+        'meta_desc' => 'Transform CSV spreadsheets into SQL INSERT queries for MySQL, PostgreSQL, SQLite, and SQL Server.',
+    ],
+    'markdown_table_generator' => [
+        'name' => 'Markdown Table Generator',
+        'short_desc' => 'Interactive visual spreadsheet editor to design, format, and generate GitHub Flavored Markdown (GFM) tables.',
+        'meta_title' => 'Markdown Table Generator — Visual Editor for GitHub MD | ToolZeno',
+        'meta_desc' => 'Create, edit, and export GitHub-flavored Markdown tables with column alignments and easy cell editing.',
+    ],
+    'html_table_converter' => [
+        'name' => 'HTML Table to JSON/CSV Converter',
+        'short_desc' => 'Extract tabular data from raw HTML <table> markup and convert it cleanly into structured JSON arrays or CSV files.',
+        'meta_title' => 'HTML Table to JSON & CSV Converter | ToolZeno',
+        'meta_desc' => 'Paste any HTML table to parse rows and headers into clean JSON or exportable CSV spreadsheets.',
+    ],
+    'svg_path_visualizer' => [
+        'name' => 'SVG Path Visualizer & Optimizer',
+        'short_desc' => 'Preview, inspect, scale, and visualize raw SVG path (d attribute) commands with interactive canvas rendering.',
+        'meta_title' => 'SVG Path Visualizer & Inspector Online | ToolZeno',
+        'meta_desc' => 'Visualize and debug SVG path "d" strings with real-time vector rendering, scale controls, and coordinate inspection.',
+    ],
 ];

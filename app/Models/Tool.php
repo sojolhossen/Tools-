@@ -47,6 +47,23 @@ class Tool extends Model
         'tools.bcrypt-hash-generator',
         'tools.code-diff-checker',
         'tools.string-escape-unescape',
+        'tools.json-to-kotlin',
+        'tools.json-to-java-pojo',
+        'tools.json-to-dart',
+        'tools.json-to-typescript',
+        'tools.http-status-lookup',
+        'tools.query-string-json-converter',
+        'tools.api-payload-tester',
+        'tools.url-path-normalizer',
+        'tools.htaccess-generator',
+        'tools.nginx-config-generator',
+        'tools.gitignore-generator',
+        'tools.hmac-generator',
+        'tools.xml-json-converter',
+        'tools.csv-to-sql',
+        'tools.markdown-table-generator',
+        'tools.html-table-converter',
+        'tools.svg-path-visualizer',
     ];
 
     protected $fillable = [

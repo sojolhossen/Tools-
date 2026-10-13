@@ -45,6 +45,23 @@ final class ToolsPageTest extends TestCase
             ['bcrypt-hash-generator'],
             ['code-diff-checker'],
             ['string-escape-unescape'],
+            ['json-to-kotlin'],
+            ['json-to-java-pojo'],
+            ['json-to-dart'],
+            ['json-to-typescript'],
+            ['http-status-lookup'],
+            ['query-string-json-converter'],
+            ['api-payload-tester'],
+            ['url-path-normalizer'],
+            ['htaccess-generator'],
+            ['nginx-config-generator'],
+            ['gitignore-generator'],
+            ['hmac-generator'],
+            ['xml-json-converter'],
+            ['csv-to-sql'],
+            ['markdown-table-generator'],
+            ['html-table-converter'],
+            ['svg-path-visualizer'],
         ];
     }
 

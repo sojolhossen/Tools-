@@ -677,4 +677,112 @@ return [
         'meta_title' => 'String Escape / Unescape Tool অনলাইন | ToolZeno',
         'meta_desc' => 'JSON, JavaScript, Python ও SQL কোডের জন্য স্ট্রিং এস্কেপ ও আন-এস্কেপ করুন সরাসরি ব্রাউজারে।',
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Developer Tools: Additional Tools (Data Models, APIs, DevOps, Converters)
+    |--------------------------------------------------------------------------
+    */
+    'json_to_kotlin' => [
+        'name' => 'JSON to Kotlin Data Class Generator',
+        'short_desc' => 'র’ JSON ডাটাকে পরিচ্ছন্ন ও টাইপ-সেফ Kotlin ডাটা ক্লাসে কনভার্ট করুন নাল-সেফটি এবং সিরিয়ালাইজেশন সহ।',
+        'meta_title' => 'JSON to Kotlin Data Class Generator অনলাইন | ToolZeno',
+        'meta_desc' => 'Android ও Multiplatform অ্যাপের জন্য JSON থেকে স্বয়ংক্রিয় Kotlin ডাটা ক্লাস তৈরি করুন বিনামূল্যে।',
+    ],
+    'json_to_java_pojo' => [
+        'name' => 'JSON to Java POJO Class Generator',
+        'short_desc' => 'JSON অবজেক্ট থেকে গেটার, সেটার ও কন্সট্রাক্টর সহ আদর্শ Java POJO ক্লাস তৈরি করুন।',
+        'meta_title' => 'JSON to Java POJO Generator অনলাইন | ToolZeno',
+        'meta_desc' => 'JSON থেকে পরিষ্কার ও স্ট্যান্ডার্ড Java ক্লাস এবং POJO ফাইল তৈরি করুন ব্রাউজারেই।',
+    ],
+    'json_to_dart' => [
+        'name' => 'JSON to Dart/Flutter Model Generator',
+        'short_desc' => 'Flutter অ্যাপের জন্য JSON থেকে fromJson এবং toJson মেথড সহ Dart মডেল ক্লাস তৈরি করুন।',
+        'meta_title' => 'JSON to Dart Model Generator (Flutter) | ToolZeno',
+        'meta_desc' => 'Flutter ও Dart অ্যাপ্লিকেশনের জন্য JSON থেকে স্বয়ংক্রিয় ডাটা মডেল ক্লাস তৈরি করুন।',
+    ],
+    'json_to_typescript' => [
+        'name' => 'JSON to TypeScript Interface Generator',
+        'short_desc' => 'JSON ডাটা পেস্ট করে টাইপ-সেফ TypeScript Interface ও Type ডেফিনিশন তৈরি করুন ইনস্ট্যান্টলি।',
+        'meta_title' => 'JSON to TypeScript Interface Generator অনলাইন | ToolZeno',
+        'meta_desc' => 'যেকোনো JSON থেকে টাইপস্ক্রিপ্ট ইন্টারফেস ও কাস্টম টাইপ জেনারেট করুন নেস্টেড সাপোর্ট সহ।',
+    ],
+    'http_status_lookup' => [
+        'name' => 'HTTP Status Code Lookup',
+        'short_desc' => 'সমস্ত HTTP রেসপন্স স্ট্যাটাস কোড (1xx, 2xx, 3xx, 4xx, 5xx) অনুসন্ধান ও তাদের অফিশিয়াল অর্থ জানুন।',
+        'meta_title' => 'HTTP Status Code Lookup ও রেফারেন্স গাইড | ToolZeno',
+        'meta_desc' => 'HTTP স্ট্যাটাস কোড ও এর কারণ সহজেই খুঁজুন এবং ডিবাগিং সমাধান জানুন।',
+    ],
+    'query_string_json_converter' => [
+        'name' => 'Query String to JSON Parser & Converter',
+        'short_desc' => 'URL কুয়েরি প্যারামিটার স্ট্রিংকে সুন্দর JSON অবজেক্টে এবং JSON-কে কুয়েরি স্ট্রিংয়ে রূপান্তর করুন।',
+        'meta_title' => 'Query String to JSON Converter অনলাইন | ToolZeno',
+        'meta_desc' => 'URL query string থেকে JSON অবজেক্ট তৈরি করুন এবং বিপরীতমুখী কনভার্ট করুন সহজে।',
+    ],
+    'api_payload_tester' => [
+        'name' => 'Webhook / API Payload Tester UI',
+        'short_desc' => 'ব্রাউজার থেকেই সরাসরি যেকোনো REST API বা Webhook এন্ডপয়েন্টে GET, POST, PUT রিকোয়েস্ট পাঠিয়ে রেসপন্স টেস্ট করুন।',
+        'meta_title' => 'API Payload Tester — ব্রাউজার REST ক্লায়েন্ট | ToolZeno',
+        'meta_desc' => 'কাস্টম হেডার ও বডি দিয়ে API টেস্ট করুন এবং স্ট্যাটাস কোড ও রেসপন্স সরাসরি ব্রাউজারে দেখুন।',
+    ],
+    'url_path_normalizer' => [
+        'name' => 'URL / Path Normalizer',
+        'short_desc' => 'এলোমেলো লিঙ্ক থেকে অপ্রয়োজনীয় ট্র্যাকিং প্যারামিটার, ডুপ্লিকেট স্ল্যাশ মুছে প্রপার ক্যানোনিকাল URL তৈরি করুন।',
+        'meta_title' => 'URL & Path Normalizer — স্ট্যান্ডার্ড লিঙ্ক ক্লিনার | ToolZeno',
+        'meta_desc' => 'লিঙ্ক ও পাথ স্ট্যান্ডার্ডাইজ করুন, অতিরিক্ত স্লাশ ও ট্র্যাকিং প্যারামিটার রিমুভ করুন।',
+    ],
+    'htaccess_generator' => [
+        'name' => '.htaccess Generator & Tester',
+        'short_desc' => 'Apache সার্ভারের জন্য HTTPS রিডাইরেক্ট, 301 রিডাইরেক্ট, জিজিপ কম্প্রেশন ও সিকিউরিটি রুল তৈরি করুন।',
+        'meta_title' => '.htaccess Generator — Apache কনফিগারেশন তৈরি | ToolZeno',
+        'meta_desc' => 'সহজেই Apache .htaccess ফাইল রুলস তৈরি করুন SSL, রিডাইরেকশন এবং ক্যাশিং অপশন সহ।',
+    ],
+    'nginx_config_generator' => [
+        'name' => 'Nginx Config Generator',
+        'short_desc' => 'Laravel, Node.js, রিভার্স প্রক্সি এবং SSL ওয়েবসাইটের জন্য অপ্টিমাইজড Nginx সার্ভার ব্লক কনফিগ ফাইল তৈরি করুন।',
+        'meta_title' => 'Nginx Server Block Config Generator অনলাইন | ToolZeno',
+        'meta_desc' => 'ক্লিন ও পারফরম্যান্ট Nginx কনফিগারেশন তৈরি করুন পিএইচপি, রিভার্স প্রক্সি ও স্ট্যাটিক সাইটের জন্য।',
+    ],
+    'gitignore_generator' => [
+        'name' => '.gitignore Generator',
+        'short_desc' => 'Laravel, Node.js, Python, Flutter, VS Code ইত্যাদির জন্য সেরা কিউরেটেড .gitignore ফাইল তৈরি করুন।',
+        'meta_title' => '.gitignore Generator — কাস্টম গিটইগনোর ফাইল তৈরি | ToolZeno',
+        'meta_desc' => 'আপনার পছন্দের প্রোগ্রামিং ল্যাঙ্গুয়েজ ও ফ্রেমওয়ার্কের জন্য ইনস্ট্যান্ট .gitignore ফাইল তৈরি করুন।',
+    ],
+    'hmac_generator' => [
+        'name' => 'HMAC Generator (SHA-256)',
+        'short_desc' => 'গোপন সিক্রেট কি (Secret Key) এবং SHA এলগরিদম দিয়ে সুরক্ষিত HMAC সিগনেচার হ্যাশ তৈরি করুন।',
+        'meta_title' => 'HMAC Generator — SHA256 API Signature টুল | ToolZeno',
+        'meta_desc' => 'ক্রিপ্টোগ্রাফিক HMAC SHA-256 ও SHA-512 সিগনেচার হ্যাশ জেনারেট করুন ব্রাউজারেই।',
+    ],
+    'xml_json_converter' => [
+        'name' => 'XML to JSON / JSON to XML Converter',
+        'short_desc' => 'XML ফরম্যাট থেকে JSON এবং JSON থেকে সুন্দর ইন্ডেন্টেড XML ফরম্যাটে দ্বিমুখী রূপান্তর করুন।',
+        'meta_title' => 'XML to JSON ও JSON to XML Converter | ToolZeno',
+        'meta_desc' => 'XML ও JSON এর মধ্যে সহজে তথ্য অদলবদল করুন অ্যাট্রিবিউট সাপোর্ট সহ।',
+    ],
+    'csv_to_sql' => [
+        'name' => 'CSV to SQL Insert Query Generator',
+        'short_desc' => 'CSV স্প্রেডশিট ডাটা থেকে স্বয়ংক্রিয়ভাবে SQL INSERT কুয়েরি তৈরি করুন ডাটাবেজে দ্রুত ইমপোর্ট করার জন্য।',
+        'meta_title' => 'CSV to SQL Generator — CSV থেকে INSERT কুয়েরি | ToolZeno',
+        'meta_desc' => 'CSV বা এক্সেল ডাটা সরাসরি MySQL, PostgreSQL বা SQLite এর INSERT স্টেটমেন্টে কনভার্ট করুন।',
+    ],
+    'markdown_table_generator' => [
+        'name' => 'Markdown Table Generator',
+        'short_desc' => 'ভিজ্যুয়াল স্প্রেডশিট গ্রিডে ডাটা লিখে সুন্দর GitHub Flavored Markdown (GFM) টেবিল তৈরি করুন।',
+        'meta_title' => 'Markdown Table Generator অনলাইন ভিজ্যুয়াল এডিটর | ToolZeno',
+        'meta_desc' => 'GitHub ও ডকুমেন্টেশনের জন্য ভিজ্যুয়াল ড্র্যাগ-এন্ড-এডিট টেবিল তৈরি ও কপি করুন।',
+    ],
+    'html_table_converter' => [
+        'name' => 'HTML Table to JSON/CSV Converter',
+        'short_desc' => 'যেকোনো HTML <table> কোড পেস্ট করে তার সমস্ত রো ও কলাম পরিষ্কার JSON অ্যারে বা CSV ফাইলে কনভার্ট করুন।',
+        'meta_title' => 'HTML Table to JSON / CSV Converter অনলাইন | ToolZeno',
+        'meta_desc' => 'ওয়েবসাইটের HTML টেবিল কোড থেকে ডাটা এক্সট্র্যাক্ট করে JSON ও CSV তে রূপান্তর করুন।',
+    ],
+    'svg_path_visualizer' => [
+        'name' => 'SVG Path Visualizer & Optimizer',
+        'short_desc' => 'SVG পাথ কমান্ড (d অ্যাট্রিবিউট) পেস্ট করে ইন্টারঅ্যাক্টিভ ক্যানভাসে রিয়েল-টাইম ভেক্টর রেন্ডারিং ও প্রিভিউ দেখুন।',
+        'meta_title' => 'SVG Path Visualizer — ভেক্টর পাথ প্রিভিউ ও ইন্সপেক্ট | ToolZeno',
+        'meta_desc' => 'SVG "d" পাথ ভিজ্যুয়ালাইজ করুন, স্কেল পরিবর্তন করুন এবং জুম করে প্রতিটি নোড পরীক্ষা করুন।',
+    ],
 ];
