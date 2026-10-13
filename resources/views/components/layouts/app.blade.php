@@ -107,10 +107,13 @@
     <meta name="twitter:description" content="{{ $pageDesc }}">
     <meta name="twitter:url" content="{{ $currentUrl }}">
 
-    <!-- Google Fonts: Inter & Noto Sans Bengali -->
+    <!-- High-Performance Asynchronous Google Fonts (Zero Render Blocking) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap">
+    </noscript>
 
     <style>
         [x-cloak] { display: none !important; }

@@ -1,4 +1,11 @@
-import QRCode from 'qrcode';
+let qrCodeModule = null;
+
+async function getQRCode() {
+    if (!qrCodeModule) {
+        qrCodeModule = (await import('qrcode')).default;
+    }
+    return qrCodeModule;
+}
 
 export default function qrGenerator() {
     return {
@@ -26,6 +33,7 @@ export default function qrGenerator() {
             if (!canvas) return;
 
             try {
+                const QRCode = await getQRCode();
                 await QRCode.toCanvas(canvas, this.text.trim(), {
                     width: Number(this.size),
                     margin: 2,
@@ -54,6 +62,7 @@ export default function qrGenerator() {
         async downloadSvg() {
             if (!this.text.trim()) return;
             try {
+                const QRCode = await getQRCode();
                 const svgString = await QRCode.toString(this.text.trim(), {
                     type: 'svg',
                     width: Number(this.size),

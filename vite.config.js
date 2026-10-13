@@ -16,20 +16,6 @@ export default defineConfig({
         },
     },
     build: {
-        rollupOptions: {
-            output: {
-                manualChunks(id) {
-                    if (id.includes('jspdf') || id.includes('html2canvas')) {
-                        return 'pdf-engine';
-                    }
-                    if (id.includes('qrcode')) {
-                        return 'qr-engine';
-                    }
-                    if (id.includes('alpinejs')) {
-                        return 'alpine';
-                    }
-                },
-            },
-        },
+        chunkSizeWarningLimit: 1000,
     },
 });

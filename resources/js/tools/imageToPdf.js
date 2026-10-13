@@ -1,4 +1,12 @@
-import { jsPDF } from 'jspdf';
+let jsPDFClass = null;
+
+async function getJsPDF() {
+    if (!jsPDFClass) {
+        const mod = await import('jspdf');
+        jsPDFClass = mod.jsPDF;
+    }
+    return jsPDFClass;
+}
 
 export default function imageToPdf() {
     return {
@@ -88,6 +96,7 @@ export default function imageToPdf() {
                 };
 
                 let doc = null;
+                const jsPDF = await getJsPDF();
                 const marginMm = parseInt(this.margin, 10);
 
                 for (let i = 0; i < this.images.length; i++) {
