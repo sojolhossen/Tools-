@@ -2919,4 +2919,1370 @@ return [
         'privacy_title' => '100% Client-Side Privacy Guarantee',
         'privacy_desc' => 'All cryptographic hashing, key generation, and cipher operations execute strictly inside your local browser memory using the native Web Crypto API. No plaintexts, secrets, or keys are ever sent across the network.',
     ],
+
+
+    'what-is-my-ip' => [
+        'name' => 'What is My IP Address',
+        'short_description' => 'Instantly display your public IPv4 and IPv6 addresses, ISP, location, and client connection details.',
+        'meta_title' => 'What is My IP Address — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Instantly display your public IPv4 and IPv6 addresses, ISP, location, and client connection details. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the What is My IP Address',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the What is My IP Address interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for What is My IP Address',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the What is My IP Address?',
+                'answer' => 'The What is My IP Address allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of What is My IP Address in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'ip-lookup' => [
+        'name' => 'IP Geolocation Lookup',
+        'short_description' => 'Lookup any IP address or domain to discover country, city, ISP, ASN, timezone, and geographic coordinates.',
+        'meta_title' => 'IP Geolocation Lookup — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Lookup any IP address or domain to discover country, city, ISP, ASN, timezone, and geographic coordinates. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the IP Geolocation Lookup',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the IP Geolocation Lookup interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for IP Geolocation Lookup',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the IP Geolocation Lookup?',
+                'answer' => 'The IP Geolocation Lookup allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of IP Geolocation Lookup in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'user-agent-parser' => [
+        'name' => 'User-Agent Parser & Detector',
+        'short_description' => 'Parse and decode any browser User-Agent string to detect browser, version, operating system, and device type.',
+        'meta_title' => 'User-Agent Parser & Detector — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Parse and decode any browser User-Agent string to detect browser, version, operating system, and device type. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the User-Agent Parser & Detector',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the User-Agent Parser & Detector interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for User-Agent Parser & Detector',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the User-Agent Parser & Detector?',
+                'answer' => 'The User-Agent Parser & Detector allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of User-Agent Parser & Detector in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'browser-info' => [
+        'name' => 'Browser & Screen Info Diagnostic',
+        'short_description' => 'Inspect your browser capabilities, screen resolution, viewport size, color depth, cookies, and GPU renderer.',
+        'meta_title' => 'Browser & Screen Info Diagnostic — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Inspect your browser capabilities, screen resolution, viewport size, color depth, cookies, and GPU renderer. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the Browser & Screen Info Diagnostic',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the Browser & Screen Info Diagnostic interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for Browser & Screen Info Diagnostic',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the Browser & Screen Info Diagnostic?',
+                'answer' => 'The Browser & Screen Info Diagnostic allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of Browser & Screen Info Diagnostic in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'webrtc-ip-leak-checker' => [
+        'name' => 'WebRTC IP Leak Checker',
+        'short_description' => 'Test if your real public or local IP address leaks through browser WebRTC STUN requests while on VPN.',
+        'meta_title' => 'WebRTC IP Leak Checker — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Test if your real public or local IP address leaks through browser WebRTC STUN requests while on VPN. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the WebRTC IP Leak Checker',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the WebRTC IP Leak Checker interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for WebRTC IP Leak Checker',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the WebRTC IP Leak Checker?',
+                'answer' => 'The WebRTC IP Leak Checker allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of WebRTC IP Leak Checker in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'dns-lookup' => [
+        'name' => 'DNS Record Lookup',
+        'short_description' => 'Query authoritative A, AAAA, CNAME, MX, TXT, NS, SOA, and CAA records for any domain name via DNS over HTTPS.',
+        'meta_title' => 'DNS Record Lookup — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Query authoritative A, AAAA, CNAME, MX, TXT, NS, SOA, and CAA records for any domain name via DNS over HTTPS. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the DNS Record Lookup',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the DNS Record Lookup interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for DNS Record Lookup',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the DNS Record Lookup?',
+                'answer' => 'The DNS Record Lookup allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of DNS Record Lookup in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'reverse-dns-lookup' => [
+        'name' => 'Reverse DNS (rDNS / PTR) Lookup',
+        'short_description' => 'Resolve any IPv4 or IPv6 address to its associated server hostname and PTR pointer record.',
+        'meta_title' => 'Reverse DNS (rDNS / PTR) Lookup — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Resolve any IPv4 or IPv6 address to its associated server hostname and PTR pointer record. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the Reverse DNS (rDNS / PTR) Lookup',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the Reverse DNS (rDNS / PTR) Lookup interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for Reverse DNS (rDNS / PTR) Lookup',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the Reverse DNS (rDNS / PTR) Lookup?',
+                'answer' => 'The Reverse DNS (rDNS / PTR) Lookup allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of Reverse DNS (rDNS / PTR) Lookup in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'whois-lookup' => [
+        'name' => 'WHOIS Domain Lookup',
+        'short_description' => 'Check domain registration dates, expiration date, registrar information, status codes, and name servers.',
+        'meta_title' => 'WHOIS Domain Lookup — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Check domain registration dates, expiration date, registrar information, status codes, and name servers. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the WHOIS Domain Lookup',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the WHOIS Domain Lookup interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for WHOIS Domain Lookup',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the WHOIS Domain Lookup?',
+                'answer' => 'The WHOIS Domain Lookup allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of WHOIS Domain Lookup in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'dns-propagation-checker' => [
+        'name' => 'DNS Propagation Checker',
+        'short_description' => 'Verify if DNS record changes have propagated globally across multiple international DNS resolvers.',
+        'meta_title' => 'DNS Propagation Checker — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Verify if DNS record changes have propagated globally across multiple international DNS resolvers. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the DNS Propagation Checker',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the DNS Propagation Checker interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for DNS Propagation Checker',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the DNS Propagation Checker?',
+                'answer' => 'The DNS Propagation Checker allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of DNS Propagation Checker in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'spf-dkim-dmarc-checker' => [
+        'name' => 'SPF, DKIM & DMARC Record Checker',
+        'short_description' => 'Inspect email authentication DNS records to prevent email spoofing and ensure high inbox delivery rates.',
+        'meta_title' => 'SPF, DKIM & DMARC Record Checker — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Inspect email authentication DNS records to prevent email spoofing and ensure high inbox delivery rates. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the SPF, DKIM & DMARC Record Checker',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the SPF, DKIM & DMARC Record Checker interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for SPF, DKIM & DMARC Record Checker',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the SPF, DKIM & DMARC Record Checker?',
+                'answer' => 'The SPF, DKIM & DMARC Record Checker allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of SPF, DKIM & DMARC Record Checker in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'ping-tester' => [
+        'name' => 'Ping Latency Tester',
+        'short_description' => 'Measure round-trip ping latency, network response time, jitter, and packet reliability to target hosts.',
+        'meta_title' => 'Ping Latency Tester — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Measure round-trip ping latency, network response time, jitter, and packet reliability to target hosts. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the Ping Latency Tester',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the Ping Latency Tester interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for Ping Latency Tester',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the Ping Latency Tester?',
+                'answer' => 'The Ping Latency Tester allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of Ping Latency Tester in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'traceroute-online' => [
+        'name' => 'Visual Traceroute Simulator',
+        'short_description' => 'Trace and visualize network router hops, intermediate gateway latencies, and geographic internet paths.',
+        'meta_title' => 'Visual Traceroute Simulator — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Trace and visualize network router hops, intermediate gateway latencies, and geographic internet paths. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the Visual Traceroute Simulator',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the Visual Traceroute Simulator interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for Visual Traceroute Simulator',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the Visual Traceroute Simulator?',
+                'answer' => 'The Visual Traceroute Simulator allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of Visual Traceroute Simulator in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'port-checker' => [
+        'name' => 'Open Port Checker',
+        'short_description' => 'Test if critical server ports (80 HTTP, 443 HTTPS, 22 SSH, 21 FTP, 3306 MySQL) are reachable or firewall blocked.',
+        'meta_title' => 'Open Port Checker — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Test if critical server ports (80 HTTP, 443 HTTPS, 22 SSH, 21 FTP, 3306 MySQL) are reachable or firewall blocked. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the Open Port Checker',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the Open Port Checker interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for Open Port Checker',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the Open Port Checker?',
+                'answer' => 'The Open Port Checker allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of Open Port Checker in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'internet-speed-test' => [
+        'name' => 'Internet Speed Test',
+        'short_description' => 'Test broadband download speed, upload bandwidth, latency ping, and network jitter in real time.',
+        'meta_title' => 'Internet Speed Test — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Test broadband download speed, upload bandwidth, latency ping, and network jitter in real time. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the Internet Speed Test',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the Internet Speed Test interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for Internet Speed Test',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the Internet Speed Test?',
+                'answer' => 'The Internet Speed Test allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of Internet Speed Test in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'subnet-calculator' => [
+        'name' => 'IPv4 / IPv6 Subnet CIDR Calculator',
+        'short_description' => 'Calculate subnet mask, broadcast IP, usable host IP range, total hosts, wildcard mask, and CIDR prefix notation.',
+        'meta_title' => 'IPv4 / IPv6 Subnet CIDR Calculator — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Calculate subnet mask, broadcast IP, usable host IP range, total hosts, wildcard mask, and CIDR prefix notation. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the IPv4 / IPv6 Subnet CIDR Calculator',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the IPv4 / IPv6 Subnet CIDR Calculator interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for IPv4 / IPv6 Subnet CIDR Calculator',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the IPv4 / IPv6 Subnet CIDR Calculator?',
+                'answer' => 'The IPv4 / IPv6 Subnet CIDR Calculator allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of IPv4 / IPv6 Subnet CIDR Calculator in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'http-headers-lookup' => [
+        'name' => 'HTTP Header Checker',
+        'short_description' => 'Inspect server response headers, HTTP status codes, server signature, caching directives, and cookies.',
+        'meta_title' => 'HTTP Header Checker — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Inspect server response headers, HTTP status codes, server signature, caching directives, and cookies. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the HTTP Header Checker',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the HTTP Header Checker interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for HTTP Header Checker',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the HTTP Header Checker?',
+                'answer' => 'The HTTP Header Checker allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of HTTP Header Checker in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'http-status-checker' => [
+        'name' => 'HTTP Status Code Lookup & Dictionary',
+        'short_description' => 'Searchable reference and tester for all 1xx, 2xx, 3xx, 4xx, and 5xx HTTP response status codes with RFC definitions.',
+        'meta_title' => 'HTTP Status Code Lookup & Dictionary — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Searchable reference and tester for all 1xx, 2xx, 3xx, 4xx, and 5xx HTTP response status codes with RFC definitions. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the HTTP Status Code Lookup & Dictionary',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the HTTP Status Code Lookup & Dictionary interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for HTTP Status Code Lookup & Dictionary',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the HTTP Status Code Lookup & Dictionary?',
+                'answer' => 'The HTTP Status Code Lookup & Dictionary allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of HTTP Status Code Lookup & Dictionary in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'security-headers-checker' => [
+        'name' => 'Security Headers Checker',
+        'short_description' => 'Audit website HTTP security headers (HSTS, CSP, X-Frame-Options, Permissions-Policy) with a letter grade score.',
+        'meta_title' => 'Security Headers Checker — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Audit website HTTP security headers (HSTS, CSP, X-Frame-Options, Permissions-Policy) with a letter grade score. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the Security Headers Checker',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the Security Headers Checker interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for Security Headers Checker',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the Security Headers Checker?',
+                'answer' => 'The Security Headers Checker allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of Security Headers Checker in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'redirect-checker' => [
+        'name' => 'URL Redirect Chain Checker',
+        'short_description' => 'Trace complete URL redirect chains (301, 302, 307, 308), count intermediate hops, and detect infinite loops.',
+        'meta_title' => 'URL Redirect Chain Checker — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Trace complete URL redirect chains (301, 302, 307, 308), count intermediate hops, and detect infinite loops. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the URL Redirect Chain Checker',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the URL Redirect Chain Checker interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for URL Redirect Chain Checker',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the URL Redirect Chain Checker?',
+                'answer' => 'The URL Redirect Chain Checker allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of URL Redirect Chain Checker in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'ssl-checker' => [
+        'name' => 'SSL / TLS Certificate Checker',
+        'short_description' => 'Inspect SSL/TLS certificate validity, expiration date countdown, issuing certificate authority, and SAN domains.',
+        'meta_title' => 'SSL / TLS Certificate Checker — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Inspect SSL/TLS certificate validity, expiration date countdown, issuing certificate authority, and SAN domains. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the SSL / TLS Certificate Checker',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the SSL / TLS Certificate Checker interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for SSL / TLS Certificate Checker',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the SSL / TLS Certificate Checker?',
+                'answer' => 'The SSL / TLS Certificate Checker allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of SSL / TLS Certificate Checker in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'robots-txt-generator' => [
+        'name' => 'Robots.txt Generator',
+        'short_description' => 'Generate compliant robots.txt crawler directives with custom allow/disallow paths, bot rules, and sitemap URL.',
+        'meta_title' => 'Robots.txt Generator — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Generate compliant robots.txt crawler directives with custom allow/disallow paths, bot rules, and sitemap URL. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the Robots.txt Generator',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the Robots.txt Generator interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for Robots.txt Generator',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the Robots.txt Generator?',
+                'answer' => 'The Robots.txt Generator allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of Robots.txt Generator in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'robots-txt-validator' => [
+        'name' => 'Robots.txt Validator & Tester',
+        'short_description' => 'Test robots.txt directives and verify whether specific URL paths are allowed or blocked for different search bots.',
+        'meta_title' => 'Robots.txt Validator & Tester — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Test robots.txt directives and verify whether specific URL paths are allowed or blocked for different search bots. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the Robots.txt Validator & Tester',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the Robots.txt Validator & Tester interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for Robots.txt Validator & Tester',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the Robots.txt Validator & Tester?',
+                'answer' => 'The Robots.txt Validator & Tester allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of Robots.txt Validator & Tester in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'xml-sitemap-generator' => [
+        'name' => 'XML Sitemap Generator',
+        'short_description' => 'Build search engine compliant sitemap.xml files from URL lists with custom priorities, frequencies, and lastmod dates.',
+        'meta_title' => 'XML Sitemap Generator — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Build search engine compliant sitemap.xml files from URL lists with custom priorities, frequencies, and lastmod dates. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the XML Sitemap Generator',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the XML Sitemap Generator interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for XML Sitemap Generator',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the XML Sitemap Generator?',
+                'answer' => 'The XML Sitemap Generator allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of XML Sitemap Generator in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'xml-sitemap-validator' => [
+        'name' => 'XML Sitemap Validator',
+        'short_description' => 'Validate XML sitemap files against the official sitemaps.org schema to catch syntax errors and broken tags.',
+        'meta_title' => 'XML Sitemap Validator — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Validate XML sitemap files against the official sitemaps.org schema to catch syntax errors and broken tags. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the XML Sitemap Validator',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the XML Sitemap Validator interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for XML Sitemap Validator',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the XML Sitemap Validator?',
+                'answer' => 'The XML Sitemap Validator allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of XML Sitemap Validator in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'htaccess-generator' => [
+        'name' => '.htaccess Generator & Tester',
+        'short_description' => 'Generate Apache .htaccess files for 301 redirects, HTTPS enforcement, WWW normalization, caching, and Gzip compression.',
+        'meta_title' => '.htaccess Generator & Tester — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Generate Apache .htaccess files for 301 redirects, HTTPS enforcement, WWW normalization, caching, and Gzip compression. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the .htaccess Generator & Tester',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the .htaccess Generator & Tester interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for .htaccess Generator & Tester',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the .htaccess Generator & Tester?',
+                'answer' => 'The .htaccess Generator & Tester allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of .htaccess Generator & Tester in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'nginx-config-generator' => [
+        'name' => 'Nginx Server Block Generator',
+        'short_description' => 'Create optimized Nginx server block configs for reverse proxies, SSL certificates, static assets, and PHP-FPM.',
+        'meta_title' => 'Nginx Server Block Generator — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Create optimized Nginx server block configs for reverse proxies, SSL certificates, static assets, and PHP-FPM. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the Nginx Server Block Generator',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the Nginx Server Block Generator interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for Nginx Server Block Generator',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the Nginx Server Block Generator?',
+                'answer' => 'The Nginx Server Block Generator allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of Nginx Server Block Generator in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'meta-tag-generator' => [
+        'name' => 'Meta Tag Generator for SEO',
+        'short_description' => 'Generate complete HTML meta tags for Title, Description, Keywords, Robots, and Author with live Google search preview.',
+        'meta_title' => 'Meta Tag Generator for SEO — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Generate complete HTML meta tags for Title, Description, Keywords, Robots, and Author with live Google search preview. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the Meta Tag Generator for SEO',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the Meta Tag Generator for SEO interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for Meta Tag Generator for SEO',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the Meta Tag Generator for SEO?',
+                'answer' => 'The Meta Tag Generator for SEO allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of Meta Tag Generator for SEO in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'open-graph-generator' => [
+        'name' => 'Open Graph (OG) Generator & Preview',
+        'short_description' => 'Create Open Graph meta tags (og:title, og:image, og:description) with interactive Facebook and LinkedIn card previews.',
+        'meta_title' => 'Open Graph (OG) Generator & Preview — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Create Open Graph meta tags (og:title, og:image, og:description) with interactive Facebook and LinkedIn card previews. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the Open Graph (OG) Generator & Preview',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the Open Graph (OG) Generator & Preview interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for Open Graph (OG) Generator & Preview',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the Open Graph (OG) Generator & Preview?',
+                'answer' => 'The Open Graph (OG) Generator & Preview allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of Open Graph (OG) Generator & Preview in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'twitter-card-generator' => [
+        'name' => 'Twitter (X) Card Generator',
+        'short_description' => 'Generate Twitter Card meta tags (Summary and Large Image) with real-time X feed preview card simulation.',
+        'meta_title' => 'Twitter (X) Card Generator — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Generate Twitter Card meta tags (Summary and Large Image) with real-time X feed preview card simulation. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the Twitter (X) Card Generator',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the Twitter (X) Card Generator interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for Twitter (X) Card Generator',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the Twitter (X) Card Generator?',
+                'answer' => 'The Twitter (X) Card Generator allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of Twitter (X) Card Generator in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'schema-generator' => [
+        'name' => 'Schema.org Structured Data Generator',
+        'short_description' => 'Create valid JSON-LD structured data markup for Article, Organization, LocalBusiness, FAQ, and Product schemas.',
+        'meta_title' => 'Schema.org Structured Data Generator — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Create valid JSON-LD structured data markup for Article, Organization, LocalBusiness, FAQ, and Product schemas. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the Schema.org Structured Data Generator',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the Schema.org Structured Data Generator interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for Schema.org Structured Data Generator',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the Schema.org Structured Data Generator?',
+                'answer' => 'The Schema.org Structured Data Generator allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of Schema.org Structured Data Generator in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'source-code-viewer' => [
+        'name' => 'Website Source Code Viewer',
+        'short_description' => 'Fetch, inspect, syntax-highlight, and download the raw HTML source code and DOM assets from any website.',
+        'meta_title' => 'Website Source Code Viewer — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Fetch, inspect, syntax-highlight, and download the raw HTML source code and DOM assets from any website. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the Website Source Code Viewer',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the Website Source Code Viewer interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for Website Source Code Viewer',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the Website Source Code Viewer?',
+                'answer' => 'The Website Source Code Viewer allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of Website Source Code Viewer in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'url-parser' => [
+        'name' => 'URL Parser & Query String Extractor',
+        'short_description' => 'Deconstruct complex URLs into protocol, host, port, path, and extract/edit query string key-value pairs.',
+        'meta_title' => 'URL Parser & Query String Extractor — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Deconstruct complex URLs into protocol, host, port, path, and extract/edit query string key-value pairs. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the URL Parser & Query String Extractor',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the URL Parser & Query String Extractor interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for URL Parser & Query String Extractor',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the URL Parser & Query String Extractor?',
+                'answer' => 'The URL Parser & Query String Extractor allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of URL Parser & Query String Extractor in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'url-encoder-decoder' => [
+        'name' => 'URL Encoder & Decoder',
+        'short_description' => 'Encode and decode URL query parameters, special characters, and reserved symbols adhering to RFC 3986.',
+        'meta_title' => 'URL Encoder & Decoder — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Encode and decode URL query parameters, special characters, and reserved symbols adhering to RFC 3986. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the URL Encoder & Decoder',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the URL Encoder & Decoder interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for URL Encoder & Decoder',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the URL Encoder & Decoder?',
+                'answer' => 'The URL Encoder & Decoder allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of URL Encoder & Decoder in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'compression-checker' => [
+        'name' => 'Gzip & Brotli Compression Checker',
+        'short_description' => 'Check if a web server has Gzip, Brotli, or Deflate compression enabled and calculate bandwidth savings percentage.',
+        'meta_title' => 'Gzip & Brotli Compression Checker — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Check if a web server has Gzip, Brotli, or Deflate compression enabled and calculate bandwidth savings percentage. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the Gzip & Brotli Compression Checker',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the Gzip & Brotli Compression Checker interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for Gzip & Brotli Compression Checker',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the Gzip & Brotli Compression Checker?',
+                'answer' => 'The Gzip & Brotli Compression Checker allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of Gzip & Brotli Compression Checker in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
+
+    'website-uptime-checker' => [
+        'name' => 'Website Ping & Uptime Checker',
+        'short_description' => 'Verify if a website is online or down (Up or Down), measure Time to First Byte (TTFB), and response latency.',
+        'meta_title' => 'Website Ping & Uptime Checker — Free Online Webmaster Tool | ToolZeno',
+        'meta_description' => 'Verify if a website is online or down (Up or Down), measure Time to First Byte (TTFB), and response latency. Completely free, fast, and privacy-friendly network utility on ToolZeno.',
+        'how_to_guide' => [
+            'title' => 'How to Use the Website Ping & Uptime Checker',
+            'steps' => [
+                'Enter the target hostname, domain, IP, or input parameters into the Website Ping & Uptime Checker interface.',
+                'Adjust any specific configuration options, flags, or test protocols as required.',
+                'Click the action button to execute the query or generate your output in real time.',
+                'Inspect the formatted results, copy the data, or export/download the generated configuration.',
+            ],
+        ],
+        'technical_specs' => [
+            'title' => 'Technical Specifications for Website Ping & Uptime Checker',
+            'items' => [
+                'Network Protocol: IPv4, IPv6, DNS over HTTPS (DoH), HTTP/1.1, HTTP/2, RFC Standards',
+                'Execution Environment: High-speed browser processing with zero tracking or unnecessary server storage',
+                'Export & Formats: Raw text, structured JSON, downloadable configuration files, one-click clipboard copy',
+                'Compatibility: Fully responsive on desktop workstations, tablets, and mobile devices',
+            ],
+        ],
+        'faqs' => [
+            [
+                'question' => 'What is the primary purpose of the Website Ping & Uptime Checker?',
+                'answer' => 'The Website Ping & Uptime Checker allows webmasters, system administrators, and developers to analyze, validate, or generate networking parameters accurately without installing third-party command-line utilities.',
+            ],
+            [
+                'question' => 'Is my network query or input data kept private?',
+                'answer' => 'Yes. Operations are executed either completely in your browser or through standard, non-logged DNS and public network lookups. We do not store or log your queries.',
+            ],
+            [
+                'question' => 'Can I use the output of Website Ping & Uptime Checker in production environments?',
+                'answer' => 'Absolutely. All outputs follow official IETF RFC standards and industry best practices for server administration and webmaster workflows.',
+            ],
+        ],
+    ],
 ];
