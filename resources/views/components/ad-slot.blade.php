@@ -23,11 +23,16 @@
 @endphp
 
 @if($globalAdsEnabled && $placement)
-    <div class="my-6 p-4 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/40 text-center {{ $class }}">
-        <span class="inline-block text-[10px] font-semibold tracking-wider uppercase text-slate-400 dark:text-slate-500 mb-2">
-            {{ __('common.ads.label') }}
-        </span>
-        <div class="min-h-[90px] flex items-center justify-center text-xs text-slate-400 font-mono">
+    <!-- Google AdSense Policy Compliant Ad Container: Strict separation & clear labeling to eliminate accidental clicks -->
+    <div class="my-8 sm:my-10 p-4 sm:p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-900/50 text-center relative overflow-hidden transition-all {{ $class }}" role="region" aria-label="Advertisement">
+        <div class="flex items-center justify-center gap-2 mb-3">
+            <span class="h-px w-8 bg-slate-200 dark:bg-slate-800"></span>
+            <span class="text-[10px] font-bold tracking-widest uppercase text-slate-400 dark:text-slate-500 select-none">
+                {{ __('common.ads.label') }}
+            </span>
+            <span class="h-px w-8 bg-slate-200 dark:bg-slate-800"></span>
+        </div>
+        <div class="min-h-[100px] flex items-center justify-center text-xs text-slate-400 font-mono overflow-hidden">
             @if(!empty($placement->slot_id))
                 <ins class="adsbygoogle"
                      style="display:block"
@@ -35,7 +40,7 @@
                      data-ad-slot="{{ $placement->slot_id }}"
                      data-ad-format="{{ $placement->format }}"></ins>
             @else
-                <span class="text-slate-400">Ad Placement: {{ $placement->name }}</span>
+                <span class="text-slate-400 font-sans text-xs">Ad Placement: {{ $placement->name }}</span>
             @endif
         </div>
     </div>
