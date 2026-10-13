@@ -6,15 +6,33 @@
 
 @php
     $locale = app()->getLocale();
-    $howToTitle = __('tools.' . $toolKey . '.how_to_title');
-    $howToSteps = __('tools.' . $toolKey . '.how_to_steps');
-    $specsTitle = __('tools.' . $toolKey . '.specs_title');
-    $specs = __('tools.' . $toolKey . '.specs');
-    $examplesTitle = __('tools.' . $toolKey . '.examples_title');
-    $examples = __('tools.' . $toolKey . '.examples');
-    $faqTitle = __('tools.' . $toolKey . '.faq_title');
-    $faq = __('tools.' . $toolKey . '.faq');
-    $relatedContext = __('tools.' . $toolKey . '.related_context');
+    $howToTitle = \Illuminate\Support\Facades\Lang::has('tools.' . $toolKey . '.how_to_title') 
+        ? __('tools.' . $toolKey . '.how_to_title') 
+        : ($locale === 'bn' ? 'ব্যবহার নির্দেশিকা' : 'How to Use this Tool');
+    $howToSteps = \Illuminate\Support\Facades\Lang::has('tools.' . $toolKey . '.how_to_steps') 
+        ? __('tools.' . $toolKey . '.how_to_steps') 
+        : [];
+    $specsTitle = \Illuminate\Support\Facades\Lang::has('tools.' . $toolKey . '.specs_title') 
+        ? __('tools.' . $toolKey . '.specs_title') 
+        : ($locale === 'bn' ? 'প্রযুক্তিগত বৈশিষ্ট্য' : 'Technical Specifications');
+    $specs = \Illuminate\Support\Facades\Lang::has('tools.' . $toolKey . '.specs') 
+        ? __('tools.' . $toolKey . '.specs') 
+        : [];
+    $examplesTitle = \Illuminate\Support\Facades\Lang::has('tools.' . $toolKey . '.examples_title') 
+        ? __('tools.' . $toolKey . '.examples_title') 
+        : ($locale === 'bn' ? 'বাস্তব উদাহরণ' : 'Usage Examples');
+    $examples = \Illuminate\Support\Facades\Lang::has('tools.' . $toolKey . '.examples') 
+        ? __('tools.' . $toolKey . '.examples') 
+        : [];
+    $faqTitle = \Illuminate\Support\Facades\Lang::has('tools.' . $toolKey . '.faq_title') 
+        ? __('tools.' . $toolKey . '.faq_title') 
+        : ($locale === 'bn' ? 'সাধারণ প্রশ্নোত্তর' : 'Frequently Asked Questions');
+    $faq = \Illuminate\Support\Facades\Lang::has('tools.' . $toolKey . '.faq') 
+        ? __('tools.' . $toolKey . '.faq') 
+        : [];
+    $relatedContext = \Illuminate\Support\Facades\Lang::has('tools.' . $toolKey . '.related_context') 
+        ? __('tools.' . $toolKey . '.related_context') 
+        : '';
 
     $limitationsTitle = \Illuminate\Support\Facades\Lang::has('tools.' . $toolKey . '.limitations_title') 
         ? __('tools.' . $toolKey . '.limitations_title') 
@@ -24,8 +42,13 @@
         ? __('tools.' . $toolKey . '.limitations_text') 
         : (\Illuminate\Support\Facades\Lang::has('tools.' . $toolKey . '.security_text') ? __('tools.' . $toolKey . '.security_text') : null);
 
-    $privacyTitle = __('tools.' . $toolKey . '.privacy_title');
-    $privacyText = __('tools.' . $toolKey . '.privacy_text');
+    $privacyTitle = \Illuminate\Support\Facades\Lang::has('tools.' . $toolKey . '.privacy_title') 
+        ? __('tools.' . $toolKey . '.privacy_title') 
+        : ($locale === 'bn' ? '১০০% ক্লায়েন্ট-সাইড প্রাইভেসি গ্যারান্টি' : '100% Client-Side Privacy Guarantee');
+
+    $privacyText = \Illuminate\Support\Facades\Lang::has('tools.' . $toolKey . '.privacy_text') 
+        ? __('tools.' . $toolKey . '.privacy_text') 
+        : ($locale === 'bn' ? 'আপনার সমস্ত হিসাব-নিকাশ সম্পূর্ণভাবে আপনার ব্রাউজারের মেমোরিতে সম্পন্ন হয়। কোনো ডেটা আমাদের সার্ভারে পাঠানো বা সংরক্ষণ করা হয় না।' : 'All calculations run directly in your local browser memory. Zero data is ever transmitted, logged, or stored on remote servers.');
 
     $registry = app(\App\Support\Tools\ToolRegistry::class);
     $relatedTool1 = $relatedSlug ? $registry->find($relatedSlug) : null;

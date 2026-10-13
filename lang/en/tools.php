@@ -1218,6 +1218,49 @@ return [
         'short_desc' => 'Full-featured scientific calculator with trigonometry (sin, cos, tan), logarithms, square roots, exponents, and factorial operations.',
         'meta_title' => 'Scientific Calculator Online — Trigonometry, Log & Math | ToolZeno',
         'meta_desc' => 'Advanced scientific calculator online. Solve complex math expressions, trigonometry, radians/degrees, powers, and logs.',
+        'how_to_title' => 'How to Use the Scientific Calculator',
+        'how_to_steps' => [
+            'Choose your angle mode: Toggle between DEG (Degrees) and RAD (Radians) for trigonometric functions.',
+            'Click on any function such as sin, cos, tan, log, or ln to start entering mathematical expressions.',
+            'Use parentheses ( and ) to group operations with standard mathematical precedence.',
+            'Press the equals key (=) or Enter on your keyboard to instantly evaluate the expression.',
+        ],
+        'specs_title' => 'Technical Capabilities & Precision',
+        'specs' => [
+            'Angle Units' => 'Degrees (DEG) & Radians (RAD) with one-click toggling',
+            'Trigonometric Functions' => 'sin, cos, tan, asin, acos, atan with sub-micro precision',
+            'Logarithmic Functions' => 'Natural logarithm (ln) & Common logarithm (log₁₀)',
+            'Advanced Operators' => 'Square root (√), Exponentiation (x² & xʸ), Factorial (n!)',
+            'Mathematical Constants' => 'Pi (π ≈ 3.14159265), Euler constant (e ≈ 2.71828182)',
+            'Execution Environment' => '100% Client-side JavaScript (Zero latency, works offline)',
+        ],
+        'examples_title' => 'Sample Scientific Calculations',
+        'examples' => [
+            [
+                'label' => 'Trigonometry (Degree)',
+                'input' => 'sin(30) + cos(60)',
+                'output' => '1.0',
+            ],
+            [
+                'label' => 'Logarithm & Roots',
+                'input' => 'log(100) + √(144)',
+                'output' => '14',
+            ],
+        ],
+        'faq_title' => 'Scientific Calculator FAQ',
+        'faq' => [
+            [
+                'q' => 'Does this calculator evaluate in Degrees or Radians?',
+                'a' => 'Both! You can switch between DEG and RAD mode using the toggle button above the display. Degree mode is selected by default for everyday math.',
+            ],
+            [
+                'q' => 'Can I type complex nested expressions with parentheses?',
+                'a' => 'Yes, you can write nested expressions like sin(45) * (2 + 3^2) and the calculator will evaluate them following proper mathematical operator precedence.',
+            ],
+        ],
+        'privacy_title' => '100% Client-Side Privacy Guarantee',
+        'privacy_text' => 'All scientific calculations execute strictly within your local browser memory. No equations, numbers, or intermediate results are ever sent over the network or saved to remote databases.',
+        'related_context' => 'Need simpler arithmetic or percentage calculations? Check out our :link or :link2 for dedicated financial and everyday workflows.',
     ],
     'fraction_calculator' => [
         'name' => 'Fraction Calculator',
