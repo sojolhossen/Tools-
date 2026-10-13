@@ -1,5 +1,15 @@
+@php
+    $rawIp = request()->header('CF-Connecting-IP') ?: (request()->header('X-Forwarded-For') ?: request()->ip());
+    if ($rawIp && str_contains($rawIp, ',')) {
+        $rawIp = trim(explode(',', $rawIp)[0]);
+    }
+    $initialIpv4 = (filter_var($rawIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) ? $rawIp : '';
+    $initialIpv6 = (filter_var($rawIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) ? $rawIp : '';
+    $initialCountry = request()->header('CF-IPCountry') ?: '';
+@endphp
+
 <x-layouts.app :title="$tool->getMetaTitle()" :description="$tool->getMetaDescription()" :schema="$schema ?? null">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10" x-data="whatIsMyIpApp()">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10" x-data="whatIsMyIpApp('{{ $initialIpv4 }}', '{{ $initialIpv6 }}', '{{ $initialCountry }}', '{{ $rawIp }}')">
         <x-breadcrumbs :items="[
             __('common.nav.tools') => route('tools.index', ['locale' => $locale]),
             __('common.categories.' . $tool->category) => route('tools.category', ['locale' => $locale, 'category' => $tool->category]),
@@ -25,17 +35,16 @@
             </p>
         </div>
 
-
         <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 sm:p-8 space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- IPv4 Card -->
                 <div class="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex flex-col justify-between">
                     <div>
                         <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Public IPv4 Address</span>
-                        <div class="mt-2 text-2xl sm:text-3xl font-mono font-bold text-blue-600 dark:text-blue-400 break-all" x-text="ipv4 || 'Detecting...'"></div>
+                        <div class="mt-2 text-2xl sm:text-3xl font-mono font-bold text-blue-600 dark:text-blue-400 break-all" x-text="ipv4 || (ipv6 ? 'Using IPv6 Connection' : 'Checking...')"></div>
                     </div>
                     <div class="mt-4 flex items-center justify-between">
-                        <span class="text-xs text-slate-500" x-text="ipv4 ? 'Verified via Web Protocol' : 'Scanning...'"></span>
+                        <span class="text-xs text-slate-500" x-text="ipv4 ? 'Verified Public IP' : (ipv6 ? 'IPv6 Primary' : 'Connecting...')"></span>
                         <button type="button" @click="copy(ipv4)" x-show="ipv4" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 hover:bg-blue-200 transition-colors">
                             Copy IPv4
                         </button>
@@ -46,7 +55,7 @@
                 <div class="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex flex-col justify-between">
                     <div>
                         <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Public IPv6 Address</span>
-                        <div class="mt-2 text-xl sm:text-2xl font-mono font-bold text-slate-800 dark:text-slate-200 break-all" x-text="ipv6 || 'Not Supported / Disabled'"></div>
+                        <div class="mt-2 text-xl sm:text-2xl font-mono font-bold text-slate-800 dark:text-slate-200 break-all" x-text="ipv6 || 'Not Supported / IPv4 Only'"></div>
                     </div>
                     <div class="mt-4 flex items-center justify-between">
                         <span class="text-xs text-slate-500" x-text="ipv6 ? 'Native IPv6 Network' : 'No IPv6 Route'"></span>
@@ -63,15 +72,15 @@
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs font-mono">
                     <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800">
                         <span class="text-slate-500 block mb-1">Country / City</span>
-                        <span class="font-bold text-slate-800 dark:text-slate-200" x-text="(geo.country || '...') + ', ' + (geo.city || '...')"></span>
+                        <span class="font-bold text-slate-800 dark:text-slate-200" x-text="geo.country ? (geo.country + (geo.city ? ', ' + geo.city : '')) : 'Detecting...'"></span>
                     </div>
                     <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800">
                         <span class="text-slate-500 block mb-1">ISP / Provider</span>
-                        <span class="font-bold text-slate-800 dark:text-slate-200 truncate block" x-text="geo.isp || 'Detecting...'"></span>
+                        <span class="font-bold text-slate-800 dark:text-slate-200 truncate block" x-text="geo.isp || 'Broadband Network'"></span>
                     </div>
                     <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800">
                         <span class="text-slate-500 block mb-1">Autonomous System (ASN)</span>
-                        <span class="font-bold text-slate-800 dark:text-slate-200" x-text="geo.asn || 'AS Unknown'"></span>
+                        <span class="font-bold text-slate-800 dark:text-slate-200" x-text="geo.asn || 'AS Network'"></span>
                     </div>
                     <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800">
                         <span class="text-slate-500 block mb-1">Local Network IP</span>
@@ -90,34 +99,92 @@
         </div>
 
         <script>
-        function whatIsMyIpApp() {
+        function whatIsMyIpApp(initIpv4, initIpv6, initCountry, serverRaw) {
             return {
-                ipv4: '',
-                ipv6: '',
+                ipv4: initIpv4 || '',
+                ipv6: initIpv6 || '',
+                serverRaw: serverRaw || '',
                 localIp: '',
                 loading: false,
-                geo: { country: '', city: '', isp: '', asn: '' },
+                geo: { country: initCountry || '', city: '', isp: '', asn: '' },
                 init() {
+                    // If server gave us an IP, display it right away
+                    if (!this.ipv4 && !this.ipv6 && this.serverRaw) {
+                        if (this.serverRaw.includes(':')) {
+                            this.ipv6 = this.serverRaw;
+                        } else if (this.serverRaw !== '127.0.0.1' && this.serverRaw !== '::1') {
+                            this.ipv4 = this.serverRaw;
+                        }
+                    }
                     this.detect();
                     this.detectLocalIp();
                 },
                 async detect() {
                     this.loading = true;
-                    try {
-                        const res4 = await fetch('https://api.ipify.org?format=json').then(r => r.json()).catch(() => null);
-                        if (res4 && res4.ip) this.ipv4 = res4.ip;
 
-                        const geoRes = await fetch('https://ipapi.co/json/').then(r => r.json()).catch(() => null);
-                        if (geoRes) {
-                            if (!this.ipv4 && geoRes.ip) this.ipv4 = geoRes.ip;
+                    // 1. Try Cloudflare cdn-cgi trace (same-origin, 100% reliable on Cloudflare domains)
+                    try {
+                        const traceRes = await fetch('/cdn-cgi/trace', { cache: 'no-store' });
+                        if (traceRes.ok) {
+                            const text = await traceRes.text();
+                            const data = {};
+                            text.split('\n').forEach(line => {
+                                const parts = line.split('=');
+                                if (parts.length >= 2) data[parts[0].trim()] = parts.slice(1).join('=').trim();
+                            });
+                            if (data.ip) {
+                                if (data.ip.includes(':')) {
+                                    this.ipv6 = data.ip;
+                                } else {
+                                    this.ipv4 = data.ip;
+                                }
+                            }
+                            if (data.loc) {
+                                this.geo.country = data.loc;
+                            }
+                            if (data.colo) {
+                                this.geo.city = 'Cloudflare (' + data.colo + ')';
+                            }
+                        }
+                    } catch (e) {}
+
+                    // 2. Fetch rich geolocation via ipwho.is (CORS enabled, unblocked by adblockers)
+                    try {
+                        const res = await fetch('https://ipwho.is/').then(r => r.json());
+                        if (res && res.success) {
+                            if (res.ip) {
+                                if (res.ip.includes(':')) {
+                                    this.ipv6 = res.ip;
+                                } else {
+                                    this.ipv4 = res.ip;
+                                }
+                            }
                             this.geo = {
-                                country: geoRes.country_name || '',
-                                city: geoRes.city || '',
-                                isp: geoRes.org || '',
-                                asn: geoRes.asn || ''
+                                country: res.country || this.geo.country,
+                                city: res.city || this.geo.city,
+                                isp: (res.connection && res.connection.isp) || res.isp || this.geo.isp,
+                                asn: (res.connection && res.connection.asn) ? ('AS' + res.connection.asn) : (res.asn || this.geo.asn)
                             };
                         }
-                    } catch(e) {}
+                    } catch (e) {}
+
+                    // 3. Fallback to api.ipify.org
+                    if (!this.ipv4 && !this.ipv6) {
+                        try {
+                            const res4 = await fetch('https://api.ipify.org?format=json').then(r => r.json());
+                            if (res4 && res4.ip) this.ipv4 = res4.ip;
+                        } catch (e) {}
+                    }
+
+                    // 4. Final fallback to server-side detected IP if client is behind strict adblocker
+                    if (!this.ipv4 && !this.ipv6 && this.serverRaw) {
+                        if (this.serverRaw.includes(':')) {
+                            this.ipv6 = this.serverRaw;
+                        } else {
+                            this.ipv4 = this.serverRaw;
+                        }
+                    }
+
                     this.loading = false;
                 },
                 detectLocalIp() {
@@ -139,7 +206,6 @@
             };
         }
         </script>
-
 
         <!-- Informational / SEO Section -->
         <div class="mt-12 space-y-8 border-t border-slate-200 dark:border-slate-800 pt-8">

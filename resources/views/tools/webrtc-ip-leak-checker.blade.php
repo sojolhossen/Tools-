@@ -1,5 +1,12 @@
+@php
+    $rawIp = request()->header('CF-Connecting-IP') ?: (request()->header('X-Forwarded-For') ?: request()->ip());
+    if ($rawIp && str_contains($rawIp, ',')) {
+        $rawIp = trim(explode(',', $rawIp)[0]);
+    }
+@endphp
+
 <x-layouts.app :title="$tool->getMetaTitle()" :description="$tool->getMetaDescription()" :schema="$schema ?? null">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10" x-data="webrtcLeakApp()">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10" x-data="webrtcLeakApp('{{ $rawIp }}')">
         <x-breadcrumbs :items="[
             __('common.nav.tools') => route('tools.index', ['locale' => $locale]),
             __('common.categories.' . $tool->category) => route('tools.category', ['locale' => $locale, 'category' => $tool->category]),
@@ -25,7 +32,6 @@
             </p>
         </div>
 
-
         <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 sm:p-8 space-y-6">
             <!-- Leak Verdict Badge -->
             <div class="p-6 rounded-2xl border text-center space-y-2" :class="leakDetected ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-200 dark:border-rose-900' : 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-900'">
@@ -37,13 +43,13 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div class="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950">
                     <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block mb-2">WebRTC STUN Public Candidate IP</span>
-                    <div class="text-xl font-mono font-bold text-slate-900 dark:text-white break-all" x-text="webrtcIp || 'No STUN Public Candidate Detected'"></div>
+                    <div class="text-xl font-mono font-bold text-slate-900 dark:text-white break-all" x-text="webrtcIp || 'No STUN Candidate Leaked (Secure)'"></div>
                     <span class="text-xs text-slate-500 mt-2 block">Observed via STUN ICE Binding (Google STUN)</span>
                 </div>
 
                 <div class="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950">
                     <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block mb-2">Regular HTTP Public IP</span>
-                    <div class="text-xl font-mono font-bold text-blue-600 dark:text-blue-400 break-all" x-text="httpIp || 'Scanning...'"></div>
+                    <div class="text-xl font-mono font-bold text-blue-600 dark:text-blue-400 break-all" x-text="httpIp || 'Detecting...'"></div>
                     <span class="text-xs text-slate-500 mt-2 block">Standard Web Browser TCP Connection IP</span>
                 </div>
             </div>
@@ -58,10 +64,10 @@
         </div>
 
         <script>
-        function webrtcLeakApp() {
+        function webrtcLeakApp(serverIp) {
             return {
                 webrtcIp: '',
-                httpIp: '',
+                httpIp: serverIp || '',
                 testing: false,
                 leakDetected: false,
                 statusText: 'Analyzing...',
@@ -74,11 +80,21 @@
                     this.webrtcIp = '';
                     this.leakDetected = false;
 
-                    // 1. Fetch normal HTTP IP
-                    try {
-                        const r = await fetch('https://api.ipify.org?format=json').then(res => res.json());
-                        if (r && r.ip) this.httpIp = r.ip;
-                    } catch(e) {}
+                    // 1. Fetch normal HTTP IP if not already set
+                    if (!this.httpIp) {
+                        try {
+                            const traceRes = await fetch('/cdn-cgi/trace').then(r => r.text());
+                            const m = traceRes.match(/ip=([^\n]+)/);
+                            if (m) this.httpIp = m[1].trim();
+                        } catch(e) {}
+
+                        if (!this.httpIp) {
+                            try {
+                                const r = await fetch('https://ipwho.is/').then(res => res.json());
+                                if (r && r.ip) this.httpIp = r.ip;
+                            } catch(e) {}
+                        }
+                    }
 
                     // 2. WebRTC STUN test
                     try {
@@ -110,16 +126,18 @@
 
                     setTimeout(() => {
                         if (!this.webrtcIp) {
-                            this.statusText = 'NO WEBRTC LEAK';
-                            this.statusDesc = 'Your browser blocks WebRTC host / reflexive ICE candidates or mDNS anonymization is enabled.';
+                            this.statusText = 'NO WEBRTC LEAK (SECURE)';
+                            this.statusDesc = 'Your browser WebRTC candidates are masked or mDNS privacy protection is active.';
+                        } else if (!this.leakDetected) {
+                            this.statusText = 'NO LEAK DETECTED (SECURE)';
+                            this.statusDesc = 'Your WebRTC IP matches your active connection IP.';
                         }
                         this.testing = false;
-                    }, 2500);
+                    }, 1200);
                 }
             };
         }
         </script>
-
 
         <!-- Informational / SEO Section -->
         <div class="mt-12 space-y-8 border-t border-slate-200 dark:border-slate-800 pt-8">
