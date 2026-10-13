@@ -28,10 +28,10 @@
         <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden mb-10">
             <div class="p-4 sm:p-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex flex-wrap items-center justify-between gap-3">
                 <div class="flex items-center gap-2">
-                    <button type="button" @click="direction = 'yaml-to-json'; convert()" :class="direction === 'yaml-to-json' ? 'bg-primary-600 text-white shadow-sm' : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700'" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all">
+                    <button type="button" @click="setDirection('yaml-to-json')" :class="direction === 'yaml-to-json' ? 'bg-primary-600 text-white shadow-sm' : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700'" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all">
                         YAML &rarr; JSON
                     </button>
-                    <button type="button" @click="direction = 'json-to-yaml'; convert()" :class="direction === 'json-to-yaml' ? 'bg-primary-600 text-white shadow-sm' : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700'" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all">
+                    <button type="button" @click="setDirection('json-to-yaml')" :class="direction === 'json-to-yaml' ? 'bg-primary-600 text-white shadow-sm' : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700'" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all">
                         JSON &rarr; YAML
                     </button>
                 </div>
@@ -79,7 +79,14 @@
     </div>
 
     @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+    <script src="{{ asset('js/vendor/js-yaml.min.js') }}"></script>
+    <script>
+        if (typeof jsyaml === 'undefined') {
+            const s = document.createElement('script');
+            s.src = 'https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js';
+            document.head.appendChild(s);
+        }
+    </script>
     <script>
         function yamlJsonConverter() {
             return {
@@ -88,16 +95,37 @@
                 output: '',
                 error: '',
                 copied: false,
+                setDirection(dir) {
+                    if (this.direction === dir) return;
+                    this.direction = dir;
+                    this.error = '';
+                    if (this.output && !this.error) {
+                        this.input = this.output;
+                        this.output = '';
+                    }
+                    this.convert();
+                },
                 convert() {
                     this.error = '';
                     if (!this.input.trim()) {
                         this.output = '';
                         return;
                     }
+                    if (typeof jsyaml === 'undefined') {
+                        this.error = 'YAML library is initializing... please retry in a moment.';
+                        setTimeout(() => {
+                            if (typeof jsyaml !== 'undefined') this.convert();
+                        }, 500);
+                        return;
+                    }
                     try {
                         if (this.direction === 'yaml-to-json') {
                             const parsed = jsyaml.load(this.input);
-                            this.output = JSON.stringify(parsed, null, 2);
+                            if (parsed === undefined) {
+                                this.output = '';
+                            } else {
+                                this.output = JSON.stringify(parsed, null, 2);
+                            }
                         } else {
                             const parsed = JSON.parse(this.input);
                             this.output = jsyaml.dump(parsed, { indent: 2 });
@@ -108,9 +136,9 @@
                 },
                 loadSample() {
                     if (this.direction === 'yaml-to-json') {
-                        this.input = `server:\n  port: 8080\n  host: "0.0.0.0"\ndatabase:\n  client: "mysql"\n  connections:\n    max: 10\n    idle: 2\ntags:\n  - web\n  - production`;
+                        this.input = `app:\n  name: ToolZeno\n  version: 1.0\n  features:\n    - fast\n    - client-side`;
                     } else {
-                        this.input = `{\n  "server": {\n    "port": 8080,\n    "host": "0.0.0.0"\n  },\n  "database": {\n    "client": "mysql",\n    "connections": {\n      "max": 10,\n      "idle": 2\n    }\n  },\n  "tags": ["web", "production"]\n}`;
+                        this.input = `{\n  "app": {\n    "name": "ToolZeno",\n    "version": 1.0,\n    "features": [\n      "fast",\n      "client-side"\n    ]\n  }\n}`;
                     }
                     this.convert();
                 },

@@ -95,7 +95,14 @@
     </div>
 
     @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/dist/bcrypt.min.js"></script>
+    <script src="{{ asset('js/vendor/bcrypt.min.js') }}"></script>
+    <script>
+        if (typeof dcodeIO === 'undefined') {
+            const s = document.createElement('script');
+            s.src = 'https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/dist/bcrypt.min.js';
+            document.head.appendChild(s);
+        }
+    </script>
     <script>
         function hashGenerator() {
             return {

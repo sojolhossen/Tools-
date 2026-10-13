@@ -96,7 +96,14 @@
     </div>
 
     @push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+    <script src="{{ asset('js/vendor/crypto-js.min.js') }}"></script>
+    <script>
+        if (typeof CryptoJS === 'undefined') {
+            const s = document.createElement('script');
+            s.src = 'https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js';
+            document.head.appendChild(s);
+        }
+    </script>
     <script>
         function aesApp() {
             return {
