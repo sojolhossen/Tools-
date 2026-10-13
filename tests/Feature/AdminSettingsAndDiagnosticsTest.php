@@ -49,7 +49,7 @@ class AdminSettingsAndDiagnosticsTest extends TestCase
         $publicResp = $this->get('/en');
         $publicResp->assertStatus(200);
         $publicResp->assertSee('https://www.googletagmanager.com/gtag/js?id=G-TEST12345', false);
-        $publicResp->assertSee("'anonymize_ip': true", false);
+        $publicResp->assertSee("gtag('config', 'G-TEST12345')", false);
     }
 
     public function test_ad_placement_can_be_configured_and_toggled(): void

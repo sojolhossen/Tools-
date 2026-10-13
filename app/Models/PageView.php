@@ -35,7 +35,8 @@ class PageView extends Model
      */
     public function scopeBetweenDates(Builder $query, string $startDate, string $endDate): Builder
     {
-        return $query->whereBetween('viewed_date', [$startDate, $endDate]);
+        return $query->whereDate('viewed_date', '>=', $startDate)
+            ->whereDate('viewed_date', '<=', $endDate);
     }
 
     /**

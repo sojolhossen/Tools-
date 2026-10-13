@@ -32,7 +32,7 @@ class AnalyticsController extends Controller
         // Base query for humans in this period
         $query = PageView::humans();
         if ($period !== 'all') {
-            $query->whereBetween('viewed_date', [$startDate->toDateString(), $endDate->toDateString()]);
+            $query->betweenDates($startDate->toDateString(), $endDate->toDateString());
         }
 
         // 1. KPI Summaries
@@ -49,7 +49,8 @@ class AnalyticsController extends Controller
         // Bots filtered count
         $botsQuery = PageView::where('is_bot', true);
         if ($period !== 'all') {
-            $botsQuery->whereBetween('viewed_date', [$startDate->toDateString(), $endDate->toDateString()]);
+            $botsQuery->whereDate('viewed_date', '>=', $startDate->toDateString())
+                ->whereDate('viewed_date', '<=', $endDate->toDateString());
         }
         $botsFiltered = $botsQuery->count();
 
@@ -70,7 +71,7 @@ class AnalyticsController extends Controller
 
             $hourlyRows = DB::table('page_views')
                 ->where('is_bot', false)
-                ->where('viewed_date', $today->toDateString())
+                ->whereDate('viewed_date', $today->toDateString())
                 ->select(
                     DB::raw("{$hourExpr} as hour"),
                     DB::raw('count(id) as views'),
