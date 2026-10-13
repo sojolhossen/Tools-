@@ -451,8 +451,8 @@ class DatabaseSeeder extends Seeder
             'sitemap_enabled' => ['value' => '1', 'group' => 'seo', 'type' => 'boolean', 'description' => 'Enable public XML sitemap generation'],
             'analytics_enabled' => ['value' => '1', 'group' => 'analytics', 'type' => 'boolean', 'description' => 'Google Analytics 4 integration toggle'],
             'analytics_measurement_id' => ['value' => 'G-HJ4N0PWKP7', 'group' => 'analytics', 'type' => 'string', 'description' => 'Google Analytics 4 Measurement ID'],
-            'adsense_enabled' => ['value' => '0', 'group' => 'ads', 'type' => 'boolean', 'description' => 'Global advertising integration toggle (disabled by default)'],
-            'adsense_publisher_id' => ['value' => '', 'group' => 'ads', 'type' => 'string', 'description' => 'AdSense Publisher ID (e.g. ca-pub-XXXXXXXXXXXXXXXX)'],
+            'adsense_enabled' => ['value' => '1', 'group' => 'ads', 'type' => 'boolean', 'description' => 'Global advertising integration toggle'],
+            'adsense_publisher_id' => ['value' => 'ca-pub-4522360995485951', 'group' => 'ads', 'type' => 'string', 'description' => 'AdSense Publisher ID'],
         ];
 
         foreach ($settingsData as $key => $data) {

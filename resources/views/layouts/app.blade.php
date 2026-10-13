@@ -50,6 +50,32 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', $locale) }}" class="h-full scroll-smooth">
 <head>
+    @php
+        $gaId = (string) (\App\Models\SiteSetting::get('analytics_measurement_id') ?: env('ANALYTICS_MEASUREMENT_ID', 'G-HJ4N0PWKP7'));
+        $gaEnabled = \App\Models\SiteSetting::get('analytics_enabled');
+        $gaActive = ($gaEnabled === null || $gaEnabled === '' || (bool) $gaEnabled);
+    @endphp
+    @if($gaActive && !empty($gaId))
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ $gaId }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ $gaId }}');
+    </script>
+    @endif
+
+    @php
+        $adsensePub = (string) (\App\Models\SiteSetting::get('adsense_publisher_id') ?: env('ADSENSE_PUBLISHER_ID', 'ca-pub-4522360995485951'));
+        $adsenseEnabled = \App\Models\SiteSetting::get('adsense_enabled');
+        $adsenseActive = ($adsenseEnabled === null || $adsenseEnabled === '' || (bool) $adsenseEnabled);
+    @endphp
+    @if($adsenseActive && !empty($adsensePub))
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ $adsensePub }}" crossorigin="anonymous"></script>
+    @endif
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -112,22 +138,6 @@
         [x-cloak] { display: none !important; }
         body { font-family: 'Inter', 'Noto Sans Bengali', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
     </style>
-
-    @php
-        $gaId = (string) (\App\Models\SiteSetting::get('analytics_measurement_id') ?: env('ANALYTICS_MEASUREMENT_ID', 'G-HJ4N0PWKP7'));
-        $gaEnabled = \App\Models\SiteSetting::get('analytics_enabled');
-        $gaActive = ($gaEnabled === null || $gaEnabled === '' || (bool) $gaEnabled);
-    @endphp
-    @if($gaActive && !empty($gaId))
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id={{ $gaId }}"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '{{ $gaId }}', { 'anonymize_ip': true });
-        </script>
-    @endif
 
     @if(isset($schema) && !empty($schema))
         <!-- Structured Data (JSON-LD) -->

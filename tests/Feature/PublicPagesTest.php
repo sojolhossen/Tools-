@@ -95,6 +95,14 @@ final class PublicPagesTest extends TestCase
         $response->assertSee('hreflang="bn"', false);
     }
 
+    public function test_ads_txt_returns_valid_response(): void
+    {
+        $response = $this->get('/ads.txt');
+        $response->assertStatus(200);
+        $response->assertSee('pub-4522360995485951');
+        $response->assertSee('f08c47fec0942fa0');
+    }
+
     public function test_unknown_routes_return_proper_404(): void
     {
         $response = $this->get('/en/some-random-page-that-does-not-exist');

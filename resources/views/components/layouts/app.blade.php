@@ -66,6 +66,16 @@
     </script>
     @endif
 
+    @php
+        $adsensePub = (string) (\App\Models\SiteSetting::get('adsense_publisher_id') ?: env('ADSENSE_PUBLISHER_ID', 'ca-pub-4522360995485951'));
+        $adsenseEnabled = \App\Models\SiteSetting::get('adsense_enabled');
+        $adsenseActive = ($adsenseEnabled === null || $adsenseEnabled === '' || (bool) $adsenseEnabled);
+    @endphp
+    @if($adsenseActive && !empty($adsensePub))
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ $adsensePub }}" crossorigin="anonymous"></script>
+    @endif
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
