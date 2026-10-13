@@ -301,4 +301,24 @@ final class ToolsPageTest extends TestCase
         $response = $this->get('/en/tools/fake-tool-does-not-exist');
         $response->assertStatus(404);
     }
+
+    public function test_ip_info_endpoint_returns_json(): void
+    {
+        $response = $this->get('/api/tools/ip-info', [
+            'CF-Connecting-IP' => '203.0.113.195',
+            'CF-IPCountry' => 'BD',
+            'CF-IPCity' => 'Dhaka',
+            'CF-Connecting-ASN' => '58715',
+            'CF-Connecting-Org' => 'Carnival Internet',
+        ]);
+        $response->assertStatus(200);
+        $response->assertJson([
+            'ip' => '203.0.113.195',
+            'ipv4' => '203.0.113.195',
+            'country' => 'BD',
+            'city' => 'Dhaka',
+            'asn' => 'AS58715',
+            'isp' => 'Carnival Internet',
+        ]);
+    }
 }

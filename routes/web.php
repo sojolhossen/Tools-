@@ -51,6 +51,39 @@ Route::get('/ads.txt', function () {
     ]);
 })->name('ads.txt');
 
+// Internal IP diagnostic endpoint (bypasses adblockers, CORS, and external rate limits)
+Route::get('/api/tools/ip-info', function () {
+    $rawIp = request()->header('CF-Connecting-IP') ?: (request()->header('X-Forwarded-For') ?: request()->ip());
+    if ($rawIp && str_contains($rawIp, ',')) {
+        $rawIp = trim(explode(',', $rawIp)[0]);
+    }
+
+    $isIpv4 = filter_var($rawIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ? true : false;
+    $isIpv6 = filter_var($rawIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) ? true : false;
+
+    $country = (string) (request()->header('CF-IPCountry') ?: '');
+    $city = (string) (request()->header('CF-IPCity') ?: '');
+    $asn = (string) (request()->header('CF-Connecting-ASN') ?: '');
+    $isp = (string) (request()->header('CF-Connecting-Org') ?: '');
+    $ray = (string) (request()->header('CF-Ray') ?: '');
+    $colo = '';
+    if ($ray && str_contains($ray, '-')) {
+        $parts = explode('-', $ray);
+        $colo = $parts[1] ?? '';
+    }
+
+    return response()->json([
+        'ip' => $rawIp,
+        'ipv4' => $isIpv4 ? $rawIp : '',
+        'ipv6' => $isIpv6 ? $rawIp : '',
+        'country' => $country ?: ($isIpv4 || $isIpv6 ? 'Detected' : 'Unknown'),
+        'city' => $city ?: ($colo ? 'Cloudflare Edge (' . strtoupper($colo) . ')' : 'Global Network'),
+        'asn' => $asn ? 'AS' . $asn : 'AS Network',
+        'isp' => $isp ?: 'Public ISP Network',
+        'timestamp' => now()->toIso8601String(),
+    ]);
+})->name('tools.api.ip_info');
+
 /*
 |--------------------------------------------------------------------------
 | Localized Public Routes (en, bn)

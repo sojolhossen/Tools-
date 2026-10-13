@@ -83,10 +83,17 @@
                     // 1. Fetch normal HTTP IP if not already set
                     if (!this.httpIp) {
                         try {
-                            const traceRes = await fetch('/cdn-cgi/trace').then(r => r.text());
-                            const m = traceRes.match(/ip=([^\n]+)/);
-                            if (m) this.httpIp = m[1].trim();
+                            const localRes = await fetch('/api/tools/ip-info').then(r => r.json());
+                            if (localRes && localRes.ip) this.httpIp = localRes.ip;
                         } catch(e) {}
+
+                        if (!this.httpIp) {
+                            try {
+                                const traceRes = await fetch('/cdn-cgi/trace').then(r => r.text());
+                                const m = traceRes.match(/ip=([^\n]+)/);
+                                if (m) this.httpIp = m[1].trim();
+                            } catch(e) {}
+                        }
 
                         if (!this.httpIp) {
                             try {

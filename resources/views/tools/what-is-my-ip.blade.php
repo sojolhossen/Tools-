@@ -41,12 +41,12 @@
                 <div class="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex flex-col justify-between">
                     <div>
                         <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Public IPv4 Address</span>
-                        <div class="mt-2 text-2xl sm:text-3xl font-mono font-bold text-blue-600 dark:text-blue-400 break-all" x-text="ipv4 || (ipv6 ? 'Using IPv6 Connection' : 'Checking...')"></div>
+                        <div class="mt-2 text-2xl sm:text-3xl font-mono font-bold text-blue-600 dark:text-blue-400 break-all" x-text="ipv4 || (ipv6 ? 'Using IPv6 Connection' : (loading ? 'Checking...' : 'No IPv4 Detected'))"></div>
                     </div>
                     <div class="mt-4 flex items-center justify-between">
-                        <span class="text-xs text-slate-500" x-text="ipv4 ? 'Verified Public IP' : (ipv6 ? 'IPv6 Primary' : 'Connecting...')"></span>
-                        <button type="button" @click="copy(ipv4)" x-show="ipv4" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 hover:bg-blue-200 transition-colors">
-                            Copy IPv4
+                        <span class="text-xs text-slate-500" x-text="ipv4 ? 'Verified Public IP' : (ipv6 ? 'IPv6 Primary' : (loading ? 'Detecting...' : 'Ready'))"></span>
+                        <button type="button" @click="copyIpv4()" x-show="ipv4" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 hover:bg-blue-200 transition-colors flex items-center gap-1.5">
+                            <span x-text="copied4 ? '✓ Copied!' : 'Copy IPv4'"></span>
                         </button>
                     </div>
                 </div>
@@ -59,8 +59,8 @@
                     </div>
                     <div class="mt-4 flex items-center justify-between">
                         <span class="text-xs text-slate-500" x-text="ipv6 ? 'Native IPv6 Network' : 'No IPv6 Route'"></span>
-                        <button type="button" @click="copy(ipv6)" x-show="ipv6" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-300 transition-colors">
-                            Copy IPv6
+                        <button type="button" @click="copyIpv6()" x-show="ipv6" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-300 transition-colors flex items-center gap-1.5">
+                            <span x-text="copied6 ? '✓ Copied!' : 'Copy IPv6'"></span>
                         </button>
                     </div>
                 </div>
@@ -72,29 +72,37 @@
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs font-mono">
                     <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800">
                         <span class="text-slate-500 block mb-1">Country / City</span>
-                        <span class="font-bold text-slate-800 dark:text-slate-200" x-text="geo.country ? (geo.country + (geo.city ? ', ' + geo.city : '')) : 'Detecting...'"></span>
+                        <span class="font-bold text-slate-800 dark:text-slate-200 truncate block" x-text="geo.country ? (geo.country + (geo.city ? ', ' + geo.city : '')) : (loading ? 'Detecting...' : 'Global')"></span>
                     </div>
                     <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800">
                         <span class="text-slate-500 block mb-1">ISP / Provider</span>
-                        <span class="font-bold text-slate-800 dark:text-slate-200 truncate block" x-text="geo.isp || 'Broadband Network'"></span>
+                        <span class="font-bold text-slate-800 dark:text-slate-200 truncate block" x-text="geo.isp || (loading ? 'Detecting...' : 'Broadband Network')"></span>
                     </div>
                     <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800">
                         <span class="text-slate-500 block mb-1">Autonomous System (ASN)</span>
-                        <span class="font-bold text-slate-800 dark:text-slate-200" x-text="geo.asn || 'AS Network'"></span>
+                        <span class="font-bold text-slate-800 dark:text-slate-200 truncate block" x-text="geo.asn || 'AS Network'"></span>
                     </div>
                     <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800">
                         <span class="text-slate-500 block mb-1">Local Network IP</span>
-                        <span class="font-bold text-slate-800 dark:text-slate-200" x-text="localIp || 'Protected (mDNS)'"></span>
+                        <span class="font-bold text-slate-800 dark:text-slate-200 truncate block" x-text="localIp || 'Protected (mDNS)'"></span>
                     </div>
                 </div>
             </div>
 
-            <!-- Action Refresh Button -->
-            <div class="flex justify-end pt-2">
-                <button type="button" @click="detect()" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-sm transition-all flex items-center gap-2">
-                    <svg class="w-4 h-4" :class="loading ? 'animate-spin' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                    <span>Refresh IP Status</span>
-                </button>
+            <!-- Action Refresh Button with Status -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+                <div class="text-xs text-slate-500 order-2 sm:order-1 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full" :class="loading ? 'bg-amber-500 animate-ping' : 'bg-emerald-500'"></span>
+                    <span>Last checked: <strong class="font-mono text-slate-700 dark:text-slate-300" x-text="lastUpdated || 'Just now'"></strong></span>
+                </div>
+                <div class="order-1 sm:order-2">
+                    <button type="button" @click="detect()" :disabled="loading" class="px-5 py-2.5 rounded-xl font-semibold text-sm shadow-sm transition-all flex items-center gap-2" :class="refreshed ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : (loading ? 'bg-blue-500 text-white opacity-80 cursor-wait' : 'bg-blue-600 hover:bg-blue-700 text-white')">
+                        <svg x-show="loading" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                        <svg x-show="!loading && !refreshed" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                        <svg x-show="refreshed" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <span x-text="loading ? 'Refreshing IP...' : (refreshed ? '✓ Refreshed!' : 'Refresh IP Status')"></span>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -106,9 +114,12 @@
                 serverRaw: serverRaw || '',
                 localIp: '',
                 loading: false,
+                refreshed: false,
+                copied4: false,
+                copied6: false,
+                lastUpdated: '',
                 geo: { country: initCountry || '', city: '', isp: '', asn: '' },
                 init() {
-                    // If server gave us an IP, display it right away
                     if (!this.ipv4 && !this.ipv6 && this.serverRaw) {
                         if (this.serverRaw.includes(':')) {
                             this.ipv6 = this.serverRaw;
@@ -116,76 +127,86 @@
                             this.ipv4 = this.serverRaw;
                         }
                     }
+                    this.lastUpdated = new Date().toLocaleTimeString();
                     this.detect();
                     this.detectLocalIp();
                 },
                 async detect() {
+                    if (this.loading) return;
                     this.loading = true;
+                    this.refreshed = false;
 
-                    // 1. Try Cloudflare cdn-cgi trace (same-origin, 100% reliable on Cloudflare domains)
+                    const fetchTimeout = (url, ms = 2500) => {
+                        const controller = new AbortController();
+                        const timer = setTimeout(() => controller.abort(), ms);
+                        return fetch(url, { signal: controller.signal, cache: 'no-store' })
+                            .finally(() => clearTimeout(timer));
+                    };
+
                     try {
-                        const traceRes = await fetch('/cdn-cgi/trace', { cache: 'no-store' });
-                        if (traceRes.ok) {
-                            const text = await traceRes.text();
-                            const data = {};
-                            text.split('\n').forEach(line => {
-                                const parts = line.split('=');
-                                if (parts.length >= 2) data[parts[0].trim()] = parts.slice(1).join('=').trim();
-                            });
-                            if (data.ip) {
-                                if (data.ip.includes(':')) {
-                                    this.ipv6 = data.ip;
-                                } else {
-                                    this.ipv4 = data.ip;
-                                }
-                            }
-                            if (data.loc) {
-                                this.geo.country = data.loc;
-                            }
-                            if (data.colo) {
-                                this.geo.city = 'Cloudflare (' + data.colo + ')';
-                            }
-                        }
-                    } catch (e) {}
-
-                    // 2. Fetch rich geolocation via ipwho.is (CORS enabled, unblocked by adblockers)
-                    try {
-                        const res = await fetch('https://ipwho.is/').then(r => r.json());
-                        if (res && res.success) {
-                            if (res.ip) {
-                                if (res.ip.includes(':')) {
-                                    this.ipv6 = res.ip;
-                                } else {
-                                    this.ipv4 = res.ip;
-                                }
-                            }
-                            this.geo = {
-                                country: res.country || this.geo.country,
-                                city: res.city || this.geo.city,
-                                isp: (res.connection && res.connection.isp) || res.isp || this.geo.isp,
-                                asn: (res.connection && res.connection.asn) ? ('AS' + res.connection.asn) : (res.asn || this.geo.asn)
-                            };
-                        }
-                    } catch (e) {}
-
-                    // 3. Fallback to api.ipify.org
-                    if (!this.ipv4 && !this.ipv6) {
+                        // 1. Same-Origin internal API (Zero adblocker risk, zero CORS risk)
                         try {
-                            const res4 = await fetch('https://api.ipify.org?format=json').then(r => r.json());
-                            if (res4 && res4.ip) this.ipv4 = res4.ip;
+                            const localRes = await fetchTimeout('/api/tools/ip-info', 2000);
+                            if (localRes.ok) {
+                                const data = await localRes.json();
+                                if (data.ipv4) this.ipv4 = data.ipv4;
+                                if (data.ipv6) this.ipv6 = data.ipv6;
+                                if (!this.ipv4 && !this.ipv6 && data.ip) {
+                                    if (data.ip.includes(':')) this.ipv6 = data.ip;
+                                    else this.ipv4 = data.ip;
+                                }
+                                if (data.country && !this.geo.country) this.geo.country = data.country;
+                                if (data.city && !this.geo.city) this.geo.city = data.city;
+                                if (data.isp && (!this.geo.isp || this.geo.isp === 'Broadband Network')) this.geo.isp = data.isp;
+                                if (data.asn && (!this.geo.asn || this.geo.asn === 'AS Network')) this.geo.asn = data.asn;
+                            }
                         } catch (e) {}
-                    }
 
-                    // 4. Final fallback to server-side detected IP if client is behind strict adblocker
-                    if (!this.ipv4 && !this.ipv6 && this.serverRaw) {
-                        if (this.serverRaw.includes(':')) {
-                            this.ipv6 = this.serverRaw;
-                        } else {
-                            this.ipv4 = this.serverRaw;
+                        // 2. Cloudflare cdn-cgi trace
+                        try {
+                            const traceRes = await fetchTimeout('/cdn-cgi/trace', 1500);
+                            if (traceRes.ok) {
+                                const text = await traceRes.text();
+                                const data = {};
+                                text.split('\n').forEach(line => {
+                                    const parts = line.split('=');
+                                    if (parts.length >= 2) data[parts[0].trim()] = parts.slice(1).join('=').trim();
+                                });
+                                if (data.ip) {
+                                    if (data.ip.includes(':')) this.ipv6 = data.ip;
+                                    else this.ipv4 = data.ip;
+                                }
+                                if (data.loc) this.geo.country = data.loc;
+                                if (data.colo) this.geo.city = 'Cloudflare (' + data.colo + ')';
+                            }
+                        } catch (e) {}
+
+                        // 3. Enrich geolocation with ipwho.is if available
+                        try {
+                            const res = await fetchTimeout('https://ipwho.is/', 2000).then(r => r.json());
+                            if (res && res.success) {
+                                if (res.ip) {
+                                    if (res.ip.includes(':')) this.ipv6 = res.ip;
+                                    else this.ipv4 = res.ip;
+                                }
+                                this.geo.country = res.country || this.geo.country;
+                                this.geo.city = res.city || this.geo.city;
+                                this.geo.isp = (res.connection && res.connection.isp) || res.isp || this.geo.isp;
+                                this.geo.asn = (res.connection && res.connection.asn) ? ('AS' + res.connection.asn) : (res.asn || this.geo.asn);
+                            }
+                        } catch (e) {}
+
+                        // 4. Fallback to server-side detected IP
+                        if (!this.ipv4 && !this.ipv6 && this.serverRaw) {
+                            if (this.serverRaw.includes(':')) this.ipv6 = this.serverRaw;
+                            else this.ipv4 = this.serverRaw;
                         }
+                    } finally {
+                        this.lastUpdated = new Date().toLocaleTimeString();
+                        this.loading = false;
+                        this.refreshed = true;
+                        setTimeout(() => { this.refreshed = false; }, 3000);
                     }
-
-                    this.loading = false;
                 },
                 detectLocalIp() {
                     try {
@@ -200,8 +221,19 @@
                         };
                     } catch (e) {}
                 },
-                copy(text) {
-                    if (navigator.clipboard) navigator.clipboard.writeText(text);
+                copyIpv4() {
+                    if (this.ipv4 && navigator.clipboard) {
+                        navigator.clipboard.writeText(this.ipv4);
+                        this.copied4 = true;
+                        setTimeout(() => { this.copied4 = false; }, 2000);
+                    }
+                },
+                copyIpv6() {
+                    if (this.ipv6 && navigator.clipboard) {
+                        navigator.clipboard.writeText(this.ipv6);
+                        this.copied6 = true;
+                        setTimeout(() => { this.copied6 = false; }, 2000);
+                    }
                 }
             };
         }
