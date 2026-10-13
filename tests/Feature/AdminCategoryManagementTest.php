@@ -27,7 +27,7 @@ class AdminCategoryManagementTest extends TestCase
 
         $response = $this->actingAs($admin)->get('/admin/categories');
         $response->assertStatus(200);
-        $response->assertSee('Text &amp; Writing', false);
+        $response->assertSee('Text &amp; Content Tools', false);
     }
 
     public function test_administrator_can_create_category(): void

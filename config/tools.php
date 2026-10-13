@@ -10,29 +10,85 @@ return [
     |
     */
     'categories' => [
-        'text' => [
-            'icon' => 'document-text',
-            'color' => 'indigo',
-        ],
-        'calculators' => [
-            'icon' => 'calculator',
-            'color' => 'emerald',
-        ],
         'developer' => [
             'icon' => 'code-bracket',
             'color' => 'amber',
         ],
-        'productivity' => [
-            'icon' => 'qr-code',
-            'color' => 'sky',
+        'text' => [
+            'icon' => 'document-text',
+            'color' => 'indigo',
         ],
         'image' => [
             'icon' => 'photo',
             'color' => 'violet',
         ],
+        'calculators' => [
+            'icon' => 'calculator',
+            'color' => 'emerald',
+        ],
+        'unit-converters' => [
+            'icon' => 'scale',
+            'color' => 'cyan',
+        ],
+        'finance' => [
+            'icon' => 'banknotes',
+            'color' => 'green',
+        ],
+        'security' => [
+            'icon' => 'shield-check',
+            'color' => 'rose',
+        ],
+        'network' => [
+            'icon' => 'globe',
+            'color' => 'blue',
+        ],
+        'seo' => [
+            'icon' => 'chart-bar',
+            'color' => 'purple',
+        ],
+        'color-design' => [
+            'icon' => 'swatch',
+            'color' => 'pink',
+        ],
         'pdf' => [
             'icon' => 'document-duplicate',
-            'color' => 'rose',
+            'color' => 'red',
+        ],
+        'mobile-dev' => [
+            'icon' => 'device-phone-mobile',
+            'color' => 'teal',
+        ],
+        'database' => [
+            'icon' => 'circle-stack',
+            'color' => 'orange',
+        ],
+        'audio-video' => [
+            'icon' => 'video-camera',
+            'color' => 'fuchsia',
+        ],
+        'file-archive' => [
+            'icon' => 'archive-box',
+            'color' => 'yellow',
+        ],
+        'productivity' => [
+            'icon' => 'clock',
+            'color' => 'sky',
+        ],
+        'education' => [
+            'icon' => 'academic-cap',
+            'color' => 'lime',
+        ],
+        'ecommerce' => [
+            'icon' => 'shopping-cart',
+            'color' => 'amber',
+        ],
+        'generators' => [
+            'icon' => 'sparkles',
+            'color' => 'indigo',
+        ],
+        'ai-tools' => [
+            'icon' => 'cpu-chip',
+            'color' => 'violet',
         ],
     ],
 
