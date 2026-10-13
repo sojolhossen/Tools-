@@ -137,7 +137,7 @@
                             <span class="text-xs font-bold text-slate-700 dark:text-slate-300" x-text="formatBytes(originalSize)"></span>
                         </div>
 
-                        <div class="relative aspect-video rounded-xl overflow-hidden bg-slate-100 flex items-center justify-center border border-slate-100">
+                        <div class="relative aspect-video rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-950 flex items-center justify-center border border-slate-100">
                             <img :src="originalUrl" alt="Original image preview" class="max-w-full max-h-full object-contain">
                         </div>
 
@@ -160,7 +160,7 @@
                             </div>
                         </div>
 
-                        <div class="relative aspect-video rounded-xl overflow-hidden bg-slate-100 flex items-center justify-center border border-slate-100">
+                        <div class="relative aspect-video rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-950 flex items-center justify-center border border-slate-100">
                             <div x-show="isProcessing" class="absolute inset-0 bg-white/70 dark:bg-slate-950/70 backdrop-blur-xs flex items-center justify-center text-xs font-semibold text-indigo-600">
                                 Processing...
                             </div>

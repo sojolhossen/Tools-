@@ -36,10 +36,10 @@
                 <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 space-y-6">
                     <div class="flex flex-wrap items-center justify-between gap-4">
                         <div class="flex flex-wrap items-center gap-2">
-                            <button type="button" @click="rotate(90)" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-xs font-semibold rounded-lg">Rotate 90° CW</button>
-                            <button type="button" @click="rotate(-90)" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-xs font-semibold rounded-lg">Rotate 90° CCW</button>
-                            <button type="button" @click="flipH = !flipH; render()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-xs font-semibold rounded-lg">Flip Horizontal</button>
-                            <button type="button" @click="flipV = !flipV; render()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-xs font-semibold rounded-lg">Flip Vertical</button>
+                            <button type="button" @click="rotate(90)" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg">Rotate 90° CW</button>
+                            <button type="button" @click="rotate(-90)" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg">Rotate 90° CCW</button>
+                            <button type="button" @click="flipH = !flipH; render()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg">Flip Horizontal</button>
+                            <button type="button" @click="flipV = !flipV; render()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg">Flip Vertical</button>
                         </div>
                         <button type="button" @click="download()" class="px-6 py-2.5 bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-xl inline-flex items-center gap-2 text-xs">
                             <x-icon name="arrow-down-tray" class="w-4 h-4" /> Download Image

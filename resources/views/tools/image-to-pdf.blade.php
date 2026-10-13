@@ -170,7 +170,7 @@
                             <div class="flex items-center gap-4 min-w-0">
                                 <span class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-700 text-xs font-bold flex items-center justify-center shrink-0" x-text="idx + 1">1</span>
 
-                                <div class="w-14 h-14 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 dark:border-slate-700 shrink-0 flex items-center justify-center">
+                                <div class="w-14 h-14 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 dark:border-slate-700 shrink-0 flex items-center justify-center">
                                     <img :src="img.url" :alt="img.name" class="w-full h-full object-cover">
                                 </div>
 
@@ -185,7 +185,7 @@
                                     type="button"
                                     @click="moveUp(idx)"
                                     :disabled="idx === 0"
-                                    class="p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
+                                    class="p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
                                     title="{{ __('tools.image_to_pdf.move_up') }}"
                                     aria-label="{{ __('tools.image_to_pdf.move_up') }}"
                                 >
@@ -198,7 +198,7 @@
                                     type="button"
                                     @click="moveDown(idx)"
                                     :disabled="idx === images.length - 1"
-                                    class="p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
+                                    class="p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
                                     title="{{ __('tools.image_to_pdf.move_down') }}"
                                     aria-label="{{ __('tools.image_to_pdf.move_down') }}"
                                 >

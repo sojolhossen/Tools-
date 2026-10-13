@@ -37,10 +37,10 @@
                     <div class="flex flex-wrap items-center justify-between gap-4">
                         <div class="flex items-center gap-2">
                             <span class="text-xs font-bold text-slate-500 uppercase">Ratio Preset:</span>
-                            <button type="button" @click="ratio = '1:1'; crop()" :class="ratio === '1:1' ? 'bg-violet-600 text-white' : 'bg-slate-100 text-slate-700'" class="px-3 py-1.5 text-xs font-semibold rounded-lg">1:1 Square</button>
-                            <button type="button" @click="ratio = '16:9'; crop()" :class="ratio === '16:9' ? 'bg-violet-600 text-white' : 'bg-slate-100 text-slate-700'" class="px-3 py-1.5 text-xs font-semibold rounded-lg">16:9 Landscape</button>
-                            <button type="button" @click="ratio = '4:3'; crop()" :class="ratio === '4:3' ? 'bg-violet-600 text-white' : 'bg-slate-100 text-slate-700'" class="px-3 py-1.5 text-xs font-semibold rounded-lg">4:3 Photo</button>
-                            <button type="button" @click="ratio = '9:16'; crop()" :class="ratio === '9:16' ? 'bg-violet-600 text-white' : 'bg-slate-100 text-slate-700'" class="px-3 py-1.5 text-xs font-semibold rounded-lg">9:16 Story</button>
+                            <button type="button" @click="ratio = '1:1'; crop()" :class="ratio === '1:1' ? 'bg-violet-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200'" class="px-3 py-1.5 text-xs font-semibold rounded-lg">1:1 Square</button>
+                            <button type="button" @click="ratio = '16:9'; crop()" :class="ratio === '16:9' ? 'bg-violet-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200'" class="px-3 py-1.5 text-xs font-semibold rounded-lg">16:9 Landscape</button>
+                            <button type="button" @click="ratio = '4:3'; crop()" :class="ratio === '4:3' ? 'bg-violet-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200'" class="px-3 py-1.5 text-xs font-semibold rounded-lg">4:3 Photo</button>
+                            <button type="button" @click="ratio = '9:16'; crop()" :class="ratio === '9:16' ? 'bg-violet-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200'" class="px-3 py-1.5 text-xs font-semibold rounded-lg">9:16 Story</button>
                         </div>
                         <button type="button" @click="download()" class="px-6 py-2.5 bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-xl inline-flex items-center gap-2 text-xs">
                             <x-icon name="arrow-down-tray" class="w-4 h-4" /> Download Cropped Image

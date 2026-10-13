@@ -43,7 +43,7 @@
                             <input type="range" min="10" max="200" step="5" x-model.number="percent" @input="scale()" class="w-full accent-violet-600">
                             <div class="flex gap-2 mt-2">
                                 <template x-for="p in [25, 50, 75, 100, 150, 200]" :key="p">
-                                    <button type="button" @click="percent = p; scale()" class="px-2.5 py-1 text-xs rounded bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700" x-text="p + '%'"></button>
+                                    <button type="button" @click="percent = p; scale()" class="px-2.5 py-1 text-xs rounded bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700" x-text="p + '%'"></button>
                                 </template>
                             </div>
                         </div>

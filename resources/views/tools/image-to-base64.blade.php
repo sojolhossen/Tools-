@@ -38,7 +38,7 @@
                         <label class="text-xs font-bold uppercase text-slate-500">Base64 Data URI (<span x-text="dataUri.length + ' chars'"></span>)</label>
                         <div class="flex gap-2">
                             <button type="button" @click="copy(dataUri)" class="px-4 py-2 bg-violet-600 text-white rounded-xl text-xs font-semibold">Copy Data URI</button>
-                            <button type="button" @click="copy('<img src=\'' + dataUri + '\' alt=\'image\' />')" class="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl text-xs font-semibold">Copy &lt;img&gt; Tag</button>
+                            <button type="button" @click="copy('<img src=\'' + dataUri + '\' alt=\'image\' />')" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl text-xs font-semibold">Copy &lt;img&gt; Tag</button>
                         </div>
                     </div>
                     <textarea readonly rows="6" class="w-full font-mono text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-3 text-slate-800 dark:text-slate-200" x-text="dataUri"></textarea>

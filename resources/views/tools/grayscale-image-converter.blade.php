@@ -37,9 +37,9 @@
                     <div class="flex flex-wrap items-center justify-between gap-4">
                         <div class="flex items-center gap-2">
                             <span class="text-xs font-bold text-slate-500 uppercase">Tone Mode:</span>
-                            <button type="button" @click="mode = 'gray'; filter()" :class="mode === 'gray' ? 'bg-violet-600 text-white' : 'bg-slate-100 text-slate-700'" class="px-3 py-1.5 text-xs font-semibold rounded-lg">Standard B&W</button>
-                            <button type="button" @click="mode = 'contrast'; filter()" :class="mode === 'contrast' ? 'bg-violet-600 text-white' : 'bg-slate-100 text-slate-700'" class="px-3 py-1.5 text-xs font-semibold rounded-lg">High Contrast</button>
-                            <button type="button" @click="mode = 'sepia'; filter()" :class="mode === 'sepia' ? 'bg-violet-600 text-white' : 'bg-slate-100 text-slate-700'" class="px-3 py-1.5 text-xs font-semibold rounded-lg">Vintage Sepia</button>
+                            <button type="button" @click="mode = 'gray'; filter()" :class="mode === 'gray' ? 'bg-violet-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200'" class="px-3 py-1.5 text-xs font-semibold rounded-lg">Standard B&W</button>
+                            <button type="button" @click="mode = 'contrast'; filter()" :class="mode === 'contrast' ? 'bg-violet-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200'" class="px-3 py-1.5 text-xs font-semibold rounded-lg">High Contrast</button>
+                            <button type="button" @click="mode = 'sepia'; filter()" :class="mode === 'sepia' ? 'bg-violet-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200'" class="px-3 py-1.5 text-xs font-semibold rounded-lg">Vintage Sepia</button>
                         </div>
                         <button type="button" @click="download()" class="px-6 py-2.5 bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-xl inline-flex items-center gap-2 text-xs">
                             <x-icon name="arrow-down-tray" class="w-4 h-4" /> Download Image

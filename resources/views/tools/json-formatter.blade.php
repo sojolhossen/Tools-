@@ -49,7 +49,7 @@
                     <button
                         type="button"
                         @click="minify()"
-                        class="px-4 py-2 bg-slate-100 text-slate-700 dark:text-slate-300 rounded-xl text-xs sm:text-sm font-semibold hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-colors"
+                        class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-xs sm:text-sm font-semibold hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-colors"
                     >
                         {{ __('common.actions.minify') }}
                     </button>
@@ -75,7 +75,7 @@
                     <button
                         type="button"
                         @click="loadSample()"
-                        class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-400 bg-slate-100 hover:bg-slate-200 transition-colors"
+                        class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 transition-colors"
                     >
                         {{ __('tools.json_formatter.load_sample') }}
                     </button>
@@ -83,7 +83,7 @@
                     <button
                         type="button"
                         @click="copy()"
-                        class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 dark:text-slate-300 hover:bg-slate-200 transition-colors"
+                        class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 transition-colors"
                     >
                         <span x-text="copied ? '{{ __('common.actions.copied') }}' : '{{ __('common.actions.copy') }}'">{{ __('common.actions.copy') }}</span>
                     </button>

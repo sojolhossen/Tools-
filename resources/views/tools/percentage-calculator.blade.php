@@ -111,7 +111,7 @@
                         <div class="text-3xl sm:text-4xl font-black text-indigo-700 mt-1" x-text="simpleResult">0</div>
                     </div>
 
-                    <div class="text-xs text-indigo-900/70 bg-white/80 p-3 rounded-xl border border-indigo-100 max-w-sm">
+                    <div class="text-xs text-indigo-900/70 dark:text-indigo-300 bg-white/80 dark:bg-indigo-950/30 p-3 rounded-xl border border-indigo-100 dark:border-indigo-900/40 max-w-sm">
                         <span class="font-semibold">{{ __('tools.percentage_calculator.simple.formula') }}</span>
                     </div>
                 </div>
@@ -171,7 +171,7 @@
                             </div>
                         </div>
 
-                        <div class="text-xs text-indigo-900/70 bg-white/80 p-3 rounded-xl border border-indigo-100 max-w-sm">
+                        <div class="text-xs text-indigo-900/70 dark:text-indigo-300 bg-white/80 dark:bg-indigo-950/30 p-3 rounded-xl border border-indigo-100 dark:border-indigo-900/40 max-w-sm">
                             <span class="font-semibold">{{ __('tools.percentage_calculator.change.formula') }}</span>
                         </div>
                     </div>
@@ -231,7 +231,7 @@
                         </div>
                     </div>
 
-                    <div class="text-xs text-emerald-900/70 bg-white/80 p-3 rounded-xl border border-emerald-100 max-w-sm">
+                    <div class="text-xs text-emerald-900/70 dark:text-emerald-300 bg-white/80 dark:bg-emerald-950/30 p-3 rounded-xl border border-emerald-100 dark:border-emerald-900/40 max-w-sm">
                         <span class="font-semibold">{{ __('tools.percentage_calculator.discount.formula') }}</span>
                     </div>
                 </div>

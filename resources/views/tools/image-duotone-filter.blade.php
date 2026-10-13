@@ -46,9 +46,9 @@
                             </div>
                         </div>
                         <div class="flex gap-2">
-                            <button type="button" @click="setColors('#00f2fe', '#4facfe')" class="px-2.5 py-1 text-xs rounded bg-slate-100 font-semibold">Cyber Blue</button>
-                            <button type="button" @click="setColors('#fa709a', '#fee140')" class="px-2.5 py-1 text-xs rounded bg-slate-100 font-semibold">Sunset</button>
-                            <button type="button" @click="setColors('#f857a6', '#ff5858')" class="px-2.5 py-1 text-xs rounded bg-slate-100 font-semibold">Neon Pink</button>
+                            <button type="button" @click="setColors('#00f2fe', '#4facfe')" class="px-2.5 py-1 text-xs rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 font-semibold">Cyber Blue</button>
+                            <button type="button" @click="setColors('#fa709a', '#fee140')" class="px-2.5 py-1 text-xs rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 font-semibold">Sunset</button>
+                            <button type="button" @click="setColors('#f857a6', '#ff5858')" class="px-2.5 py-1 text-xs rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 font-semibold">Neon Pink</button>
                         </div>
                         <div class="text-right">
                             <button type="button" @click="download()" class="px-6 py-2.5 bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-xl inline-flex items-center gap-2 text-xs">

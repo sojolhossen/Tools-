@@ -37,8 +37,8 @@
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <span class="text-xs font-bold text-slate-500 uppercase">Target:</span>
-                            <button type="button" @click="target = 'png'; convert()" :class="target === 'png' ? 'bg-violet-600 text-white' : 'bg-slate-100 text-slate-700'" class="px-4 py-2 text-xs font-semibold rounded-xl">PNG</button>
-                            <button type="button" @click="target = 'jpeg'; convert()" :class="target === 'jpeg' ? 'bg-violet-600 text-white' : 'bg-slate-100 text-slate-700'" class="px-4 py-2 text-xs font-semibold rounded-xl">JPG</button>
+                            <button type="button" @click="target = 'png'; convert()" :class="target === 'png' ? 'bg-violet-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200'" class="px-4 py-2 text-xs font-semibold rounded-xl">PNG</button>
+                            <button type="button" @click="target = 'jpeg'; convert()" :class="target === 'jpeg' ? 'bg-violet-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200'" class="px-4 py-2 text-xs font-semibold rounded-xl">JPG</button>
                         </div>
                         <button type="button" @click="download()" class="px-6 py-2.5 bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-xl inline-flex items-center gap-2 text-xs">
                             <x-icon name="arrow-down-tray" class="w-4 h-4" /> Download <span x-text="target.toUpperCase()"></span>

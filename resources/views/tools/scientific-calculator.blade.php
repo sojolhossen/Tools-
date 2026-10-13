@@ -31,37 +31,37 @@
 
                 <!-- Advanced & Standard Grid -->
                 <div class="grid grid-cols-5 gap-2 text-xs font-bold">
-                    <button type="button" @click="func('sin')" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800">sin</button>
-                    <button type="button" @click="func('cos')" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800">cos</button>
-                    <button type="button" @click="func('tan')" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800">tan</button>
+                    <button type="button" @click="func('sin')" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:bg-slate-800">sin</button>
+                    <button type="button" @click="func('cos')" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:bg-slate-800">cos</button>
+                    <button type="button" @click="func('tan')" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:bg-slate-800">tan</button>
                     <button type="button" @click="clear()" class="p-3 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-100">C</button>
-                    <button type="button" @click="backspace()" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800">⌫</button>
+                    <button type="button" @click="backspace()" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:bg-slate-800">⌫</button>
 
-                    <button type="button" @click="func('ln')" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800">ln</button>
-                    <button type="button" @click="func('log')" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800">log</button>
-                    <button type="button" @click="func('sqrt')" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800">√</button>
-                    <button type="button" @click="input('(')" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800">(</button>
-                    <button type="button" @click="input(')')" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800">)</button>
+                    <button type="button" @click="func('ln')" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:bg-slate-800">ln</button>
+                    <button type="button" @click="func('log')" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:bg-slate-800">log</button>
+                    <button type="button" @click="func('sqrt')" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:bg-slate-800">√</button>
+                    <button type="button" @click="input('(')" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:bg-slate-800">(</button>
+                    <button type="button" @click="input(')')" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:bg-slate-800">)</button>
 
-                    <button type="button" @click="func('pow2')" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800">x²</button>
+                    <button type="button" @click="func('pow2')" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:bg-slate-800">x²</button>
                     <button type="button" @click="input('7')" class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60">7</button>
                     <button type="button" @click="input('8')" class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60">8</button>
                     <button type="button" @click="input('9')" class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60">9</button>
                     <button type="button" @click="input('/')" class="p-3 rounded-xl bg-emerald-500 text-white">÷</button>
 
-                    <button type="button" @click="func('pi')" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800">π</button>
+                    <button type="button" @click="func('pi')" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:bg-slate-800">π</button>
                     <button type="button" @click="input('4')" class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60">4</button>
                     <button type="button" @click="input('5')" class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60">5</button>
                     <button type="button" @click="input('6')" class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60">6</button>
                     <button type="button" @click="input('*')" class="p-3 rounded-xl bg-emerald-500 text-white">×</button>
 
-                    <button type="button" @click="func('e')" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800">e</button>
+                    <button type="button" @click="func('e')" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:bg-slate-800">e</button>
                     <button type="button" @click="input('1')" class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60">1</button>
                     <button type="button" @click="input('2')" class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60">2</button>
                     <button type="button" @click="input('3')" class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60">3</button>
                     <button type="button" @click="input('-')" class="p-3 rounded-xl bg-emerald-500 text-white">−</button>
 
-                    <button type="button" @click="func('fact')" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800">n!</button>
+                    <button type="button" @click="func('fact')" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:bg-slate-800">n!</button>
                     <button type="button" @click="input('0')" class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60">0</button>
                     <button type="button" @click="input('.')" class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60">.</button>
                     <button type="button" @click="equals()" class="p-3 rounded-xl bg-emerald-600 text-white shadow-md">=</button>

@@ -26,9 +26,16 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-// Root URL redirects to canonical default English locale
+// Root URL redirects to canonical default English locale with Google Tag
 Route::get('/', function () {
-    return redirect()->route('home', ['locale' => 'en']);
+    $target = route('home', ['locale' => 'en']);
+    $gaId = (string) (\App\Models\SiteSetting::get('analytics_measurement_id') ?: env('ANALYTICS_MEASUREMENT_ID', 'G-HJ4N0PWKP7'));
+    $html = '<!DOCTYPE html><html><head><meta charset="UTF-8">' .
+            '<script async src="https://www.googletagmanager.com/gtag/js?id=' . e($gaId) . '"></script>' .
+            '<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","' . e($gaId) . '");</script>' .
+            '<meta http-equiv="refresh" content="0;url=' . e($target) . '">' .
+            '<title>Redirecting...</title></head><body>Redirecting to <a href="' . e($target) . '">' . e($target) . '</a></body></html>';
+    return response($html, 302, ['Location' => $target]);
 })->name('root');
 
 // XML Sitemap

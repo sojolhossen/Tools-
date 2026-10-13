@@ -39,7 +39,7 @@
                             <label class="block text-xs font-semibold uppercase text-slate-500 mb-2">Target DPI</label>
                             <div class="flex gap-2">
                                 <template x-for="d in [72, 150, 300, 600]" :key="d">
-                                    <button type="button" @click="dpi = d" :class="dpi === d ? 'bg-violet-600 text-white' : 'bg-slate-100 text-slate-700'" class="px-3 py-1.5 text-xs font-semibold rounded-lg" x-text="d + ' DPI'"></button>
+                                    <button type="button" @click="dpi = d" :class="dpi === d ? 'bg-violet-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200'" class="px-3 py-1.5 text-xs font-semibold rounded-lg" x-text="d + ' DPI'"></button>
                                 </template>
                             </div>
                         </div>
