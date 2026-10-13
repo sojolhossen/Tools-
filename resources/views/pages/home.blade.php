@@ -54,16 +54,24 @@
                 </button>
             </div>
 
-            <!-- Category Chips: Wrapped and Fully Visible Without Horizontal Scroll -->
+            <!-- Category Chips: Wrapped on Desktop, Truncated with +More on Mobile -->
             <div class="mt-5 sm:mt-8">
                 <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 max-w-4xl mx-auto py-1">
+                    @php
+                        $mobileLimit = 10;
+                        $totalCategories = count($categories);
+                        $remainingCount = max(0, $totalCategories - $mobileLimit);
+                        $catIndex = 0;
+                    @endphp
                     @foreach($categories as $catKey => $catData)
                         @php
                             $catCount = $allTools->where('category', $catKey)->count();
+                            $isMobileHidden = $catIndex >= $mobileLimit;
+                            $catIndex++;
                         @endphp
                         <a
                             href="{{ route('tools.category', ['locale' => $locale, 'category' => $catKey]) }}"
-                            class="group inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:border-indigo-400 dark:hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 shadow-2xs hover:shadow-xs active:scale-95 transition-all"
+                            class="group {{ $isMobileHidden ? 'hidden sm:inline-flex' : 'inline-flex' }} items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:border-indigo-400 dark:hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 shadow-2xs hover:shadow-xs active:scale-95 transition-all"
                         >
                             <x-icon :name="$catData['icon']" class="w-3.5 h-3.5 text-indigo-500 shrink-0" />
                             <span>{{ __('common.categories.' . $catKey) }}</span>
@@ -72,6 +80,19 @@
                             </span>
                         </a>
                     @endforeach
+
+                    @if($remainingCount > 0)
+                        <a
+                            href="{{ route('tools.index', ['locale' => $locale]) }}"
+                            class="sm:hidden group inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-indigo-500/10 via-indigo-600/15 to-violet-600/10 dark:from-indigo-950/80 dark:to-violet-950/80 border border-indigo-300/80 dark:border-indigo-700/60 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 shadow-2xs active:scale-95 transition-all"
+                            title="{{ $locale === 'bn' ? 'সকল ক্যাটেগরি ও টুলস দেখুন' : 'View all categories and tools' }}"
+                        >
+                            <span>+{{ $remainingCount }} {{ $locale === 'bn' ? 'আরো' : 'More' }}</span>
+                            <svg class="w-3.5 h-3.5 text-indigo-500 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                            </svg>
+                        </a>
+                    @endif
                 </div>
             </div>
 
