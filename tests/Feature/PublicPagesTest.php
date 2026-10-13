@@ -99,7 +99,7 @@ final class PublicPagesTest extends TestCase
     {
         $response = $this->get('/ads.txt');
         $response->assertStatus(200);
-        $response->assertSee('pub-4522360995485951');
+        $response->assertSee('pub-8336443496687004');
         $response->assertSee('f08c47fec0942fa0');
     }
 

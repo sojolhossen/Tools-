@@ -67,7 +67,7 @@
     @endif
 
     @php
-        $adsensePub = (string) (\App\Models\SiteSetting::get('adsense_publisher_id') ?: env('ADSENSE_PUBLISHER_ID', 'ca-pub-4522360995485951'));
+        $adsensePub = (string) (\App\Models\SiteSetting::get('adsense_publisher_id') ?: env('ADSENSE_PUBLISHER_ID', 'ca-pub-8336443496687004'));
         $adsenseEnabled = \App\Models\SiteSetting::get('adsense_enabled');
         $adsenseActive = ($adsenseEnabled === null || $adsenseEnabled === '' || (bool) $adsenseEnabled);
     @endphp

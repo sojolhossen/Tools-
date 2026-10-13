@@ -43,7 +43,7 @@ Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap')
 
 // AdSense ads.txt crawler endpoint
 Route::get('/ads.txt', function () {
-    $adsPub = (string) (\App\Models\SiteSetting::get('adsense_publisher_id') ?: env('ADSENSE_PUBLISHER_ID', 'ca-pub-4522360995485951'));
+    $adsPub = (string) (\App\Models\SiteSetting::get('adsense_publisher_id') ?: env('ADSENSE_PUBLISHER_ID', 'ca-pub-8336443496687004'));
     $pubId = str_replace('ca-', '', $adsPub);
     return response("google.com, {$pubId}, DIRECT, f08c47fec0942fa0\n", 200, [
         'Content-Type' => 'text/plain; charset=UTF-8',
