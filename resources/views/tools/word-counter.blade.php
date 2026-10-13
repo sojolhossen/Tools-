@@ -67,27 +67,27 @@
             </div>
 
             <!-- Reading & Speaking Time Strip -->
-            <div class="p-4 rounded-2xl bg-indigo-50/70 border border-indigo-100 flex flex-wrap items-center justify-between gap-4 text-xs sm:text-sm text-indigo-900">
+            <div class="p-4 rounded-2xl bg-gradient-to-r from-indigo-50/80 via-white to-indigo-50/50 dark:from-indigo-950/50 dark:via-slate-900 dark:to-indigo-950/30 border border-indigo-100 dark:border-indigo-800/60 shadow-2xs flex flex-wrap items-center justify-between gap-4 text-xs sm:text-sm text-indigo-900 dark:text-indigo-200">
                 <div class="flex items-center gap-6 flex-wrap">
                     <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                         </svg>
                         <span class="font-medium text-slate-600 dark:text-slate-400">{{ __('tools.word_counter.metrics.reading_time') }}:</span>
-                        <strong class="font-bold text-indigo-700" x-text="readingTime">0s</strong>
+                        <strong class="font-bold text-indigo-700 dark:text-indigo-300" x-text="readingTime">0s</strong>
                     </div>
 
                     <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75Z" />
                         </svg>
                         <span class="font-medium text-slate-600 dark:text-slate-400">{{ __('tools.word_counter.metrics.speaking_time') }}:</span>
-                        <strong class="font-bold text-indigo-700" x-text="speakingTime">0s</strong>
+                        <strong class="font-bold text-indigo-700 dark:text-indigo-300" x-text="speakingTime">0s</strong>
                     </div>
                 </div>
 
-                <div class="text-[11px] text-slate-500">
-                    {{ __('tools.word_counter.metrics.characters_no_spaces') }}: <strong class="font-semibold text-slate-800" x-text="charactersNoSpaces">0</strong>
+                <div class="text-[11px] text-slate-500 dark:text-slate-400">
+                    {{ __('tools.word_counter.metrics.characters_no_spaces') }}: <strong class="font-semibold text-slate-800 dark:text-slate-200" x-text="charactersNoSpaces">0</strong>
                 </div>
             </div>
 

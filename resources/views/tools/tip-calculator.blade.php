@@ -66,10 +66,10 @@
                 </div>
             </div>
 
-            <div class="flex flex-col justify-between p-6 rounded-2xl bg-indigo-50 dark:bg-indigo-950/20 border border-indigo-200 dark:border-indigo-900/50">
+            <div class="flex flex-col justify-between p-6 rounded-2xl bg-gradient-to-br from-indigo-50/80 via-white to-indigo-50/50 dark:from-indigo-950/50 dark:via-slate-900 dark:to-indigo-950/30 border border-indigo-100 dark:border-indigo-800/60 shadow-sm">
                 <div class="text-center">
-                    <span class="text-xs uppercase tracking-wider font-semibold text-indigo-700 dark:text-indigo-400">Total Per Person</span>
-                    <div class="text-5xl font-black text-indigo-600 dark:text-indigo-400 my-3" x-text="perPerson"></div>
+                    <span class="text-xs uppercase tracking-wider font-semibold text-indigo-600 dark:text-indigo-400">Total Per Person</span>
+                    <div class="text-5xl font-black text-indigo-600 dark:text-indigo-300 my-3 tracking-tight" x-text="perPerson"></div>
                 </div>
                 <div class="space-y-3 pt-6 border-t border-indigo-200 dark:border-indigo-800 text-sm">
                     <div class="flex justify-between items-center">

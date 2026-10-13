@@ -56,21 +56,21 @@
                     class="hidden"
                 >
 
-                <div class="w-16 h-16 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto mb-4 group-hover:scale-105 transition-transform">
+                <div class="w-16 h-16 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mx-auto mb-4 group-hover:scale-105 transition-transform">
                     <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Z" />
                     </svg>
                 </div>
 
-                <h3 class="text-base font-bold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 transition-colors">
+                <h3 class="text-base font-bold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                     {{ __('tools.image_compressor.drop_label') }}
                 </h3>
 
-                <p class="mt-2 text-xs text-slate-500">
+                <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">
                     {{ __('tools.image_compressor.supported_formats') }}
                 </p>
 
-                <span class="mt-4 inline-flex items-center px-4 py-2 rounded-xl bg-slate-100 text-xs font-semibold text-slate-700 dark:text-slate-300 group-hover:bg-indigo-50 group-hover:text-indigo-600 transition-colors">
+                <span class="mt-4 inline-flex items-center px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-950/60 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                     {{ __('common.actions.upload') }}
                 </span>
             </div>
