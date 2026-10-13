@@ -1,12 +1,19 @@
+DirectoryIndex index.php
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /tools/
 
-    # Prevent direct access to sensitive files
+    # Prevent direct access to sensitive files and directories
     RewriteRule ^(\.env|\.git|composer\.|package\.|tests|storage|database|app|bootstrap|config) - [F,L,NC]
 
-    # Redirect any request not prefixed with public/ to public/
-    RewriteRule ^$ public/ [L,R=302]
-    RewriteRule ^((?!public/).*)$ public/$1 [L,NC,R=302]
+    # Local development: redirect localhost/tools to localhost/tools/public
+    RewriteCond %{HTTP_HOST} ^(localhost|127\.0\.0\.1)(:\d+)?$ [NC]
+    RewriteCond %{REQUEST_URI} !^/tools/public/
+    RewriteRule ^(.*)$ /tools/public/$1 [L,R=302]
+
+    # Live Server (Production): Internally rewrite all requests to public/
+    RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)(:\d+)?$ [NC]
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>
 

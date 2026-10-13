@@ -1,161 +1,24 @@
-name: Deploy ToolZeno via FTP
+name: Deploy via FTP
 
 on:
   push:
     branches:
-      - main
-  workflow_dispatch:
-    inputs:
-      dry_run:
-        description: 'Simulate FTP deployment without modifying server files (Dry Run)'
-        required: false
-        type: boolean
-        default: false
-
-permissions:
-  contents: read
-
-concurrency:
-  group: production-deployment
-  cancel-in-progress: false
+      - main # যে branch থেকে deploy করতে চান
 
 jobs:
-  validate-and-build:
-    name: Build & Validate Artifacts
+  web-deploy:
+    name: Sync to Live Server
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-
     steps:
-      - name: Checkout Source Code
+      - name: Checkout Code
         uses: actions/checkout@v4
-
-      - name: Setup PHP Environment
-        uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pdo_mysql, bcmath, gd, zip, curl
-          coverage: none
+          fetch-depth: 2 # শুধু changed file sync করার জন্য
 
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache Composer Dependencies
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-
-      - name: Install Composer Dependencies (With Dev for Testing)
-        run: composer install --prefer-dist --no-interaction --no-progress
-
-      - name: Setup Node.js Environment
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-
-      - name: Install Node.js Dependencies
-        run: npm ci
-
-      - name: Build Production Frontend Assets (Vite)
-        run: npm run build
-
-      - name: Verify Automated Test Suite
-        env:
-          APP_ENV: testing
-          APP_KEY: base64:u3Jm9p384JVQSGA52/6i/VamjaNgBQo+7Xj9iDR3DSg=
-          DB_CONNECTION: sqlite
-          DB_DATABASE: ':memory:'
-        run: php artisan test
-
-      - name: Prune Dev Dependencies for Production
-        run: composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction --no-progress
-
-      - name: Package Production Deployment Payload
-        run: |
-          mkdir -p payload
-          # Copy core application files and pre-built public directory
-          cp -r app bootstrap config database lang public resources routes artisan composer.json composer.lock vendor payload/
-
-          # Prepare clean storage directory structure
-          mkdir -p payload/storage/app/public
-          mkdir -p payload/storage/framework/cache/data
-          mkdir -p payload/storage/framework/sessions
-          mkdir -p payload/storage/framework/views
-          mkdir -p payload/storage/logs
-
-          # Create directory placeholder markers
-          touch payload/storage/app/.gitignore
-          touch payload/storage/framework/cache/.gitignore
-          touch payload/storage/framework/sessions/.gitignore
-          touch payload/storage/framework/views/.gitignore
-          touch payload/storage/logs/.gitignore
-
-          # Strip raw uncompiled source assets (already built into public/build)
-          rm -rf payload/resources/css
-          rm -rf payload/resources/js
-
-          # Optimize vendor payload: strip non-production tests, documentation, and markdown
-          find payload/vendor -type d \( -name "tests" -o -name "Tests" -o -name "test" -o -name "docs" -o -name "doc" -o -name ".github" \) -exec rm -rf {} + 2>/dev/null || true
-          find payload/vendor -type f \( -name "*.md" -o -name "*.txt" -o -name "*.dist" -o -name "phpunit*.xml" -o -name ".php-cs-fixer*" -o -name ".editorconfig" \) -delete 2>/dev/null || true
-
-      - name: Upload Production Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: production-payload
-          path: payload/
-          retention-days: 1
-
-  deploy-ftp:
-    name: Deploy to AmarHoster via FTP
-    needs: validate-and-build
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-      - name: Download Production Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: production-payload
-          path: payload/
-
-      - name: Verify Required FTP Secrets
-        shell: bash
-        run: |
-          missing=()
-          [ -z "${{ secrets.FTP_SERVER }}" ] && missing+=("FTP_SERVER")
-          [ -z "${{ secrets.FTP_USERNAME }}" ] && missing+=("FTP_USERNAME")
-          [ -z "${{ secrets.FTP_PASSWORD }}" ] && missing+=("FTP_PASSWORD")
-
-          if [ ${#missing[@]} -ne 0 ]; then
-            echo "::error::Deployment halted: The following required FTP Secrets are missing: ${missing[*]}"
-            echo "Please configure these secrets in your repository under Settings > Secrets and variables > Actions."
-            echo "Refer to docs/FTP_DEPLOYMENT_GUIDE.md for step-by-step instructions."
-            exit 1
-          fi
-
-      - name: Deploy Code via FTP / FTPS
+      - name: FTP Deploy
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT || 21 }}
-          protocol: ${{ secrets.FTP_PROTOCOL || 'ftp' }}
-          local-dir: ./payload/
-          server-dir: ${{ secrets.FTP_SERVER_DIR || './' }}
-          timeout: 300000
-          dry-run: ${{ inputs.dry_run == true }}
-          dangerous-clean-slate: false
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/.env*
-            **/storage/app/public/**
-            **/storage/logs/**
-            **/storage/framework/cache/**
-            **/storage/framework/sessions/**
-            **/storage/framework/views/**
+          server-dir: toolzeno.site/ # লাইভ সার্ভারের ডিরেক্টরি পাথ
