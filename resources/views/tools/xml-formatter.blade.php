@@ -29,55 +29,7 @@
             </p>
         </div>
 
-        <div 
-            x-data="{
-                input: '',
-                output: '',
-                error: '',
-                copied: false,
-                indentSize: 2,
-                format() {
-                    this.error = '';
-                    if (!this.input.trim()) { this.output = ''; return; }
-                    try {
-                        const parser = new DOMParser();
-                        const xmlDoc = parser.parseFromString(this.input, 'application/xml');
-                        const parseError = xmlDoc.getElementsByTagName('parsererror');
-                        if (parseError.length > 0) {
-                            this.error = parseError[0].textContent.split('\n')[0] || 'Invalid XML syntax.';
-                        }
-                        
-                        const pad = ' '.repeat(Number(this.indentSize));
-                        let formatted = '';
-                        let indent = 0;
-                        const tokens = this.input.replace(/>\s*</g, '><').match(/<[^>]+>|[^<]+/g) || [];
-                        tokens.forEach(node => {
-                            if (node.match(/^<\/\w/)) indent = Math.max(0, indent - 1);
-                            formatted += pad.repeat(indent) + node.trim() + '\n';
-                            if (node.match(/^<\w[^>]*[^\/]>$/) && !node.startsWith('<?') && !node.startsWith('<!')) {
-                                indent++;
-                            }
-                        });
-                        this.output = formatted.trim();
-                    } catch (e) {
-                        this.error = e.message;
-                    }
-                },
-                loadSample() {
-                    this.input = '<?xml version=\"1.0\" encoding=\"UTF-8\"?><catalog><book id=\"bk101\"><author>Gambardella, Matthew</author><title>XML Developer\'s Guide</title><genre>Computer</genre><price>44.95</price><publish_date>2026-10-01</publish_date><description>An in-depth look at creating applications with XML.</description></book></catalog>';
-                    this.format();
-                },
-                copy() {
-                    if (!this.output) return;
-                    navigator.clipboard.writeText(this.output).then(() => {
-                        this.copied = true;
-                        setTimeout(() => this.copied = false, 2000);
-                    });
-                },
-                clear() { this.input = ''; this.output = ''; this.error = ''; }
-            }"
-            class="space-y-6"
-        >
+        <div x-data="xmlFormatterApp()" class="space-y-6">
             <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-2xs flex flex-wrap items-center justify-between gap-4">
                 <div class="flex items-center gap-3 flex-wrap">
                     <button type="button" @click="format()" class="px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs sm:text-sm font-bold hover:bg-indigo-700 transition shadow-2xs cursor-pointer">
@@ -129,4 +81,59 @@
             </div>
         @endif
     </div>
+
+    <script>
+    function xmlFormatterApp() {
+        return {
+            input: '',
+            output: '',
+            error: '',
+            copied: false,
+            indentSize: 2,
+            format() {
+                this.error = '';
+                if (!this.input.trim()) { this.output = ''; return; }
+                try {
+                    const parser = new DOMParser();
+                    const xmlDoc = parser.parseFromString(this.input, 'application/xml');
+                    const parseError = xmlDoc.getElementsByTagName('parsererror');
+                    if (parseError.length > 0) {
+                        this.error = parseError[0].textContent.split('\n')[0] || 'Invalid XML syntax.';
+                    }
+                    
+                    const pad = ' '.repeat(Number(this.indentSize));
+                    let formatted = '';
+                    let indent = 0;
+                    const tokens = this.input.replace(/>\s*</g, '><').match(/<[^>]+>|[^<]+/g) || [];
+                    tokens.forEach(node => {
+                        if (node.match(/^<\/\w/)) indent = Math.max(0, indent - 1);
+                        formatted += pad.repeat(indent) + node.trim() + '\n';
+                        if (node.match(/^<\w[^>]*[^\/]>$/) && !node.startsWith('<?') && !node.startsWith('<!')) {
+                            indent++;
+                        }
+                    });
+                    this.output = formatted.trim();
+                } catch (e) {
+                    this.error = e.message;
+                }
+            },
+            loadSample() {
+                this.input = '<?xml version="1.0" encoding="UTF-8"?>\n<catalog>\n  <book id="bk101">\n    <author>Gambardella, Matthew</author>\n    <title>XML Developer\'s Guide</title>\n    <genre>Computer</genre>\n    <price>44.95</price>\n    <publish_date>2026-10-01</publish_date>\n    <description>An in-depth look at creating applications with XML.</description>\n  </book>\n</catalog>';
+                this.format();
+            },
+            copy() {
+                if (!this.output) return;
+                navigator.clipboard.writeText(this.output).then(() => {
+                    this.copied = true;
+                    setTimeout(() => { this.copied = false; }, 2000);
+                });
+            },
+            clear() {
+                this.input = '';
+                this.output = '';
+                this.error = '';
+            }
+        };
+    }
+    </script>
 </x-layouts.app>

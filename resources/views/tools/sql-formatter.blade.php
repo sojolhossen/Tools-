@@ -29,60 +29,7 @@
             </p>
         </div>
 
-        <div 
-            x-data="{
-                input: '',
-                output: '',
-                uppercaseKeywords: true,
-                indentSize: 2,
-                copied: false,
-                format() {
-                    if (!this.input.trim()) { this.output = ''; return; }
-                    const keywords = [
-                        'SELECT', 'FROM', 'WHERE', 'AND', 'OR', 'LEFT JOIN', 'RIGHT JOIN', 
-                        'INNER JOIN', 'OUTER JOIN', 'JOIN', 'ON', 'GROUP BY', 'HAVING', 
-                        'ORDER BY', 'LIMIT', 'OFFSET', 'UNION ALL', 'UNION', 'INSERT INTO', 
-                        'VALUES', 'UPDATE', 'SET', 'DELETE FROM', 'CREATE TABLE', 'DROP TABLE', 
-                        'ALTER TABLE', 'AS', 'IN', 'BETWEEN', 'LIKE', 'IS NULL', 'IS NOT NULL',
-                        'COUNT', 'SUM', 'AVG', 'MIN', 'MAX', 'CASE', 'WHEN', 'THEN', 'ELSE', 'END'
-                    ];
-
-                    let sql = this.input.replace(/\s+/g, ' ').trim();
-                    const lineBreakers = ['SELECT', 'FROM', 'WHERE', 'LEFT JOIN', 'RIGHT JOIN', 'INNER JOIN', 'JOIN', 'GROUP BY', 'HAVING', 'ORDER BY', 'LIMIT', 'SET', 'VALUES'];
-                    
-                    lineBreakers.forEach(kw => {
-                        const regex = new RegExp('\\b' + kw + '\\b', 'gi');
-                        sql = sql.replace(regex, '\n' + kw.toUpperCase() + ' ');
-                    });
-
-                    sql = sql.replace(/\bAND\b/gi, '\n  AND ')
-                             .replace(/\bOR\b/gi, '\n  OR ')
-                             .replace(/,\s*/g, ',\n  ');
-
-                    if (this.uppercaseKeywords) {
-                        keywords.forEach(kw => {
-                            const regex = new RegExp('\\b' + kw + '\\b', 'gi');
-                            sql = sql.replace(regex, kw.toUpperCase());
-                        });
-                    }
-
-                    this.output = sql.split('\n').map(l => l.trimEnd()).filter(l => l.length > 0).join('\n').trim();
-                },
-                loadSample() {
-                    this.input = 'select u.id, u.name, u.email, count(o.id) as total_orders, sum(o.amount) as total_spent from users u left join orders o on u.id = o.user_id where u.status = 1 and u.created_at >= \'2026-01-01\' group by u.id, u.name, u.email having count(o.id) > 5 order by total_spent desc limit 20;';
-                    this.format();
-                },
-                copy() {
-                    if (!this.output) return;
-                    navigator.clipboard.writeText(this.output).then(() => {
-                        this.copied = true;
-                        setTimeout(() => this.copied = false, 2000);
-                    });
-                },
-                clear() { this.input = ''; this.output = ''; }
-            }"
-            class="space-y-6"
-        >
+        <div x-data="sqlFormatterApp()" class="space-y-6">
             <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-2xs flex flex-wrap items-center justify-between gap-4">
                 <div class="flex items-center gap-3 flex-wrap">
                     <button type="button" @click="format()" class="px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs sm:text-sm font-bold hover:bg-indigo-700 transition shadow-2xs cursor-pointer">
@@ -128,4 +75,63 @@
             </div>
         @endif
     </div>
+
+    <script>
+    function sqlFormatterApp() {
+        return {
+            input: '',
+            output: '',
+            uppercaseKeywords: true,
+            indentSize: 2,
+            copied: false,
+            format() {
+                if (!this.input.trim()) { this.output = ''; return; }
+                const keywords = [
+                    'SELECT', 'FROM', 'WHERE', 'AND', 'OR', 'LEFT JOIN', 'RIGHT JOIN', 
+                    'INNER JOIN', 'OUTER JOIN', 'JOIN', 'ON', 'GROUP BY', 'HAVING', 
+                    'ORDER BY', 'LIMIT', 'OFFSET', 'UNION ALL', 'UNION', 'INSERT INTO', 
+                    'VALUES', 'UPDATE', 'SET', 'DELETE FROM', 'CREATE TABLE', 'DROP TABLE', 
+                    'ALTER TABLE', 'AS', 'IN', 'BETWEEN', 'LIKE', 'IS NULL', 'IS NOT NULL',
+                    'COUNT', 'SUM', 'AVG', 'MIN', 'MAX', 'CASE', 'WHEN', 'THEN', 'ELSE', 'END'
+                ];
+
+                let sql = this.input.replace(/\s+/g, ' ').trim();
+                const lineBreakers = ['SELECT', 'FROM', 'WHERE', 'LEFT JOIN', 'RIGHT JOIN', 'INNER JOIN', 'JOIN', 'GROUP BY', 'HAVING', 'ORDER BY', 'LIMIT', 'SET', 'VALUES'];
+                
+                lineBreakers.forEach(kw => {
+                    const regex = new RegExp('\\b' + kw + '\\b', 'gi');
+                    sql = sql.replace(regex, '\n' + kw.toUpperCase() + ' ');
+                });
+
+                sql = sql.replace(/\bAND\b/gi, '\n  AND ')
+                         .replace(/\bOR\b/gi, '\n  OR ')
+                         .replace(/,\s*/g, ',\n  ');
+
+                if (this.uppercaseKeywords) {
+                    keywords.forEach(kw => {
+                        const regex = new RegExp('\\b' + kw + '\\b', 'gi');
+                        sql = sql.replace(regex, kw.toUpperCase());
+                    });
+                }
+
+                this.output = sql.split('\n').map(l => l.trimEnd()).filter(l => l.length > 0).join('\n').trim();
+            },
+            loadSample() {
+                this.input = "select u.id, u.name, u.email, count(o.id) as total_orders, sum(o.amount) as total_spent\nfrom users u\nleft join orders o on u.id = o.user_id\nwhere u.status = 1 and u.created_at >= '2026-01-01'\ngroup by u.id, u.name, u.email\nhaving count(o.id) > 5\norder by total_spent desc limit 20;";
+                this.format();
+            },
+            copy() {
+                if (!this.output) return;
+                navigator.clipboard.writeText(this.output).then(() => {
+                    this.copied = true;
+                    setTimeout(() => { this.copied = false; }, 2000);
+                });
+            },
+            clear() {
+                this.input = '';
+                this.output = '';
+            }
+        };
+    }
+    </script>
 </x-layouts.app>

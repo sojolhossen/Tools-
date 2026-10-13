@@ -30,36 +30,7 @@
         </div>
 
         
-    <div x-data="{
-        valL100: 8,
-        valMpgUS: 29.4,
-        valMpgUK: 35.3,
-        valKmL: 12.5,
-        convertFrom(src) {
-            if (src === 'l100') {
-                let l = parseFloat(this.valL100);
-                if (l > 0) {
-                    this.valKmL = (100 / l).toFixed(2);
-                    this.valMpgUS = (235.214583 / l).toFixed(2);
-                    this.valMpgUK = (282.481 / l).toFixed(2);
-                }
-            } else if (src === 'kml') {
-                let k = parseFloat(this.valKmL);
-                if (k > 0) {
-                    this.valL100 = (100 / k).toFixed(2);
-                    this.valMpgUS = (k * 2.35214583).toFixed(2);
-                    this.valMpgUK = (k * 2.82481).toFixed(2);
-                }
-            } else if (src === 'mpgus') {
-                let m = parseFloat(this.valMpgUS);
-                if (m > 0) {
-                    this.valL100 = (235.214583 / m).toFixed(2);
-                    this.valKmL = (m / 2.35214583).toFixed(2);
-                    this.valMpgUK = (m * 1.20095).toFixed(2);
-                }
-            }
-        }
-    }" class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl p-6 sm:p-8">
+    <div x-data="fuelEconomyConverterApp()" class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl p-6 sm:p-8">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
                 <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Liters / 100 km</label>
@@ -89,4 +60,39 @@
             <x-tool-guide :tool-key="str_replace('-', '_', $tool->slug)" related-slug="length-converter" related-slug2="weight-converter" />
         </div>
     </div>
+
+    <script>
+    function fuelEconomyConverterApp() {
+        return {
+            valL100: 8,
+            valMpgUS: 29.4,
+            valMpgUK: 35.3,
+            valKmL: 12.5,
+            convertFrom(src) {
+                if (src === 'l100') {
+                    let l = parseFloat(this.valL100);
+                    if (l > 0) {
+                        this.valKmL = (100 / l).toFixed(2);
+                        this.valMpgUS = (235.214583 / l).toFixed(2);
+                        this.valMpgUK = (282.481 / l).toFixed(2);
+                    }
+                } else if (src === 'kml') {
+                    let k = parseFloat(this.valKmL);
+                    if (k > 0) {
+                        this.valL100 = (100 / k).toFixed(2);
+                        this.valMpgUS = (k * 2.35214583).toFixed(2);
+                        this.valMpgUK = (k * 2.82481).toFixed(2);
+                    }
+                } else if (src === 'mpgus') {
+                    let m = parseFloat(this.valMpgUS);
+                    if (m > 0) {
+                        this.valL100 = (235.214583 / m).toFixed(2);
+                        this.valKmL = (m / 2.35214583).toFixed(2);
+                        this.valMpgUK = (m * 1.20095).toFixed(2);
+                    }
+                }
+            }
+        };
+    }
+    </script>
 </x-layouts.app>

@@ -29,86 +29,7 @@
             </p>
         </div>
 
-        <div 
-            x-data="{
-                mode: 'html',
-                indent: 2,
-                input: '',
-                output: '',
-                copied: false,
-                beautify() {
-                    if (!this.input.trim()) { this.output = ''; return; }
-                    const spaces = ' '.repeat(Number(this.indent));
-                    if (this.mode === 'html') {
-                        let formatted = '';
-                        let pad = 0;
-                        const tokens = this.input.replace(/>\s*</g, '><').match(/<[^>]+>|[^<]+/g) || [];
-                        tokens.forEach(tok => {
-                            if (tok.match(/^<\/\w/)) pad = Math.max(0, pad - 1);
-                            formatted += spaces.repeat(pad) + tok.trim() + '\n';
-                            if (tok.match(/^<\w[^>]*[^\/]>$/) && !tok.match(/^<(area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)/i)) {
-                                pad++;
-                            }
-                        });
-                        this.output = formatted.trim();
-                    } else if (this.mode === 'css') {
-                        let formatted = this.input
-                            .replace(/\s*{\s*/g, ' {\n')
-                            .replace(/;\s*/g, ';\n')
-                            .replace(/\s*}\s*/g, '\n}\n')
-                            .replace(/\n+/g, '\n');
-                        let lines = formatted.split('\n');
-                        let pad = 0;
-                        this.output = lines.map(line => {
-                            let trimmed = line.trim();
-                            if (trimmed === '}') pad = Math.max(0, pad - 1);
-                            let res = spaces.repeat(pad) + trimmed;
-                            if (trimmed.endsWith('{')) pad++;
-                            return res;
-                        }).join('\n').trim();
-                    } else {
-                        // JS / Generic
-                        try {
-                            // If valid JSON, pretty print
-                            this.output = JSON.stringify(JSON.parse(this.input), null, Number(this.indent));
-                        } catch {
-                            let formatted = this.input
-                                .replace(/\s*{\s*/g, ' {\n')
-                                .replace(/;\s*/g, ';\n')
-                                .replace(/\s*}\s*/g, '\n}\n');
-                            let lines = formatted.split('\n');
-                            let pad = 0;
-                            this.output = lines.map(l => {
-                                let t = l.trim();
-                                if (t === '}' || t === '};') pad = Math.max(0, pad - 1);
-                                let res = spaces.repeat(pad) + t;
-                                if (t.endsWith('{')) pad++;
-                                return res;
-                            }).filter(l => l.trim().length > 0).join('\n');
-                        }
-                    }
-                },
-                loadSample() {
-                    if (this.mode === 'html') {
-                        this.input = '<div class=\"container\"><header><h1>Hello World</h1><p>ToolZeno HTML Beautifier</p></header><main><section><p>Clean code fast.</p></section></main></div>';
-                    } else if (this.mode === 'css') {
-                        this.input = 'body{margin:0;padding:0;background:#fff}.card{border:1px solid #ddd;border-radius:8px;padding:16px}.btn{background:#4f46e5;color:#fff}';
-                    } else {
-                        this.input = 'function calculateTotal(items){let total=0;for(let i=0;i<items.length;i++){total+=items[i].price;}return total;}console.log(calculateTotal([{price:10},{price:25}]));';
-                    }
-                    this.beautify();
-                },
-                copy() {
-                    if (!this.output) return;
-                    navigator.clipboard.writeText(this.output).then(() => {
-                        this.copied = true;
-                        setTimeout(() => this.copied = false, 2000);
-                    });
-                },
-                clear() { this.input = ''; this.output = ''; }
-            }"
-            class="space-y-6"
-        >
+        <div x-data="htmlCssJsBeautifierApp()" class="space-y-6">
             <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-2xs flex flex-wrap items-center justify-between gap-4">
                 <div class="flex items-center gap-2 flex-wrap">
                     <div class="inline-flex p-1 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-semibold">
@@ -160,4 +81,87 @@
             </div>
         @endif
     </div>
+
+    <script>
+    function htmlCssJsBeautifierApp() {
+        return {
+            mode: 'html',
+            indent: 2,
+            input: '',
+            output: '',
+            copied: false,
+            beautify() {
+                if (!this.input.trim()) { this.output = ''; return; }
+                const spaces = ' '.repeat(Number(this.indent));
+                if (this.mode === 'html') {
+                    let formatted = '';
+                    let pad = 0;
+                    const tokens = this.input.replace(/>\s*</g, '><').match(/<[^>]+>|[^<]+/g) || [];
+                    tokens.forEach(tok => {
+                        if (tok.match(/^<\/\w/)) pad = Math.max(0, pad - 1);
+                        formatted += spaces.repeat(pad) + tok.trim() + '\n';
+                        if (tok.match(/^<\w[^>]*[^\/]>$/) && !tok.match(/^<(area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)/i)) {
+                            pad++;
+                        }
+                    });
+                    this.output = formatted.trim();
+                } else if (this.mode === 'css') {
+                    let formatted = this.input
+                        .replace(/\s*{\s*/g, ' {\n')
+                        .replace(/;\s*/g, ';\n')
+                        .replace(/\s*}\s*/g, '\n}\n')
+                        .replace(/\n+/g, '\n');
+                    let lines = formatted.split('\n');
+                    let pad = 0;
+                    this.output = lines.map(line => {
+                        let trimmed = line.trim();
+                        if (trimmed === '}') pad = Math.max(0, pad - 1);
+                        let res = spaces.repeat(pad) + trimmed;
+                        if (trimmed.endsWith('{')) pad++;
+                        return res;
+                    }).join('\n').trim();
+                } else {
+                    try {
+                        this.output = JSON.stringify(JSON.parse(this.input), null, Number(this.indent));
+                    } catch (e) {
+                        let formatted = this.input
+                            .replace(/\s*{\s*/g, ' {\n')
+                            .replace(/;\s*/g, ';\n')
+                            .replace(/\s*}\s*/g, '\n}\n');
+                        let lines = formatted.split('\n');
+                        let pad = 0;
+                        this.output = lines.map(l => {
+                            let t = l.trim();
+                            if (t === '}' || t === '};') pad = Math.max(0, pad - 1);
+                            let res = spaces.repeat(pad) + t;
+                            if (t.endsWith('{')) pad++;
+                            return res;
+                        }).filter(l => l.trim().length > 0).join('\n');
+                    }
+                }
+            },
+            loadSample() {
+                if (this.mode === 'html') {
+                    this.input = '<div class="container">\n  <header>\n    <h1>Hello World</h1>\n    <p>ToolZeno HTML Beautifier</p>\n  </header>\n  <main>\n    <section>\n      <p>Clean code fast.</p>\n    </section>\n  </main>\n</div>';
+                } else if (this.mode === 'css') {
+                    this.input = 'body{margin:0;padding:0;background:#fff}.card{border:1px solid #ddd;border-radius:8px;padding:16px}.btn{background:#4f46e5;color:#fff}';
+                } else {
+                    this.input = 'function calculateTotal(items){let total=0;for(let i=0;i<items.length;i++){total+=items[i].price;}return total;}console.log(calculateTotal([{price:10},{price:25}]));';
+                }
+                this.beautify();
+            },
+            copy() {
+                if (!this.output) return;
+                navigator.clipboard.writeText(this.output).then(() => {
+                    this.copied = true;
+                    setTimeout(() => { this.copied = false; }, 2000);
+                });
+            },
+            clear() {
+                this.input = '';
+                this.output = '';
+            }
+        };
+    }
+    </script>
 </x-layouts.app>
