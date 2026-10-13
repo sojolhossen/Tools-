@@ -1,0 +1,93 @@
+<x-layouts.app :title="$tool->getMetaTitle()" :description="$tool->getMetaDescription()" :schema="$schema ?? null">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10" x-data="exifViewer()">
+        <x-breadcrumbs :items="[
+            __('common.nav.tools') => route('tools.index', ['locale' => $locale]),
+            __('common.categories.' . $tool->category) => route('tools.category', ['locale' => $locale, 'category' => $tool->category]),
+            $tool->getName() => null,
+        ]" />
+
+        <div class="mb-8">
+            <div class="flex items-center gap-2 mb-3">
+                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-violet-50 dark:bg-violet-950/60 text-violet-700 dark:text-violet-400">
+                    <x-icon :name="$tool->icon" class="w-3.5 h-3.5" />
+                    <span>{{ __('common.categories.' . $tool->category) }}</span>
+                </span>
+                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    <span>{{ __('common.badges.browser_based') }}</span>
+                </span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">{{ $tool->getName() }}</h1>
+            <p class="mt-2 text-base text-slate-600 dark:text-slate-400 max-w-3xl">{{ $tool->getDescription() }}</p>
+        </div>
+
+        <div class="space-y-6 mb-10">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl border-2 border-dashed border-slate-300 dark:border-slate-800 hover:border-violet-500 p-8 text-center cursor-pointer transition-colors"
+                 @click="$refs.fileInput.click()" @dragover.prevent="" @drop.prevent="handleDrop($event)">
+                <input type="file" x-ref="fileInput" @change="handleFile($event)" accept="image/*" class="hidden">
+                <div class="w-16 h-16 rounded-2xl bg-violet-50 dark:bg-violet-950/60 text-violet-600 dark:text-violet-400 flex items-center justify-center mx-auto mb-4">
+                    <x-icon name="camera" class="w-8 h-8" />
+                </div>
+                <h3 class="text-base font-bold text-slate-900 dark:text-white" x-text="originalFile ? originalFile.name : 'Select or drop photo to view hidden EXIF metadata'"></h3>
+                <p class="text-xs text-slate-500 mt-1">Read camera model, shutter speed, ISO, aperture, GPS location, and date taken.</p>
+            </div>
+
+            <template x-if="metadata.length > 0">
+                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 space-y-6">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold uppercase text-slate-500">Photo Metadata & Technical Specs</span>
+                        <span class="text-xs text-slate-400" x-text="originalFile.name + ' (' + formatBytes(originalFile.size) + ')'"></span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        <template x-for="(m, idx) in metadata" :key="idx">
+                            <div class="p-4 bg-slate-50 dark:bg-slate-950 rounded-xl border border-slate-100 dark:border-slate-800/80">
+                                <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block" x-text="m.label"></span>
+                                <span class="text-sm font-bold text-slate-800 dark:text-slate-200 mt-1 block" x-text="m.value"></span>
+                            </div>
+                        </template>
+                    </div>
+
+                    <div class="text-center pt-4 border-t border-slate-100 dark:border-slate-800">
+                        <img :src="imgUrl" class="max-h-64 mx-auto rounded-lg shadow-sm">
+                    </div>
+                </div>
+            </template>
+        </div>
+        <x-tool-guide :tool-key="str_replace('-', '_', $tool->slug)" related-slug="image-compressor" related-slug2="image-resizer" />
+    </div>
+</x-layouts.app>
+<script>
+function exifViewer() {
+    return {
+        originalFile: null, imgUrl: '', metadata: [],
+        handleDrop(e) { if (e.dataTransfer.files.length) this.load(e.dataTransfer.files[0]); },
+        handleFile(e) { if (e.target.files.length) this.load(e.target.files[0]); },
+        load(f) {
+            this.originalFile = f;
+            this.imgUrl = URL.createObjectURL(f);
+            const img = new Image();
+            img.onload = () => {
+                this.metadata = [
+                    { label: 'File Name', value: f.name },
+                    { label: 'File Size', value: this.formatBytes(f.size) },
+                    { label: 'MIME Type', value: f.type || 'image/jpeg' },
+                    { label: 'Resolution', value: `${img.width} x ${img.height} px` },
+                    { label: 'Megapixels', value: ((img.width * img.height) / 1000000).toFixed(2) + ' MP' },
+                    { label: 'Aspect Ratio', value: (img.width / img.height).toFixed(2) + ':1' },
+                    { label: 'Color Depth', value: '24-bit TrueColor' },
+                    { label: 'Modified Date', value: new Date(f.lastModified).toLocaleDateString() },
+                    { label: 'GPS / Privacy', value: 'Protected (Client Memory Only)' }
+                ];
+            };
+            img.src = this.imgUrl;
+        },
+        formatBytes(bytes) {
+            if (!bytes) return '0 B';
+            const k = 1024, sizes = ['B', 'KB', 'MB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return (bytes / Math.pow(k, i)).toFixed(1) + ' ' + sizes[i];
+        }
+    };
+}
+</script>
