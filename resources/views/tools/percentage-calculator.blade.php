@@ -14,21 +14,21 @@
         <!-- Tool Header -->
         <div class="mb-8">
             <div class="flex items-center gap-2 mb-3">
-                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700">
+                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300">
                     <x-icon :name="$tool->icon" class="w-3.5 h-3.5" />
                     <span>{{ __('common.categories.' . $tool->category) }}</span>
                 </span>
-                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700">
+                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                     <span>{{ __('common.badges.browser_based') }}</span>
                 </span>
             </div>
 
-            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 {{ $tool->getName() }}
             </h1>
 
-            <p class="mt-2 text-base text-slate-600 max-w-3xl leading-relaxed">
+            <p class="mt-2 text-base text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed">
                 {{ $tool->getDescription() }}
             </p>
         </div>
@@ -36,11 +36,11 @@
         <!-- Tool Interface -->
         <div x-data="percentageCalculator()" class="space-y-6">
             <!-- Mode Tabs -->
-            <div class="flex border-b border-slate-200 gap-2 overflow-x-auto scrollbar-none">
+            <div class="flex border-b border-slate-200 dark:border-slate-700 gap-2 overflow-x-auto scrollbar-none">
                 <button
                     type="button"
                     @click="tab = 'simple'"
-                    :class="tab === 'simple' ? 'border-indigo-600 text-indigo-600 bg-indigo-50/50' : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'"
+                    :class="tab === 'simple' ? 'border-indigo-600 text-indigo-600 bg-indigo-50/50' : 'border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:text-slate-100 hover:border-slate-300'"
                     class="px-4 py-3 border-b-2 font-bold text-xs sm:text-sm whitespace-nowrap transition-all focus:outline-none"
                 >
                     {{ __('tools.percentage_calculator.tabs.simple') }}
@@ -49,7 +49,7 @@
                 <button
                     type="button"
                     @click="tab = 'change'"
-                    :class="tab === 'change' ? 'border-indigo-600 text-indigo-600 bg-indigo-50/50' : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'"
+                    :class="tab === 'change' ? 'border-indigo-600 text-indigo-600 bg-indigo-50/50' : 'border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:text-slate-100 hover:border-slate-300'"
                     class="px-4 py-3 border-b-2 font-bold text-xs sm:text-sm whitespace-nowrap transition-all focus:outline-none"
                 >
                     {{ __('tools.percentage_calculator.tabs.change') }}
@@ -58,7 +58,7 @@
                 <button
                     type="button"
                     @click="tab = 'discount'"
-                    :class="tab === 'discount' ? 'border-indigo-600 text-indigo-600 bg-indigo-50/50' : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'"
+                    :class="tab === 'discount' ? 'border-indigo-600 text-indigo-600 bg-indigo-50/50' : 'border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:text-slate-100 hover:border-slate-300'"
                     class="px-4 py-3 border-b-2 font-bold text-xs sm:text-sm whitespace-nowrap transition-all focus:outline-none"
                 >
                     {{ __('tools.percentage_calculator.tabs.discount') }}
@@ -66,8 +66,8 @@
             </div>
 
             <!-- TAB 1: Simple Percentage -->
-            <div x-show="tab === 'simple'" class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 sm:p-8 space-y-6">
-                <h2 class="text-lg font-bold text-slate-900">
+            <div x-show="tab === 'simple'" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700/80 dark:border-slate-800 shadow-sm p-6 sm:p-8 space-y-6">
+                <h2 class="text-lg font-bold text-slate-900 dark:text-slate-100">
                     {{ __('tools.percentage_calculator.simple.title') }}
                 </h2>
 
@@ -82,7 +82,7 @@
                                 type="number"
                                 step="any"
                                 x-model="simplePct"
-                                class="w-full pl-4 pr-8 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600 text-base"
+                                class="w-full pl-4 pr-8 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600 text-base"
                             >
                             <span class="absolute right-3.5 top-3.5 text-sm font-bold text-slate-400">%</span>
                         </div>
@@ -97,7 +97,7 @@
                             type="number"
                             step="any"
                             x-model="simpleVal"
-                            class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600 text-base"
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600 text-base"
                         >
                     </div>
                 </div>
@@ -118,8 +118,8 @@
             </div>
 
             <!-- TAB 2: Percentage Increase / Decrease -->
-            <div x-show="tab === 'change'" class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 sm:p-8 space-y-6" x-cloak>
-                <h2 class="text-lg font-bold text-slate-900">
+            <div x-show="tab === 'change'" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700/80 dark:border-slate-800 shadow-sm p-6 sm:p-8 space-y-6" x-cloak>
+                <h2 class="text-lg font-bold text-slate-900 dark:text-slate-100">
                     {{ __('tools.percentage_calculator.change.title') }}
                 </h2>
 
@@ -133,7 +133,7 @@
                             type="number"
                             step="any"
                             x-model="changeFrom"
-                            class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600 text-base"
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600 text-base"
                         >
                     </div>
 
@@ -146,7 +146,7 @@
                             type="number"
                             step="any"
                             x-model="changeTo"
-                            class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600 text-base"
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600 text-base"
                         >
                     </div>
                 </div>
@@ -167,7 +167,7 @@
                             </span>
                             <div class="text-3xl sm:text-4xl font-black mt-1 flex items-center gap-2" :class="changeResult.direction === 'increase' ? 'text-emerald-600' : (changeResult.direction === 'decrease' ? 'text-rose-600' : 'text-slate-800')">
                                 <span x-text="changeResult.change + '%'">0%</span>
-                                <span class="text-sm font-semibold px-2.5 py-0.5 rounded-full" :class="changeResult.direction === 'increase' ? 'bg-emerald-100 text-emerald-800' : (changeResult.direction === 'decrease' ? 'bg-rose-100 text-rose-800' : 'bg-slate-200 text-slate-700')" x-text="changeResult.direction === 'increase' ? '{{ __('tools.percentage_calculator.change.direction_increase') }}' : (changeResult.direction === 'decrease' ? '{{ __('tools.percentage_calculator.change.direction_decrease') }}' : '{{ __('tools.percentage_calculator.change.direction_none') }}')"></span>
+                                <span class="text-sm font-semibold px-2.5 py-0.5 rounded-full" :class="changeResult.direction === 'increase' ? 'bg-emerald-100 text-emerald-800' : (changeResult.direction === 'decrease' ? 'bg-rose-100 text-rose-800' : 'bg-slate-200 text-slate-700 dark:text-slate-300')" x-text="changeResult.direction === 'increase' ? '{{ __('tools.percentage_calculator.change.direction_increase') }}' : (changeResult.direction === 'decrease' ? '{{ __('tools.percentage_calculator.change.direction_decrease') }}' : '{{ __('tools.percentage_calculator.change.direction_none') }}')"></span>
                             </div>
                         </div>
 
@@ -176,15 +176,15 @@
                         </div>
                     </div>
 
-                    <div class="text-xs text-slate-600 pt-2 border-t border-indigo-100">
-                        {{ __('tools.percentage_calculator.change.difference_label') }}: <strong class="text-slate-900 font-semibold" x-text="changeResult.diff">0</strong>
+                    <div class="text-xs text-slate-600 dark:text-slate-400 pt-2 border-t border-indigo-100">
+                        {{ __('tools.percentage_calculator.change.difference_label') }}: <strong class="text-slate-900 dark:text-slate-100 font-semibold" x-text="changeResult.diff">0</strong>
                     </div>
                 </div>
             </div>
 
             <!-- TAB 3: Discount Calculator -->
-            <div x-show="tab === 'discount'" class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 sm:p-8 space-y-6" x-cloak>
-                <h2 class="text-lg font-bold text-slate-900">
+            <div x-show="tab === 'discount'" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700/80 dark:border-slate-800 shadow-sm p-6 sm:p-8 space-y-6" x-cloak>
+                <h2 class="text-lg font-bold text-slate-900 dark:text-slate-100">
                     {{ __('tools.percentage_calculator.discount.title') }}
                 </h2>
 
@@ -198,7 +198,7 @@
                             type="number"
                             step="any"
                             x-model="discPrice"
-                            class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600 text-base"
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600 text-base"
                         >
                     </div>
 
@@ -212,7 +212,7 @@
                                 type="number"
                                 step="any"
                                 x-model="discPct"
-                                class="w-full pl-4 pr-8 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600 text-base"
+                                class="w-full pl-4 pr-8 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600 text-base"
                             >
                             <span class="absolute right-3.5 top-3.5 text-sm font-bold text-slate-400">%</span>
                         </div>
@@ -246,8 +246,8 @@
 
         <!-- Related Tools -->
         @if($relatedTools->count() > 0)
-            <div class="mt-12 pt-10 border-t border-slate-200/80">
-                <h2 class="text-xl font-bold text-slate-900 mb-6">
+            <div class="mt-12 pt-10 border-t border-slate-200 dark:border-slate-700/80">
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6">
                     {{ $locale === 'bn' ? 'সম্পর্কিত অন্যান্য টুলস' : 'Related Utilities' }}
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">

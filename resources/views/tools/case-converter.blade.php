@@ -18,17 +18,17 @@
                     <x-icon :name="$tool->icon" class="w-3.5 h-3.5" />
                     <span>{{ __('common.categories.' . $tool->category) }}</span>
                 </span>
-                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700">
+                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                     <span>{{ __('common.badges.browser_based') }}</span>
                 </span>
             </div>
 
-            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 {{ $tool->getName() }}
             </h1>
 
-            <p class="mt-2 text-base text-slate-600 max-w-3xl leading-relaxed">
+            <p class="mt-2 text-base text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed">
                 {{ $tool->getDescription() }}
             </p>
         </div>
@@ -36,9 +36,9 @@
         <!-- Tool Interface -->
         <div x-data="caseConverter()" class="space-y-6">
             <!-- Input Area -->
-            <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-4 sm:p-6 space-y-3">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700/80 dark:border-slate-800 shadow-sm p-4 sm:p-6 space-y-3">
                 <div class="flex items-center justify-between">
-                    <label for="case-input" class="text-sm font-bold text-slate-900">
+                    <label for="case-input" class="text-sm font-bold text-slate-900 dark:text-slate-100">
                         {{ __('tools.case_converter.input_label') }}
                     </label>
                     <button
@@ -55,7 +55,7 @@
                     x-model="input"
                     rows="6"
                     placeholder="{{ __('tools.case_converter.input_placeholder') }}"
-                    class="w-full p-4 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600 text-sm leading-relaxed"
+                    class="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950/50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-indigo-600 text-sm leading-relaxed"
                 ></textarea>
             </div>
 
@@ -64,7 +64,7 @@
                 <button
                     type="button"
                     @click="toUpper()"
-                    :class="activeMode === 'upper' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'"
+                    :class="activeMode === 'upper' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-white text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-950'"
                     class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all focus:outline-none focus:ring-2 focus:ring-indigo-600"
                 >
                     {{ __('tools.case_converter.modes.upper') }}
@@ -73,7 +73,7 @@
                 <button
                     type="button"
                     @click="toLower()"
-                    :class="activeMode === 'lower' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'"
+                    :class="activeMode === 'lower' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-white text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-950'"
                     class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all focus:outline-none focus:ring-2 focus:ring-indigo-600"
                 >
                     {{ __('tools.case_converter.modes.lower') }}
@@ -82,7 +82,7 @@
                 <button
                     type="button"
                     @click="toTitle()"
-                    :class="activeMode === 'title' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'"
+                    :class="activeMode === 'title' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-white text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-950'"
                     class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all focus:outline-none focus:ring-2 focus:ring-indigo-600"
                 >
                     {{ __('tools.case_converter.modes.title') }}
@@ -91,7 +91,7 @@
                 <button
                     type="button"
                     @click="toSentence()"
-                    :class="activeMode === 'sentence' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'"
+                    :class="activeMode === 'sentence' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-white text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-950'"
                     class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all focus:outline-none focus:ring-2 focus:ring-indigo-600"
                 >
                     {{ __('tools.case_converter.modes.sentence') }}
@@ -100,7 +100,7 @@
                 <button
                     type="button"
                     @click="toCamel()"
-                    :class="activeMode === 'camel' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'"
+                    :class="activeMode === 'camel' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-white text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-950'"
                     class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all focus:outline-none focus:ring-2 focus:ring-indigo-600"
                 >
                     {{ __('tools.case_converter.modes.camel') }}
@@ -109,7 +109,7 @@
                 <button
                     type="button"
                     @click="toSnake()"
-                    :class="activeMode === 'snake' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'"
+                    :class="activeMode === 'snake' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-white text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-950'"
                     class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all focus:outline-none focus:ring-2 focus:ring-indigo-600"
                 >
                     {{ __('tools.case_converter.modes.snake') }}
@@ -118,7 +118,7 @@
                 <button
                     type="button"
                     @click="toKebab()"
-                    :class="activeMode === 'kebab' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'"
+                    :class="activeMode === 'kebab' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-white text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-950'"
                     class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all focus:outline-none focus:ring-2 focus:ring-indigo-600"
                 >
                     {{ __('tools.case_converter.modes.kebab') }}
@@ -126,9 +126,9 @@
             </div>
 
             <!-- Output Result Area -->
-            <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-4 sm:p-6 space-y-3">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700/80 dark:border-slate-800 shadow-sm p-4 sm:p-6 space-y-3">
                 <div class="flex items-center justify-between">
-                    <label for="case-output" class="text-sm font-bold text-slate-900">
+                    <label for="case-output" class="text-sm font-bold text-slate-900 dark:text-slate-100">
                         {{ __('tools.case_converter.output_label') }}
                     </label>
 
@@ -149,7 +149,7 @@
                     x-model="output"
                     rows="6"
                     readonly
-                    class="w-full p-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 focus:outline-none text-sm leading-relaxed font-mono"
+                    class="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:outline-none text-sm leading-relaxed font-mono"
                 ></textarea>
             </div>
         </div>
@@ -162,8 +162,8 @@
 
         <!-- Related Tools -->
         @if($relatedTools->count() > 0)
-            <div class="mt-12 pt-10 border-t border-slate-200/80">
-                <h2 class="text-xl font-bold text-slate-900 mb-6">
+            <div class="mt-12 pt-10 border-t border-slate-200 dark:border-slate-700/80">
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6">
                     {{ $locale === 'bn' ? 'সম্পর্কিত অন্যান্য টুলস' : 'Related Utilities' }}
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">

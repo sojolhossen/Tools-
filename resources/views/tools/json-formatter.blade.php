@@ -18,17 +18,17 @@
                     <x-icon :name="$tool->icon" class="w-3.5 h-3.5" />
                     <span>{{ __('common.categories.' . $tool->category) }}</span>
                 </span>
-                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700">
+                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                     <span>{{ __('common.badges.browser_based') }}</span>
                 </span>
             </div>
 
-            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 {{ $tool->getName() }}
             </h1>
 
-            <p class="mt-2 text-base text-slate-600 max-w-3xl leading-relaxed">
+            <p class="mt-2 text-base text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed">
                 {{ $tool->getDescription() }}
             </p>
         </div>
@@ -36,7 +36,7 @@
         <!-- Tool Interface -->
         <div x-data="jsonFormatter()" class="space-y-6">
             <!-- Toolbar -->
-            <div class="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-2xs flex flex-wrap items-center justify-between gap-4">
+            <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 dark:border-slate-800 shadow-2xs flex flex-wrap items-center justify-between gap-4">
                 <div class="flex items-center gap-2 flex-wrap">
                     <button
                         type="button"
@@ -49,12 +49,12 @@
                     <button
                         type="button"
                         @click="minify()"
-                        class="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl text-xs sm:text-sm font-semibold hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-colors"
+                        class="px-4 py-2 bg-slate-100 text-slate-700 dark:text-slate-300 rounded-xl text-xs sm:text-sm font-semibold hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-colors"
                     >
                         {{ __('common.actions.minify') }}
                     </button>
 
-                    <div class="flex items-center gap-1 text-xs text-slate-600 pl-2">
+                    <div class="flex items-center gap-1 text-xs text-slate-600 dark:text-slate-400 pl-2">
                         <label for="indent-select" class="font-medium">
                             {{ __('tools.json_formatter.indent_label') }}
                         </label>
@@ -62,7 +62,7 @@
                             id="indent-select"
                             x-model="indent"
                             @change="format()"
-                            class="px-2 py-1 rounded-lg border border-slate-200 bg-slate-50 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                            class="px-2 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-600"
                         >
                             <option value="2">{{ __('tools.json_formatter.indent_2') }}</option>
                             <option value="4">{{ __('tools.json_formatter.indent_4') }}</option>
@@ -75,7 +75,7 @@
                     <button
                         type="button"
                         @click="loadSample()"
-                        class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors"
+                        class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-400 bg-slate-100 hover:bg-slate-200 transition-colors"
                     >
                         {{ __('tools.json_formatter.load_sample') }}
                     </button>
@@ -83,7 +83,7 @@
                     <button
                         type="button"
                         @click="copy()"
-                        class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors"
+                        class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 dark:text-slate-300 hover:bg-slate-200 transition-colors"
                     >
                         <span x-text="copied ? '{{ __('common.actions.copied') }}' : '{{ __('common.actions.copy') }}'">{{ __('common.actions.copy') }}</span>
                     </button>
@@ -119,7 +119,7 @@
             </div>
 
             <!-- JSON Editor Textarea -->
-            <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-4 sm:p-6 space-y-2">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700/80 dark:border-slate-800 shadow-sm p-4 sm:p-6 space-y-2">
                 <label for="json-input" class="sr-only">
                     {{ __('tools.json_formatter.input_label') }}
                 </label>
@@ -129,7 +129,7 @@
                     @input="validate()"
                     rows="16"
                     placeholder="{{ __('tools.json_formatter.input_placeholder') }}"
-                    class="w-full p-4 rounded-xl border border-slate-200 bg-slate-900 text-emerald-400 placeholder:text-slate-500 font-mono text-xs sm:text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-indigo-600 resize-y"
+                    class="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-900 text-emerald-400 placeholder:text-slate-500 font-mono text-xs sm:text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-indigo-600 resize-y"
                     spellcheck="false"
                 ></textarea>
             </div>
@@ -143,8 +143,8 @@
 
         <!-- Related Tools -->
         @if($relatedTools->count() > 0)
-            <div class="mt-12 pt-10 border-t border-slate-200/80">
-                <h2 class="text-xl font-bold text-slate-900 mb-6">
+            <div class="mt-12 pt-10 border-t border-slate-200 dark:border-slate-700/80">
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-6">
                     {{ $locale === 'bn' ? 'সম্পর্কিত অন্যান্য টুলস' : 'Related Utilities' }}
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
