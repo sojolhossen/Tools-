@@ -108,4 +108,25 @@ final class PublicPagesTest extends TestCase
         $response = $this->get('/en/some-random-page-that-does-not-exist');
         $response->assertStatus(404);
     }
+
+    public function test_whois_api_validates_domain_input(): void
+    {
+        $responseEmpty = $this->getJson('/api/tools/whois');
+        $responseEmpty->assertStatus(400);
+
+        $responseInvalid = $this->getJson('/api/tools/whois?domain=nodot');
+        $responseInvalid->assertStatus(422);
+    }
+
+    public function test_whois_lookup_page_renders_successfully(): void
+    {
+        $responseEn = $this->get('/en/tools/whois-lookup');
+        $responseEn->assertStatus(200);
+        $responseEn->assertSee('WHOIS Domain Lookup');
+        $responseEn->assertSee('/api/tools/whois', false);
+
+        $responseBn = $this->get('/bn/tools/whois-lookup');
+        $responseBn->assertStatus(200);
+    }
 }
+

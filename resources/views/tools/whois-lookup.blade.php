@@ -29,25 +29,42 @@
         <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 sm:p-8 space-y-6">
             <div class="flex flex-col sm:flex-row gap-3">
                 <input type="text" x-model="domain" @keydown.enter="lookup()" placeholder="example.com" class="flex-1 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-mono text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none">
-                <button type="button" @click="lookup()" :disabled="loading" class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-sm transition-all flex items-center justify-center gap-2">
+                <button type="button" @click="lookup()" :disabled="loading" class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-semibold text-sm shadow-sm transition-all flex items-center justify-center gap-2">
+                    <svg x-show="loading" class="animate-spin -ml-1 mr-1.5 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
                     <span x-show="!loading">Query WHOIS / RDAP</span>
                     <span x-show="loading">Querying Registry...</span>
                 </button>
             </div>
 
             <!-- Error -->
-            <div x-show="error" x-text="error" class="p-4 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900 text-rose-700 dark:text-rose-400 text-sm"></div>
+            <div x-show="error" x-cloak class="p-4 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900 text-rose-700 dark:text-rose-400 text-sm flex items-start gap-3">
+                <svg class="w-5 h-5 flex-shrink-0 text-rose-500 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span x-text="error"></span>
+            </div>
 
             <!-- Results -->
-            <div x-show="data" class="space-y-6">
+            <div x-show="data" x-cloak class="space-y-6">
+                <!-- Header with Domain & Quick Status -->
+                <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-200 dark:border-slate-800">
+                    <div>
+                        <span class="text-xs text-slate-500 uppercase tracking-wider block font-semibold">Domain Queried</span>
+                        <h2 class="text-xl font-bold font-mono text-slate-900 dark:text-white" x-text="data?.domain || domain"></h2>
+                    </div>
+                    <div class="flex flex-wrap gap-1.5" x-show="status && status.length">
+                        <template x-for="(st, idx) in status.slice(0, 3)" :key="idx">
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/50" x-text="st"></span>
+                        </template>
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
                         <span class="text-xs text-slate-500 uppercase tracking-wider block mb-1">Registration Date</span>
-                        <span class="font-mono text-sm font-bold text-slate-900 dark:text-slate-100" x-text="created || '-'"></span>
+                        <span class="font-mono text-sm font-bold text-slate-900 dark:text-slate-100" x-text="formatDate(created)"></span>
                     </div>
                     <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
                         <span class="text-xs text-slate-500 uppercase tracking-wider block mb-1">Expiration Date</span>
-                        <span class="font-mono text-sm font-bold text-emerald-600 dark:text-emerald-400" x-text="expires || '-'"></span>
+                        <span class="font-mono text-sm font-bold text-emerald-600 dark:text-emerald-400" x-text="formatDate(expires)"></span>
                     </div>
                     <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
                         <span class="text-xs text-slate-500 uppercase tracking-wider block mb-1">Registrar</span>
@@ -57,11 +74,33 @@
 
                 <!-- Nameservers -->
                 <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
-                    <span class="text-xs text-slate-500 uppercase tracking-wider block mb-2">Authoritative Nameservers</span>
+                    <span class="text-xs text-slate-500 uppercase tracking-wider block mb-2 font-semibold">Authoritative Nameservers</span>
                     <div class="flex flex-wrap gap-2">
                         <template x-for="(ns, i) in nameservers" :key="i">
-                            <span class="px-2.5 py-1 rounded bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-mono text-xs" x-text="ns"></span>
+                            <span class="px-2.5 py-1 rounded-lg bg-slate-200/70 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-mono text-xs border border-slate-300/60 dark:border-slate-700/60" x-text="ns"></span>
                         </template>
+                        <span x-show="!nameservers || !nameservers.length" class="text-xs text-slate-500 italic">No nameserver records found</span>
+                    </div>
+                </div>
+
+                <!-- Status Codes (if available) -->
+                <div x-show="status && status.length > 0" class="p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+                    <span class="text-xs text-slate-500 uppercase tracking-wider block mb-2 font-semibold">Registry Status Codes</span>
+                    <div class="flex flex-wrap gap-1.5">
+                        <template x-for="(st, i) in status" :key="i">
+                            <span class="px-2 py-0.5 rounded text-xs font-mono bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-900/40" x-text="st"></span>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Raw RDAP / WHOIS Toggle -->
+                <div class="pt-2">
+                    <button type="button" @click="showRaw = !showRaw" class="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 font-medium">
+                        <span x-text="showRaw ? 'Hide Raw RDAP / WHOIS Data' : 'View Raw RDAP / WHOIS Data'"></span>
+                        <svg class="w-3.5 h-3.5 transform transition-transform" :class="showRaw ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div x-show="showRaw" x-cloak class="mt-3">
+                        <pre class="p-4 rounded-xl bg-slate-950 text-slate-200 text-xs font-mono overflow-x-auto max-h-80 border border-slate-800" x-text="JSON.stringify(data?.raw || data, null, 2)"></pre>
                     </div>
                 </div>
             </div>
@@ -75,43 +114,54 @@
                 data: null,
                 created: '',
                 expires: '',
+                updated: '',
                 registrar: '',
                 nameservers: [],
+                status: [],
+                showRaw: false,
                 error: null,
                 init() {
                     this.lookup();
                 },
+                formatDate(isoStr) {
+                    if (!isoStr) return '-';
+                    try {
+                        const d = new Date(isoStr);
+                        if (isNaN(d.getTime())) return isoStr;
+                        return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+                    } catch (e) {
+                        return isoStr;
+                    }
+                },
                 async lookup() {
-                    if (!this.domain.trim()) return;
+                    if (!this.domain || !this.domain.trim()) return;
                     this.loading = true;
                     this.error = null;
                     this.data = null;
+                    this.showRaw = false;
+
+                    const clean = this.domain.replace(/^https?:\/\//i, '').replace(/\/.*$/, '').trim();
+
                     try {
-                        const clean = this.domain.replace(/^https?:\/\//, '').replace(/\/.*$/, '').trim();
-                        const res = await fetch('https://rdap.org/domain/' + encodeURIComponent(clean)).then(r => r.json());
-                        if (res && res.handle) {
+                        const response = await fetch('/api/tools/whois?domain=' + encodeURIComponent(clean));
+                        const res = await response.json();
+
+                        if (response.ok && res.success) {
                             this.data = res;
-                            if (res.events) {
-                                res.events.forEach(e => {
-                                    if (e.eventAction === 'registration') this.created = new Date(e.eventDate).toLocaleDateString();
-                                    if (e.eventAction === 'expiration') this.expires = new Date(e.eventDate).toLocaleDateString();
-                                });
-                            }
-                            if (res.entities && res.entities[0] && res.entities[0].vcardArray) {
-                                const vcard = res.entities[0].vcardArray[1];
-                                const fn = vcard.find(item => item[0] === 'fn');
-                                if (fn) this.registrar = fn[3];
-                            }
-                            if (res.nameservers) {
-                                this.nameservers = res.nameservers.map(n => n.ldhName);
-                            }
+                            this.created = res.created || '';
+                            this.expires = res.expires || '';
+                            this.updated = res.updated || '';
+                            this.registrar = res.registrar || '';
+                            this.nameservers = res.nameservers || [];
+                            this.status = res.status || [];
                         } else {
-                            this.error = 'Domain RDAP/WHOIS data not available.';
+                            this.error = res.message || 'Unable to retrieve WHOIS/RDAP details for this domain.';
                         }
                     } catch (e) {
-                        this.error = 'WHOIS service query failed.';
+                        this.error = 'WHOIS service query failed. Please check network connection.';
+                    } finally {
+                        this.loading = false;
                     }
-                    this.loading = false;
                 }
             };
         }

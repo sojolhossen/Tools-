@@ -174,6 +174,153 @@ Route::get('/api/tools/ip-lookup', function () {
     ], 404);
 })->name('tools.api.ip_lookup');
 
+// Internal WHOIS / RDAP lookup proxy endpoint (immune to CORS, browser blockers, and registry redirect limitations)
+Route::get('/api/tools/whois', function () {
+    $domain = trim((string) request()->query('domain', request()->query('query', '')));
+
+    if ($domain === '') {
+        return response()->json([
+            'success' => false,
+            'message' => 'Please provide a domain name to query.',
+        ], 400);
+    }
+
+    $clean = preg_replace('#^https?://#i', '', $domain);
+    $clean = trim(explode('/', $clean)[0]);
+    $clean = trim(explode(':', $clean)[0]);
+    $clean = strtolower($clean);
+
+    if ($clean === '' || !str_contains($clean, '.')) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Invalid domain format. Example: example.com',
+        ], 422);
+    }
+
+    $created = '';
+    $expires = '';
+    $updated = '';
+    $registrar = '';
+    $nameservers = [];
+    $status = [];
+    $raw = null;
+
+    // 1. Primary: Query authoritative RDAP bootstrap service
+    try {
+        $res = \Illuminate\Support\Facades\Http::timeout(7)
+            ->withHeaders([
+                'User-Agent' => 'Mozilla/5.0 (compatible; ToolZenoBot/1.0; +https://toolzeno.site)',
+                'Accept' => 'application/rdap+json, application/json',
+            ])
+            ->get('https://rdap.org/domain/' . urlencode($clean));
+
+        if ($res->successful()) {
+            $raw = $res->json();
+            if (is_array($raw)) {
+                if (!empty($raw['events']) && is_array($raw['events'])) {
+                    foreach ($raw['events'] as $e) {
+                        $action = $e['eventAction'] ?? '';
+                        $date = $e['eventDate'] ?? '';
+                        if ($action === 'registration') $created = $date;
+                        if ($action === 'expiration') $expires = $date;
+                        if ($action === 'last changed') $updated = $date;
+                    }
+                }
+
+                if (!empty($raw['entities']) && is_array($raw['entities'])) {
+                    foreach ($raw['entities'] as $ent) {
+                        $roles = $ent['roles'] ?? [];
+                        if (!empty($ent['vcardArray'][1]) && is_array($ent['vcardArray'][1])) {
+                            foreach ($ent['vcardArray'][1] as $v) {
+                                if (isset($v[0]) && $v[0] === 'fn' && !empty($v[3])) {
+                                    if (in_array('registrar', $roles) || empty($registrar)) {
+                                        $registrar = (string) $v[3];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (!empty($raw['nameservers']) && is_array($raw['nameservers'])) {
+                    foreach ($raw['nameservers'] as $ns) {
+                        if (!empty($ns['ldhName'])) {
+                            $nameservers[] = strtolower($ns['ldhName']);
+                        }
+                    }
+                }
+
+                if (!empty($raw['status']) && is_array($raw['status'])) {
+                    $status = $raw['status'];
+                }
+            }
+        }
+    } catch (\Throwable $e) {}
+
+    // 2. Secondary fallback: who-dat if registrar or events missing
+    if (empty($registrar) || empty($created)) {
+        try {
+            $fallbackRes = \Illuminate\Support\Facades\Http::timeout(5)
+                ->get('https://who-dat.as93.net/' . urlencode($clean));
+            if ($fallbackRes->successful()) {
+                $fJson = $fallbackRes->json();
+                if (is_array($fJson)) {
+                    if (empty($created) && !empty($fJson['created'])) $created = $fJson['created'];
+                    if (empty($expires) && !empty($fJson['expires'])) $expires = $fJson['expires'];
+                    if (empty($registrar) && !empty($fJson['registrar']['name'])) $registrar = $fJson['registrar']['name'];
+                    if (empty($nameservers) && !empty($fJson['nameservers']) && is_array($fJson['nameservers'])) {
+                        foreach ($fJson['nameservers'] as $ns) {
+                            if (is_array($ns) && !empty($ns['name'])) {
+                                $nameservers[] = strtolower($ns['name']);
+                            } elseif (is_string($ns)) {
+                                $nameservers[] = strtolower($ns);
+                            }
+                        }
+                    }
+                    if (empty($raw)) {
+                        $raw = $fJson;
+                    }
+                }
+            }
+        } catch (\Throwable $e) {}
+    }
+
+    // 3. Fallback nameservers from authoritative DNS NS records if still empty
+    if (empty($nameservers)) {
+        try {
+            $dns = @dns_get_record($clean, DNS_NS);
+            if (is_array($dns)) {
+                foreach ($dns as $record) {
+                    if (!empty($record['target'])) {
+                        $nameservers[] = strtolower($record['target']);
+                    }
+                }
+            }
+        } catch (\Throwable $e) {}
+    }
+
+    $nameservers = array_values(array_unique($nameservers));
+
+    if (empty($raw) && empty($nameservers)) {
+        return response()->json([
+            'success' => false,
+            'message' => 'No WHOIS / RDAP records found for ' . $clean . '. The domain might be available or restricted.',
+        ], 404);
+    }
+
+    return response()->json([
+        'success' => true,
+        'domain' => $clean,
+        'created' => $created,
+        'expires' => $expires,
+        'updated' => $updated,
+        'registrar' => $registrar ?: 'Protected / Registry Privacy',
+        'nameservers' => $nameservers,
+        'status' => $status,
+        'raw' => $raw,
+    ]);
+})->name('tools.api.whois');
+
 /*
 |--------------------------------------------------------------------------
 | Localized Public Routes (en, bn)
