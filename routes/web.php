@@ -574,38 +574,115 @@ Route::get('/api/tools/rdns-lookup', function () {
 Route::get('/api/tools/http-headers', function () {
     $url = trim((string) request()->query('url', ''));
     if ($url === '') {
-        return response()->json(['success' => false, 'message' => 'URL is required.'], 400);
+        return response()->json(['success' => false, 'message' => 'Please provide a valid URL to inspect.'], 400);
     }
     if (!str_starts_with($url, 'http://') && !str_starts_with($url, 'https://')) {
         $url = 'https://' . $url;
     }
+
+    $browserUA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 (compatible; ToolZeno/1.0; +https://toolzeno.site)';
+
+    $res = null;
+    $error = null;
+
+    // 1. Try HEAD request first
     try {
-        $res = \Illuminate\Support\Facades\Http::timeout(7)
-            ->withHeaders(['User-Agent' => 'Mozilla/5.0 (compatible; ToolZeno-Inspector/1.0)'])
+        $candidate = \Illuminate\Support\Facades\Http::timeout(8)
+            ->withoutVerifying()
+            ->withHeaders([
+                'User-Agent' => $browserUA,
+                'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            ])
             ->withoutRedirecting()
             ->head($url);
 
-        $headers = [];
-        foreach ($res->headers() as $name => $values) {
-            $headers[] = [
-                'name' => strtolower($name),
-                'val' => implode(', ', (array) $values),
-            ];
+        if ($candidate->status() !== 405) {
+            $res = $candidate;
         }
-
-        return response()->json([
-            'success' => true,
-            'url' => $url,
-            'status' => $res->status(),
-            'statusText' => $res->reason() ?: 'OK',
-            'headers' => $headers,
-        ]);
     } catch (\Throwable $e) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Unable to connect to ' . $url . ': ' . $e->getMessage(),
-        ], 502);
+        $error = $e->getMessage();
     }
+
+    // 2. If HEAD failed or gave 405 Method Not Allowed, fallback to lightweight GET request
+    if (!$res) {
+        try {
+            $res = \Illuminate\Support\Facades\Http::timeout(8)
+                ->withoutVerifying()
+                ->withHeaders([
+                    'User-Agent' => $browserUA,
+                    'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                ])
+                ->withoutRedirecting()
+                ->get($url);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unable to connect to ' . $url . ': ' . ($e->getMessage() ?: ($error ?: 'Connection timed out')),
+            ], 502);
+        }
+    }
+
+    $headers = [];
+    $rawText = '';
+    $status = $res->status();
+    $statusText = $res->reason() ?: 'OK';
+    $server = null;
+    $contentType = null;
+    $location = null;
+
+    $secHeadersList = [
+        'strict-transport-security',
+        'content-security-policy',
+        'x-content-type-options',
+        'x-frame-options',
+        'referrer-policy',
+        'permissions-policy',
+        'x-xss-protection',
+    ];
+
+    foreach ($res->headers() as $name => $values) {
+        $lower = strtolower($name);
+        $val = implode(', ', (array) $values);
+        $rawText .= $name . ': ' . $val . "\n";
+
+        $category = 'general';
+        if (in_array($lower, $secHeadersList)) $category = 'security';
+        elseif (in_array($lower, ['cache-control', 'expires', 'pragma', 'etag', 'last-modified', 'age'])) $category = 'caching';
+        elseif (in_array($lower, ['server', 'x-powered-by', 'alt-svc', 'via'])) $category = 'server';
+        elseif (in_array($lower, ['set-cookie', 'cookie'])) $category = 'cookies';
+
+        if ($lower === 'server') $server = $val;
+        if ($lower === 'content-type') $contentType = $val;
+        if ($lower === 'location') $location = $val;
+
+        $headers[] = [
+            'name' => $lower,
+            'original_name' => $name,
+            'val' => $val,
+            'category' => $category,
+        ];
+    }
+
+    // Sort: security headers first, then caching, then server, then others
+    usort($headers, function ($a, $b) {
+        $p = ['security' => 1, 'caching' => 2, 'server' => 3, 'cookies' => 4, 'general' => 5];
+        $pa = $p[$a['category']] ?? 9;
+        $pb = $p[$b['category']] ?? 9;
+        if ($pa !== $pb) return $pa <=> $pb;
+        return strcmp($a['name'], $b['name']);
+    });
+
+    return response()->json([
+        'success' => true,
+        'url' => $url,
+        'status' => $status,
+        'statusText' => $statusText,
+        'server' => $server,
+        'contentType' => $contentType,
+        'location' => $location,
+        'raw' => trim($rawText),
+        'headers' => $headers,
+    ]);
 })->name('tools.api.http_headers');
 
 // Internal DNS Propagation Checker proxy endpoint (immune to client-side adblockers and CORS failures)
