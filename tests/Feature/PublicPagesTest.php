@@ -204,6 +204,21 @@ final class PublicPagesTest extends TestCase
         $responsePage->assertSee('SPF, DKIM &amp; DMARC Record Checker', false);
         $responsePage->assertSee('/api/tools/spf-dkim-dmarc', false);
     }
+
+    public function test_speed_test_endpoints_and_page_renders_successfully(): void
+    {
+        $responseDown = $this->get('/api/tools/speed-test/download?bytes=1000');
+        $responseDown->assertStatus(200);
+        $responseDown->assertHeader('Content-Type', 'application/octet-stream');
+
+        $responseUp = $this->postJson('/api/tools/speed-test/upload', ['dummy' => 'payload']);
+        $responseUp->assertStatus(200);
+
+        $responsePage = $this->get('/en/tools/internet-speed-test');
+        $responsePage->assertStatus(200);
+        $responsePage->assertSee('Internet Speed Test');
+        $responsePage->assertSee('speed.cloudflare.com', false);
+    }
 }
 
 

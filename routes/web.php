@@ -1057,6 +1057,47 @@ Route::get('/api/tools/spf-dkim-dmarc', function () {
     ]);
 })->name('tools.api.email_security');
 
+// Internal Speed Test fallback download streaming endpoint (high-throughput binary stream)
+Route::get('/api/tools/speed-test/download', function () {
+    $bytes = (int) request()->query('bytes', 5000000);
+    if ($bytes <= 0) $bytes = 1000000;
+    if ($bytes > 25000000) $bytes = 25000000;
+
+    return response()->stream(function () use ($bytes) {
+        $chunkSize = 65536;
+        $chunk = str_repeat('0', $chunkSize);
+        $sent = 0;
+        while ($sent < $bytes) {
+            $toSend = min($chunkSize, $bytes - $sent);
+            if ($toSend < $chunkSize) {
+                echo substr($chunk, 0, $toSend);
+            } else {
+                echo $chunk;
+            }
+            $sent += $toSend;
+            if (ob_get_level() > 0) ob_flush();
+            flush();
+        }
+    }, 200, [
+        'Content-Type' => 'application/octet-stream',
+        'Content-Length' => $bytes,
+        'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
+        'Access-Control-Allow-Origin' => '*',
+    ]);
+})->name('tools.api.speed_test_download');
+
+// Internal Speed Test fallback upload sink endpoint
+Route::post('/api/tools/speed-test/upload', function () {
+    $size = (int) request()->server('CONTENT_LENGTH', 0);
+    return response()->json([
+        'success' => true,
+        'bytes' => $size,
+    ], 200, [
+        'Access-Control-Allow-Origin' => '*',
+        'Cache-Control' => 'no-store',
+    ]);
+})->name('tools.api.speed_test_upload');
+
 /*
 |--------------------------------------------------------------------------
 | Localized Public Routes (en, bn)
