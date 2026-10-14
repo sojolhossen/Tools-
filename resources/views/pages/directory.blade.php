@@ -91,8 +91,8 @@
                             x-data="categoryTicker()"
                             @mouseenter="isHovered = true"
                             @mouseleave="isHovered = false"
-                            @touchstart="isHovered = true"
-                            @touchend="setTimeout(() => isHovered = false, 1500)"
+                            @touchstart.passive="isHovered = true"
+                            @touchend.passive="setTimeout(() => isHovered = false, 1500)"
                             class="flex items-center gap-1.5 min-w-0 flex-1 overflow-hidden"
                         >
                             <x-icon name="squares-2x2" class="w-3.5 h-3.5 {{ $currentCategory === 'all' ? 'text-white' : 'text-slate-400' }} shrink-0" />
@@ -101,7 +101,7 @@
                                 class="min-w-0 flex-1 overflow-x-auto no-scrollbar whitespace-nowrap text-left"
                                 title="{{ __('common.categories.all') }}"
                             >
-                                <span class="inline-block whitespace-nowrap">{{ __('common.categories.all') }}</span>
+                                <span class="inline-block whitespace-nowrap font-semibold">{{ __('common.categories.all') }}</span>
                             </div>
                         </div>
                         @if(isset($allTools))
@@ -129,8 +129,8 @@
                                 x-data="categoryTicker()"
                                 @mouseenter="isHovered = true"
                                 @mouseleave="isHovered = false"
-                                @touchstart="isHovered = true"
-                                @touchend="setTimeout(() => isHovered = false, 1500)"
+                                @touchstart.passive="isHovered = true"
+                                @touchend.passive="setTimeout(() => isHovered = false, 1500)"
                                 class="flex items-center gap-1.5 min-w-0 flex-1 overflow-hidden"
                             >
                                 <x-icon :name="$catData['icon']" class="w-3.5 h-3.5 {{ $currentCategory === $catKey ? 'text-white' : 'text-slate-400' }} shrink-0" />
@@ -139,7 +139,7 @@
                                     class="min-w-0 flex-1 overflow-x-auto no-scrollbar whitespace-nowrap text-left"
                                     title="{{ __('common.categories.' . $catKey) }}"
                                 >
-                                    <span class="inline-block whitespace-nowrap">{{ __('common.categories.' . $catKey) }}</span>
+                                    <span class="inline-block whitespace-nowrap font-semibold">{{ __('common.categories.' . $catKey) }}</span>
                                 </div>
                             </div>
                             @if($catCount !== null)
@@ -153,7 +153,7 @@
                     @if($remainingCount > 0)
                         <button
                             type="button"
-                            @click="expanded = !expanded"
+                            @click="expanded = !expanded; $nextTick(() => window.dispatchEvent(new Event('resize')))"
                             class="sm:hidden group flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-xl bg-gradient-to-r from-indigo-500/15 via-indigo-600/20 to-violet-600/15 dark:from-indigo-950 dark:to-violet-950 border border-indigo-300 dark:border-indigo-700 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 shadow-2xs active:scale-95 transition-all cursor-pointer"
                         >
                             <span x-text="expanded ? '{{ $locale === 'bn' ? 'কম দেখুন' : 'Show Less' }}' : '+{{ $remainingCount }} {{ $locale === 'bn' ? 'আরো' : 'More' }}'">

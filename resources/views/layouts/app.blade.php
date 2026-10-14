@@ -176,65 +176,97 @@
 
     <!-- Alpine Category Marquee Ticker -->
     <script>
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('categoryTicker', () => ({
-                timer: null,
-                isHovered: false,
-                init() {
-                    this.$nextTick(() => this.checkAndScroll());
-                    window.addEventListener('resize', () => this.checkAndScroll());
-                    if (this.$data && typeof this.$data.expanded !== 'undefined') {
-                        this.$watch('expanded', () => {
-                            this.$nextTick(() => setTimeout(() => this.checkAndScroll(), 120));
-                        });
-                    }
-                },
-                destroy() {
-                    if (this.timer) clearTimeout(this.timer);
-                },
-                checkAndScroll() {
-                    const el = this.$refs.ticker;
-                    if (!el) return;
-                    if (this.timer) clearTimeout(this.timer);
+        (function () {
+            function registerCategoryTicker() {
+                if (!window.Alpine) {
+                    document.addEventListener('alpine:init', registerCategoryTicker, { once: true });
+                    return;
+                }
 
-                    setTimeout(() => {
-                        if (!this.$refs.ticker) return;
-                        const max = el.scrollWidth - el.clientWidth;
-                        if (max <= 2) {
-                            el.scrollLeft = 0;
-                            return;
+                window.Alpine.data('categoryTicker', () => ({
+                    timer: null,
+                    isHovered: false,
+                    ro: null,
+
+                    init() {
+                        this.$nextTick(() => {
+                            this.checkAndScroll();
+                        });
+
+                        if (typeof ResizeObserver !== 'undefined' && this.$refs.ticker) {
+                            this.ro = new ResizeObserver(() => {
+                                this.checkAndScroll();
+                            });
+                            this.ro.observe(this.$refs.ticker);
                         }
 
-                        let dir = 1;
-                        const tick = () => {
+                        window.addEventListener('resize', () => this.checkAndScroll());
+
+                        if (document.fonts && document.fonts.ready) {
+                            document.fonts.ready.then(() => this.checkAndScroll());
+                        }
+                    },
+
+                    destroy() {
+                        if (this.timer) clearTimeout(this.timer);
+                        if (this.ro) this.ro.disconnect();
+                    },
+
+                    checkAndScroll() {
+                        const el = this.$refs.ticker;
+                        if (!el) return;
+                        if (this.timer) clearTimeout(this.timer);
+
+                        setTimeout(() => {
                             if (!this.$refs.ticker) return;
-                            if (this.isHovered) {
-                                this.timer = setTimeout(tick, 200);
+                            const max = el.scrollWidth - el.clientWidth;
+                            if (max <= 2) {
+                                el.scrollLeft = 0;
                                 return;
                             }
-                            if (dir === 1) {
-                                if (el.scrollLeft < max) {
+
+                            let dir = 1;
+                            const tick = () => {
+                                if (!this.$refs.ticker) return;
+                                if (this.isHovered) {
+                                    this.timer = setTimeout(tick, 200);
+                                    return;
+                                }
+
+                                if (dir === 1) {
+                                    const prevLeft = el.scrollLeft;
                                     el.scrollLeft += 1;
-                                    this.timer = setTimeout(tick, 35);
+                                    if (el.scrollLeft >= max || el.scrollLeft === prevLeft) {
+                                        dir = -1;
+                                        this.timer = setTimeout(tick, 1800);
+                                    } else {
+                                        this.timer = setTimeout(tick, 28);
+                                    }
                                 } else {
-                                    dir = -1;
-                                    this.timer = setTimeout(tick, 2000);
-                                }
-                            } else {
-                                if (el.scrollLeft > 0) {
+                                    const prevLeft = el.scrollLeft;
                                     el.scrollLeft -= 1;
-                                    this.timer = setTimeout(tick, 35);
-                                } else {
-                                    dir = 1;
-                                    this.timer = setTimeout(tick, 2000);
+                                    if (el.scrollLeft <= 0 || el.scrollLeft === prevLeft) {
+                                        el.scrollLeft = 0;
+                                        dir = 1;
+                                        this.timer = setTimeout(tick, 2000);
+                                    } else {
+                                        this.timer = setTimeout(tick, 28);
+                                    }
                                 }
-                            }
-                        };
-                        this.timer = setTimeout(tick, 1500);
-                    }, 150);
-                }
-            }));
-        });
+                            };
+
+                            this.timer = setTimeout(tick, 1200);
+                        }, 100);
+                    }
+                }));
+            }
+
+            if (window.Alpine) {
+                registerCategoryTicker();
+            } else {
+                document.addEventListener('alpine:init', registerCategoryTicker, { once: true });
+            }
+        })();
     </script>
 
     @stack('scripts')
