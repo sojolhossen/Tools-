@@ -128,5 +128,16 @@ final class PublicPagesTest extends TestCase
         $responseBn = $this->get('/bn/tools/whois-lookup');
         $responseBn->assertStatus(200);
     }
+
+    public function test_webrtc_ip_leak_checker_page_renders_successfully(): void
+    {
+        $responseEn = $this->get('/en/tools/webrtc-ip-leak-checker');
+        $responseEn->assertStatus(200);
+        $responseEn->assertSee('WebRTC IP Leak Checker');
+
+        $responseBn = $this->get('/bn/tools/webrtc-ip-leak-checker');
+        $responseBn->assertStatus(200);
+    }
 }
+
 
