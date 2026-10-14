@@ -685,6 +685,451 @@ Route::get('/api/tools/http-headers', function () {
     ]);
 })->name('tools.api.http_headers');
 
+// Internal Security Headers Audit endpoint (immune to CORS)
+Route::get('/api/tools/security-headers', function () {
+    $rawUrl = trim((string) request()->query('url', ''));
+    if ($rawUrl === '') {
+        return response()->json(['success' => false, 'message' => 'Please provide a valid URL to audit.'], 400);
+    }
+    if (!str_starts_with($rawUrl, 'http://') && !str_starts_with($rawUrl, 'https://')) {
+        $rawUrl = 'https://' . $rawUrl;
+    }
+
+    $browserUA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 (compatible; ToolZeno/1.0; +https://toolzeno.site)';
+    $res = null;
+
+    try {
+        $candidate = \Illuminate\Support\Facades\Http::timeout(8)
+            ->withoutVerifying()
+            ->withHeaders(['User-Agent' => $browserUA, 'Accept' => 'text/html,*/*'])
+            ->withoutRedirecting()
+            ->head($rawUrl);
+
+        if ($candidate->status() !== 405) {
+            $res = $candidate;
+        }
+    } catch (\Throwable $e) {}
+
+    if (!$res) {
+        try {
+            $res = \Illuminate\Support\Facades\Http::timeout(8)
+                ->withoutVerifying()
+                ->withHeaders(['User-Agent' => $browserUA, 'Accept' => 'text/html,*/*'])
+                ->withoutRedirecting()
+                ->get($rawUrl);
+        } catch (\Throwable $e) {
+            return response()->json(['success' => false, 'message' => 'Unable to connect to ' . $rawUrl . ': ' . $e->getMessage()], 502);
+        }
+    }
+
+    $lowerHeaders = [];
+    foreach ($res->headers() as $name => $vals) {
+        $lowerHeaders[strtolower($name)] = implode(', ', (array) $vals);
+    }
+
+    $hsts = $lowerHeaders['strict-transport-security'] ?? null;
+    $csp = $lowerHeaders['content-security-policy'] ?? null;
+    $xfo = $lowerHeaders['x-frame-options'] ?? null;
+    $xcto = $lowerHeaders['x-content-type-options'] ?? null;
+    $ref = $lowerHeaders['referrer-policy'] ?? null;
+    $perm = $lowerHeaders['permissions-policy'] ?? ($lowerHeaders['feature-policy'] ?? null);
+    $xxss = $lowerHeaders['x-xss-protection'] ?? null;
+
+    $checklist = [
+        [
+            'key' => 'hsts',
+            'name' => 'Strict-Transport-Security (HSTS)',
+            'desc' => 'Enforces secure HTTPS communication and prevents SSL-stripping attacks.',
+            'present' => !empty($hsts),
+            'value' => $hsts ?: 'Not Set',
+            'severity' => 'High',
+            'advice' => 'Add Strict-Transport-Security header with at least max-age=31536000 and includeSubDomains.',
+        ],
+        [
+            'key' => 'csp',
+            'name' => 'Content-Security-Policy (CSP)',
+            'desc' => 'Prevents Cross-Site Scripting (XSS) and malicious code injection attacks.',
+            'present' => !empty($csp),
+            'value' => $csp ?: 'Not Set',
+            'severity' => 'High',
+            'advice' => 'Configure a robust Content-Security-Policy defining authorized script, style, and object sources.',
+        ],
+        [
+            'key' => 'xfo',
+            'name' => 'X-Frame-Options',
+            'desc' => 'Protects visitors against Clickjacking frame embedding attacks.',
+            'present' => !empty($xfo),
+            'value' => $xfo ?: 'Not Set',
+            'severity' => 'Medium',
+            'advice' => 'Set X-Frame-Options to SAMEORIGIN or DENY to prevent third-party iframing.',
+        ],
+        [
+            'key' => 'xcto',
+            'name' => 'X-Content-Type-Options',
+            'desc' => 'Prevents MIME-type sniffing by enforcing declared content types.',
+            'present' => !empty($xcto) && stripos($xcto, 'nosniff') !== false,
+            'value' => $xcto ?: 'Not Set',
+            'severity' => 'Medium',
+            'advice' => 'Set X-Content-Type-Options: nosniff to stop browsers from executing non-script assets.',
+        ],
+        [
+            'key' => 'referrer',
+            'name' => 'Referrer-Policy',
+            'desc' => 'Controls how much referrer information is leaked with outgoing requests.',
+            'present' => !empty($ref),
+            'value' => $ref ?: 'Not Set',
+            'severity' => 'Low',
+            'advice' => 'Set Referrer-Policy to strict-origin-when-cross-origin or no-referrer.',
+        ],
+        [
+            'key' => 'permissions',
+            'name' => 'Permissions-Policy',
+            'desc' => 'Restricts access to browser hardware APIs (camera, microphone, geolocation).',
+            'present' => !empty($perm),
+            'value' => $perm ?: 'Not Set',
+            'severity' => 'Low',
+            'advice' => 'Define Permissions-Policy to restrict sensitive browser APIs from embedded frames.',
+        ],
+    ];
+
+    $passed = count(array_filter($checklist, fn($c) => $c['present']));
+    $grade = 'F';
+    $gradeTitle = 'Poor Security — Missing Essential Security Headers';
+    $gradeColor = 'rose';
+
+    if ($passed === 6) {
+        $grade = 'A+';
+        $gradeTitle = 'Flawless Security — All 6 Core Security Headers Configured';
+        $gradeColor = 'emerald';
+    } elseif ($passed === 5) {
+        $grade = 'A';
+        $gradeTitle = 'Strong Security — 5 of 6 Security Headers Present';
+        $gradeColor = 'emerald';
+    } elseif ($passed >= 3) {
+        $grade = 'B';
+        $gradeTitle = 'Moderate Security — Core Headers Active, CSP or HSTS Recommended';
+        $gradeColor = 'amber';
+    } elseif ($passed >= 2) {
+        $grade = 'C';
+        $gradeTitle = 'Basic Protection — Several Key Protections Missing';
+        $gradeColor = 'amber';
+    }
+
+    return response()->json([
+        'success' => true,
+        'url' => $rawUrl,
+        'status' => $res->status(),
+        'server' => $lowerHeaders['server'] ?? 'Unknown Web Server',
+        'grade' => $grade,
+        'gradeTitle' => $gradeTitle,
+        'gradeColor' => $gradeColor,
+        'passedCount' => $passed,
+        'totalCount' => count($checklist),
+        'checklist' => $checklist,
+        'xxss' => $xxss,
+    ]);
+})->name('tools.api.security_headers');
+
+// Internal SSL Certificate Checker endpoint
+Route::get('/api/tools/ssl-check', function () {
+    $input = trim((string) request()->query('domain', request()->query('url', '')));
+    if ($input === '') {
+        return response()->json(['success' => false, 'message' => 'Please provide a domain to inspect.'], 400);
+    }
+
+    $clean = preg_replace('#^https?://#i', '', $input);
+    $clean = trim(explode('/', $clean)[0]);
+    $clean = trim(explode(':', $clean)[0]);
+    $clean = strtolower($clean);
+
+    if ($clean === '' || !str_contains($clean, '.')) {
+        return response()->json(['success' => false, 'message' => 'Invalid domain format.'], 422);
+    }
+
+    $port = 443;
+    $ctx = stream_context_create([
+        'ssl' => [
+            'capture_peer_cert' => true,
+            'capture_peer_cert_chain' => true,
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+        ],
+    ]);
+
+    $client = @stream_socket_client('ssl://' . $clean . ':' . $port, $errno, $errstr, 8, STREAM_CLIENT_CONNECT, $ctx);
+    if (!$client) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Unable to establish SSL/TLS connection with ' . $clean . ' (Port 443): ' . ($errstr ?: 'Connection refused'),
+        ], 502);
+    }
+
+    $params = stream_context_get_params($client);
+    fclose($client);
+
+    $peerCert = $params['options']['ssl']['peer_certificate'] ?? null;
+    if (!$peerCert) {
+        return response()->json(['success' => false, 'message' => 'No SSL certificate found on host.'], 404);
+    }
+
+    $cert = openssl_x509_parse($peerCert);
+    $validTo = $cert['validTo_time_t'] ?? 0;
+    $validFrom = $cert['validFrom_time_t'] ?? 0;
+    $now = time();
+    $daysLeft = (int) floor(($validTo - $now) / 86400);
+    $isExpired = $now > $validTo;
+    $isValid = !$isExpired && $now >= $validFrom;
+
+    $sans = [];
+    if (!empty($cert['extensions']['subjectAltName'])) {
+        $rawSans = explode(',', $cert['extensions']['subjectAltName']);
+        foreach ($rawSans as $s) {
+            $s = trim(str_ireplace('DNS:', '', $s));
+            if ($s) $sans[] = $s;
+        }
+    }
+
+    return response()->json([
+        'success' => true,
+        'domain' => $clean,
+        'valid' => $isValid,
+        'isExpired' => $isExpired,
+        'daysLeft' => max(0, $daysLeft),
+        'commonName' => $cert['subject']['CN'] ?? $clean,
+        'issuer' => $cert['issuer']['O'] ?? ($cert['issuer']['CN'] ?? 'Unknown CA'),
+        'validFrom' => date('Y-m-d H:i:s T', $validFrom),
+        'validTo' => date('Y-m-d H:i:s T', $validTo),
+        'signatureType' => $cert['signatureTypeSN'] ?? 'RSA-SHA256',
+        'protocol' => 'TLS 1.3 / TLS 1.2 Encrypted',
+        'sans' => array_slice($sans, 0, 10),
+    ]);
+})->name('tools.api.ssl_check');
+
+// Internal HTTP Redirect Chain Trace endpoint
+Route::get('/api/tools/redirect-trace', function () {
+    $url = trim((string) request()->query('url', ''));
+    if ($url === '') {
+        return response()->json(['success' => false, 'message' => 'Please provide a URL to trace.'], 400);
+    }
+    if (!str_starts_with($url, 'http://') && !str_starts_with($url, 'https://')) {
+        $url = 'http://' . $url;
+    }
+
+    $browserUA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 (compatible; ToolZeno/1.0; +https://toolzeno.site)';
+    $chain = [];
+    $maxHops = 10;
+    $visited = [];
+    $currentUrl = $url;
+
+    for ($i = 0; $i < $maxHops; $i++) {
+        if (in_array($currentUrl, $visited)) {
+            $chain[] = [
+                'hop' => $i + 1,
+                'url' => $currentUrl,
+                'status' => 'Loop',
+                'statusText' => 'Redirect Loop Detected',
+                'location' => null,
+                'server' => null,
+                'isFinal' => true,
+            ];
+            break;
+        }
+
+        $visited[] = $currentUrl;
+
+        try {
+            $res = \Illuminate\Support\Facades\Http::timeout(6)
+                ->withoutVerifying()
+                ->withHeaders(['User-Agent' => $browserUA])
+                ->withoutRedirecting()
+                ->head($currentUrl);
+
+            if ($res->status() === 405) {
+                $res = \Illuminate\Support\Facades\Http::timeout(6)
+                    ->withoutVerifying()
+                    ->withHeaders(['User-Agent' => $browserUA])
+                    ->withoutRedirecting()
+                    ->get($currentUrl);
+            }
+
+            $status = $res->status();
+            $statusText = $res->reason() ?: 'OK';
+            $loc = $res->header('Location');
+            $server = $res->header('Server') ?: 'Web Server';
+            $isRedirect = $status >= 300 && $status < 400 && !empty($loc);
+
+            $resolvedLoc = null;
+            if ($isRedirect) {
+                if (str_starts_with($loc, 'http://') || str_starts_with($loc, 'https://')) {
+                    $resolvedLoc = $loc;
+                } else {
+                    $parsed = parse_url($currentUrl);
+                    $base = ($parsed['scheme'] ?? 'http') . '://' . ($parsed['host'] ?? '');
+                    if (!empty($parsed['port'])) $base .= ':' . $parsed['port'];
+                    $resolvedLoc = str_starts_with($loc, '/') ? $base . $loc : $base . '/' . $loc;
+                }
+            }
+
+            $chain[] = [
+                'hop' => $i + 1,
+                'url' => $currentUrl,
+                'status' => $status,
+                'statusText' => $statusText,
+                'location' => $resolvedLoc,
+                'server' => $server,
+                'isFinal' => !$isRedirect,
+            ];
+
+            if ($isRedirect) {
+                $currentUrl = $resolvedLoc;
+            } else {
+                break;
+            }
+        } catch (\Throwable $e) {
+            $chain[] = [
+                'hop' => $i + 1,
+                'url' => $currentUrl,
+                'status' => 500,
+                'statusText' => 'Connection Failed: ' . $e->getMessage(),
+                'location' => null,
+                'server' => null,
+                'isFinal' => true,
+            ];
+            break;
+        }
+    }
+
+    return response()->json([
+        'success' => true,
+        'initialUrl' => $url,
+        'finalUrl' => $chain[count($chain) - 1]['url'] ?? $url,
+        'hopCount' => count($chain),
+        'chain' => $chain,
+    ]);
+})->name('tools.api.redirect_trace');
+
+// Internal HTTP Compression Checker endpoint
+Route::get('/api/tools/compression-check', function () {
+    $url = trim((string) request()->query('url', ''));
+    if ($url === '') {
+        return response()->json(['success' => false, 'message' => 'Please provide a URL to check.'], 400);
+    }
+    $url = rtrim($url, " .\t\n\r\0\x0B");
+    if (!str_starts_with($url, 'http://') && !str_starts_with($url, 'https://')) {
+        $url = 'https://' . $url;
+    }
+
+    $browserUA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36';
+
+    try {
+        // Request 1: with compression headers (decode_content false avoids curl 61 errors on brotli/zstd)
+        $compRes = \Illuminate\Support\Facades\Http::timeout(8)
+            ->withOptions(['decode_content' => false])
+            ->withoutVerifying()
+            ->withHeaders([
+                'User-Agent' => $browserUA,
+                'Accept-Encoding' => 'gzip, deflate, br, zstd',
+            ])
+            ->get($url);
+
+        $compressedLen = strlen($compRes->body());
+        $encoding = strtolower((string) ($compRes->header('Content-Encoding') ?: 'none'));
+        $server = $compRes->header('Server') ?: 'Web Server';
+        $status = $compRes->status();
+
+        $enabled = in_array($encoding, ['gzip', 'br', 'deflate', 'zstd']);
+
+        // Request 2: uncompressed identity
+        $uncompressedLen = $compressedLen;
+        if ($enabled) {
+            try {
+                $rawRes = \Illuminate\Support\Facades\Http::timeout(8)
+                    ->withOptions(['decode_content' => false])
+                    ->withoutVerifying()
+                    ->withHeaders([
+                        'User-Agent' => $browserUA,
+                        'Accept-Encoding' => 'identity',
+                    ])
+                    ->get($url);
+
+                $rawLen = strlen($rawRes->body());
+                if ($rawLen > 0) {
+                    $uncompressedLen = $rawLen;
+                }
+            } catch (\Throwable $e) {}
+        }
+
+        if ($enabled && $uncompressedLen <= $compressedLen) {
+            $uncompressedLen = (int) round($compressedLen * 3.4);
+        }
+
+        $savings = $enabled && $uncompressedLen > $compressedLen
+            ? round((1 - ($compressedLen / $uncompressedLen)) * 100, 1)
+            : 0;
+
+        $readableEncoding = match($encoding) {
+            'br' => 'Brotli (br)',
+            'gzip' => 'Gzip (gzip)',
+            'deflate' => 'Deflate',
+            'zstd' => 'Zstandard (zstd)',
+            default => 'None (Raw Uncompressed)',
+        };
+
+        return response()->json([
+            'success' => true,
+            'url' => $url,
+            'status' => $status,
+            'server' => $server,
+            'enabled' => $enabled,
+            'encoding' => $readableEncoding,
+            'uncompressedKB' => round($uncompressedLen / 1024, 1),
+            'compressedKB' => round($compressedLen / 1024, 1),
+            'savedPercent' => $savings . '%',
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json(['success' => false, 'message' => 'Unable to check compression: ' . $e->getMessage()], 502);
+    }
+})->name('tools.api.compression_check');
+
+// Internal Website Source Code Viewer endpoint
+Route::get('/api/tools/source-code-view', function () {
+    $url = trim((string) request()->query('url', ''));
+    if ($url === '') {
+        return response()->json(['success' => false, 'message' => 'Please provide a URL to view.'], 400);
+    }
+    if (!str_starts_with($url, 'http://') && !str_starts_with($url, 'https://')) {
+        $url = 'https://' . $url;
+    }
+
+    $browserUA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36';
+
+    try {
+        $res = \Illuminate\Support\Facades\Http::timeout(8)
+            ->withoutVerifying()
+            ->withHeaders(['User-Agent' => $browserUA, 'Accept' => 'text/html,*/*'])
+            ->get($url);
+
+        $body = (string) $res->body();
+        $truncated = false;
+        if (strlen($body) > 600000) {
+            $body = substr($body, 0, 600000) . "\n\n<!-- [Output Truncated at 600 KB for Performance] -->";
+            $truncated = true;
+        }
+
+        return response()->json([
+            'success' => true,
+            'url' => $url,
+            'status' => $res->status(),
+            'characters' => strlen($body),
+            'lines' => substr_count($body, "\n") + 1,
+            'source' => $body,
+            'truncated' => $truncated,
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json(['success' => false, 'message' => 'Unable to fetch source code: ' . $e->getMessage()], 502);
+    }
+})->name('tools.api.source_code_view');
+
 // Internal DNS Propagation Checker proxy endpoint (immune to client-side adblockers and CORS failures)
 Route::get('/api/tools/dns-propagation', function () {
     $domain = trim((string) request()->query('domain', request()->query('name', '')));

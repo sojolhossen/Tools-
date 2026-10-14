@@ -219,6 +219,64 @@ final class PublicPagesTest extends TestCase
         $responsePage->assertSee('Internet Speed Test');
         $responsePage->assertSee('speed.cloudflare.com', false);
     }
+
+    public function test_security_headers_checker_endpoint_and_page(): void
+    {
+        $responseEmpty = $this->getJson('/api/tools/security-headers');
+        $responseEmpty->assertStatus(400);
+
+        $responsePage = $this->get('/en/tools/security-headers-checker');
+        $responsePage->assertStatus(200);
+        $responsePage->assertSee('Security Headers Checker');
+        $responsePage->assertSee('/api/tools/security-headers', false);
+    }
+
+    public function test_ssl_checker_endpoint_and_page(): void
+    {
+        $responseEmpty = $this->getJson('/api/tools/ssl-check');
+        $responseEmpty->assertStatus(400);
+
+        $responseInvalid = $this->getJson('/api/tools/ssl-check?domain=nodot');
+        $responseInvalid->assertStatus(422);
+
+        $responsePage = $this->get('/en/tools/ssl-checker');
+        $responsePage->assertStatus(200);
+        $responsePage->assertSee('SSL / TLS Certificate Checker');
+        $responsePage->assertSee('/api/tools/ssl-check', false);
+    }
+
+    public function test_redirect_checker_endpoint_and_page(): void
+    {
+        $responseEmpty = $this->getJson('/api/tools/redirect-trace');
+        $responseEmpty->assertStatus(400);
+
+        $responsePage = $this->get('/en/tools/redirect-checker');
+        $responsePage->assertStatus(200);
+        $responsePage->assertSee('URL Redirect Chain Checker');
+        $responsePage->assertSee('/api/tools/redirect-trace', false);
+    }
+
+    public function test_compression_checker_endpoint_and_page(): void
+    {
+        $responseEmpty = $this->getJson('/api/tools/compression-check');
+        $responseEmpty->assertStatus(400);
+
+        $responsePage = $this->get('/en/tools/compression-checker');
+        $responsePage->assertStatus(200);
+        $responsePage->assertSee('Compression Checker');
+        $responsePage->assertSee('/api/tools/compression-check', false);
+    }
+
+    public function test_source_code_viewer_endpoint_and_page(): void
+    {
+        $responseEmpty = $this->getJson('/api/tools/source-code-view');
+        $responseEmpty->assertStatus(400);
+
+        $responsePage = $this->get('/en/tools/source-code-viewer');
+        $responsePage->assertStatus(200);
+        $responsePage->assertSee('Source Code Viewer');
+        $responsePage->assertSee('/api/tools/source-code-view', false);
+    }
 }
 
 

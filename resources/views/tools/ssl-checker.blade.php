@@ -27,41 +27,102 @@
 
 
         <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 sm:p-8 space-y-6">
-            <div class="flex flex-col sm:flex-row gap-3">
-                <input type="text" x-model="domain" @keydown.enter="checkSsl()" placeholder="example.com" class="flex-1 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-mono text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none">
-                <button type="button" @click="checkSsl()" :disabled="loading" class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-sm transition-all flex items-center justify-center gap-2">
-                    <span x-show="!loading">Check SSL Status</span>
-                    <span x-show="loading">Inspecting Certificate...</span>
-                </button>
+            <!-- Input & Actions -->
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Target Hostname or Domain</label>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <div class="relative flex-1">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 font-mono text-sm">🔒</span>
+                        <input type="text" x-model="domain" @keydown.enter="checkSsl()" placeholder="example.com" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-mono text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none transition-all">
+                    </div>
+                    <button type="button" @click="checkSsl()" :disabled="loading" class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white font-semibold text-sm shadow-sm transition-all flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer">
+                        <svg x-show="loading" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                        </svg>
+                        <span x-show="!loading">Check SSL Status</span>
+                        <span x-show="loading">Inspecting Certificate...</span>
+                    </button>
+                </div>
+                <!-- Presets -->
+                <div class="mt-3 flex flex-wrap items-center gap-2 text-xs">
+                    <span class="text-slate-500">Quick Test:</span>
+                    <button type="button" @click="setPreset('shebafind.site')" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-950/60 text-slate-700 dark:text-slate-300 hover:text-blue-600 transition-colors font-mono">shebafind.site</button>
+                    <button type="button" @click="setPreset('google.com')" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-950/60 text-slate-700 dark:text-slate-300 hover:text-blue-600 transition-colors font-mono">google.com</button>
+                    <button type="button" @click="setPreset('cloudflare.com')" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-950/60 text-slate-700 dark:text-slate-300 hover:text-blue-600 transition-colors font-mono">cloudflare.com</button>
+                    <button type="button" @click="setPreset('github.com')" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-950/60 text-slate-700 dark:text-slate-300 hover:text-blue-600 transition-colors font-mono">github.com</button>
+                </div>
             </div>
 
-            <!-- SSL Validity Badge Card -->
-            <div class="p-6 rounded-2xl border flex items-center justify-between" :class="valid ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-900' : 'bg-rose-50 dark:bg-rose-950/40 border-rose-200 dark:border-rose-900'">
+            <!-- Error Banner -->
+            <div x-show="errorMessage" x-cloak class="p-4 rounded-xl border border-rose-200 dark:border-rose-900 bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 text-sm flex items-start gap-3">
+                <span class="text-lg">⚠️</span>
                 <div>
-                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Certificate Status</span>
-                    <div class="text-2xl font-extrabold text-slate-900 dark:text-white mt-1" x-text="valid ? 'Valid & Trusted SSL Certificate' : 'SSL Certificate Invalid / Expired'"></div>
-                    <span class="text-xs text-slate-500" x-text="'Issued to ' + domain"></span>
+                    <strong class="font-semibold block">SSL Verification Failed</strong>
+                    <span x-text="errorMessage"></span>
                 </div>
-                <div class="text-3xl">🔒</div>
             </div>
 
-            <!-- Details Grid -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs font-mono">
-                <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
-                    <span class="text-slate-500 block mb-1">Issuer Authority</span>
-                    <span class="font-bold text-slate-900 dark:text-slate-100 truncate block" x-text="issuer"></span>
+            <!-- Loading Skeleton -->
+            <div x-show="loading" class="animate-pulse space-y-4">
+                <div class="h-24 bg-slate-100 dark:bg-slate-800 rounded-2xl"></div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div class="h-20 bg-slate-100 dark:bg-slate-800 rounded-xl"></div>
+                    <div class="h-20 bg-slate-100 dark:bg-slate-800 rounded-xl"></div>
+                    <div class="h-20 bg-slate-100 dark:bg-slate-800 rounded-xl"></div>
+                    <div class="h-20 bg-slate-100 dark:bg-slate-800 rounded-xl"></div>
                 </div>
-                <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
-                    <span class="text-slate-500 block mb-1">Expiration Date</span>
-                    <span class="font-bold text-slate-900 dark:text-slate-100" x-text="expiryDate"></span>
+            </div>
+
+            <!-- Results Section -->
+            <div x-show="!loading && audited" x-cloak class="space-y-6">
+                <!-- SSL Validity Badge Card -->
+                <div class="p-6 rounded-2xl border flex items-center justify-between transition-all"
+                    :class="valid ? 'bg-emerald-50/70 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-800 text-emerald-900 dark:text-emerald-100' : 'bg-rose-50/70 dark:bg-rose-950/30 border-rose-300 dark:border-rose-800 text-rose-900 dark:text-rose-100'">
+                    <div class="space-y-1">
+                        <span class="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
+                            :class="valid ? 'bg-emerald-200/60 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300' : 'bg-rose-200/60 dark:bg-rose-900/60 text-rose-800 dark:text-rose-300'">
+                            Certificate Status
+                        </span>
+                        <div class="text-2xl font-black tracking-tight" x-text="valid ? 'Valid & Trusted SSL Certificate' : 'SSL Certificate Invalid / Expired'"></div>
+                        <div class="text-xs font-mono opacity-80" x-text="'Issued to ' + (commonName || checkedDomain)"></div>
+                    </div>
+                    <div class="text-4xl p-3 rounded-2xl bg-white/60 dark:bg-slate-900/60 border border-current/20">
+                        <span x-text="valid ? '🔒' : '⚠️'"></span>
+                    </div>
                 </div>
-                <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
-                    <span class="text-slate-500 block mb-1">Days Remaining</span>
-                    <span class="text-base font-bold text-emerald-600 dark:text-emerald-400" x-text="daysLeft + ' Days'"></span>
+
+                <!-- Details Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs font-mono">
+                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+                        <span class="text-slate-500 block mb-1">Issuer Authority</span>
+                        <span class="font-bold text-slate-900 dark:text-slate-100 truncate block text-sm" x-text="issuer"></span>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+                        <span class="text-slate-500 block mb-1">Expiration Date</span>
+                        <span class="font-bold text-slate-900 dark:text-slate-100 block text-sm" x-text="validTo"></span>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+                        <span class="text-slate-500 block mb-1">Days Remaining</span>
+                        <span class="text-base font-bold"
+                            :class="daysLeft > 30 ? 'text-emerald-600 dark:text-emerald-400' : (daysLeft > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-rose-600 dark:text-rose-400')"
+                            x-text="daysLeft + ' Days'">
+                        </span>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+                        <span class="text-slate-500 block mb-1">Signature Cipher</span>
+                        <span class="font-bold text-slate-900 dark:text-slate-100 block text-sm" x-text="signatureType"></span>
+                    </div>
                 </div>
-                <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
-                    <span class="text-slate-500 block mb-1">TLS Protocol</span>
-                    <span class="font-bold text-slate-900 dark:text-slate-100" x-text="protocol"></span>
+
+                <!-- SANs & Extra Info -->
+                <div x-show="sans && sans.length > 0" class="p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-2">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Subject Alternative Names (SANs):</span>
+                    <div class="flex flex-wrap gap-2 pt-1">
+                        <template x-for="san in sans" :key="san">
+                            <span class="px-2.5 py-1 rounded-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 font-mono text-xs text-slate-700 dark:text-slate-300" x-text="san"></span>
+                        </template>
+                    </div>
                 </div>
             </div>
         </div>
@@ -69,26 +130,69 @@
         <script>
         function sslCheckerApp() {
             return {
-                domain: 'google.com',
+                domain: 'shebafind.site',
+                checkedDomain: '',
                 loading: false,
+                audited: false,
+                errorMessage: '',
                 valid: true,
-                issuer: 'Google Trust Services LLC',
-                expiryDate: '2026-12-31',
-                daysLeft: 80,
-                protocol: 'TLS 1.3 (ChaCha20 / AES-GCM)',
+                isExpired: false,
+                issuer: '',
+                commonName: '',
+                validFrom: '',
+                validTo: '',
+                daysLeft: 0,
+                signatureType: '',
+                protocol: '',
+                sans: [],
+
                 init() {
                     this.checkSsl();
                 },
-                checkSsl() {
+
+                setPreset(target) {
+                    this.domain = target;
+                    this.checkSsl();
+                },
+
+                async checkSsl() {
+                    let raw = (this.domain || '').trim();
+                    if (!raw) {
+                        this.errorMessage = 'Please enter a domain name to inspect.';
+                        return;
+                    }
+
+                    raw = raw.replace(/^https?:\/\//i, '').replace(/\/.*$/, '').replace(/\.+$/, '');
+                    this.domain = raw;
+
                     this.loading = true;
-                    setTimeout(() => {
-                        this.valid = true;
-                        this.daysLeft = Math.floor(Math.random() * 60 + 40);
-                        const exp = new Date();
-                        exp.setDate(exp.getDate() + this.daysLeft);
-                        this.expiryDate = exp.toISOString().split('T')[0];
+                    this.errorMessage = '';
+
+                    try {
+                        const res = await fetch('/api/tools/ssl-check?domain=' + encodeURIComponent(raw));
+                        const data = await res.json();
+
+                        if (!res.ok || !data.success) {
+                            throw new Error(data.message || 'Failed to inspect SSL certificate.');
+                        }
+
+                        this.checkedDomain = data.domain;
+                        this.valid = data.valid;
+                        this.isExpired = data.isExpired;
+                        this.issuer = data.issuer;
+                        this.commonName = data.commonName;
+                        this.validFrom = data.validFrom;
+                        this.validTo = data.validTo;
+                        this.daysLeft = data.daysLeft;
+                        this.signatureType = data.signatureType;
+                        this.protocol = data.protocol;
+                        this.sans = data.sans || [];
+                        this.audited = true;
+                    } catch (err) {
+                        this.errorMessage = err.message || 'Unable to establish TLS connection on port 443. Check that the domain has an active SSL certificate.';
+                    } finally {
                         this.loading = false;
-                    }, 400);
+                    }
                 }
             };
         }
