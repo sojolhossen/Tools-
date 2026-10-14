@@ -321,6 +321,152 @@ Route::get('/api/tools/whois', function () {
     ]);
 })->name('tools.api.whois');
 
+// Internal DNS Record Lookup proxy endpoint (immune to browser CORS, client adblockers, and ISP DoH filtering)
+Route::get('/api/tools/dns-lookup', function () {
+    $domain = trim((string) request()->query('name', request()->query('domain', '')));
+    $type = strtoupper(trim((string) request()->query('type', 'A')));
+
+    if ($domain === '') {
+        return response()->json([
+            'success' => false,
+            'message' => 'Please provide a domain name to lookup.',
+        ], 400);
+    }
+
+    $clean = preg_replace('#^https?://#i', '', $domain);
+    $clean = trim(explode('/', $clean)[0]);
+    $clean = trim(explode(':', $clean)[0]);
+    $clean = strtolower($clean);
+
+    if ($clean === '' || !str_contains($clean, '.')) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Invalid domain format. Example: example.com',
+        ], 422);
+    }
+
+    $allowedTypes = ['A', 'AAAA', 'CNAME', 'MX', 'TXT', 'NS', 'SOA', 'CAA', 'PTR', 'SRV'];
+    if (!in_array($type, $allowedTypes)) {
+        $type = 'A';
+    }
+
+    $records = [];
+    $status = 0;
+
+    // 1. Primary: Google DoH API
+    try {
+        $res = \Illuminate\Support\Facades\Http::timeout(6)
+            ->get('https://dns.google/resolve', [
+                'name' => $clean,
+                'type' => $type,
+            ]);
+
+        if ($res->successful()) {
+            $data = $res->json();
+            $status = $data['Status'] ?? 0;
+            if (!empty($data['Answer']) && is_array($data['Answer'])) {
+                foreach ($data['Answer'] as $ans) {
+                    $records[] = [
+                        'name' => rtrim($ans['name'] ?? $clean, '.'),
+                        'type' => $type,
+                        'TTL' => $ans['TTL'] ?? 300,
+                        'data' => (string) ($ans['data'] ?? ''),
+                    ];
+                }
+            }
+        }
+    } catch (\Throwable $e) {}
+
+    // 2. Secondary fallback: Cloudflare DoH API
+    if (empty($records) && $status !== 3) {
+        try {
+            $cfRes = \Illuminate\Support\Facades\Http::timeout(5)
+                ->withHeaders([
+                    'Accept' => 'application/dns-json',
+                    'User-Agent' => 'ToolZeno-DNS/1.0',
+                ])
+                ->get('https://cloudflare-dns.com/dns-query', [
+                    'name' => $clean,
+                    'type' => $type,
+                ]);
+
+            if ($cfRes->successful()) {
+                $cfData = $cfRes->json();
+                $status = $cfData['Status'] ?? $status;
+                if (!empty($cfData['Answer']) && is_array($cfData['Answer'])) {
+                    foreach ($cfData['Answer'] as $ans) {
+                        $records[] = [
+                            'name' => rtrim($ans['name'] ?? $clean, '.'),
+                            'type' => $type,
+                            'TTL' => $ans['TTL'] ?? 300,
+                            'data' => (string) ($ans['data'] ?? ''),
+                        ];
+                    }
+                }
+            }
+        } catch (\Throwable $e) {}
+    }
+
+    // 3. Tertiary fallback: PHP Native dns_get_record()
+    if (empty($records) && $status !== 3) {
+        try {
+            $typeConstMap = [
+                'A' => DNS_A,
+                'AAAA' => DNS_AAAA,
+                'CNAME' => DNS_CNAME,
+                'MX' => DNS_MX,
+                'TXT' => DNS_TXT,
+                'NS' => DNS_NS,
+                'SOA' => DNS_SOA,
+                'CAA' => defined('DNS_CAA') ? DNS_CAA : DNS_ANY,
+            ];
+
+            if (isset($typeConstMap[$type])) {
+                $nativeRecords = @dns_get_record($clean, $typeConstMap[$type]);
+                if (is_array($nativeRecords)) {
+                    foreach ($nativeRecords as $rec) {
+                        $val = '';
+                        if ($type === 'A' && !empty($rec['ip'])) $val = $rec['ip'];
+                        elseif ($type === 'AAAA' && !empty($rec['ipv6'])) $val = $rec['ipv6'];
+                        elseif ($type === 'CNAME' && !empty($rec['target'])) $val = $rec['target'];
+                        elseif ($type === 'MX' && !empty($rec['target'])) $val = ($rec['pri'] ?? 10) . ' ' . $rec['target'];
+                        elseif ($type === 'TXT' && !empty($rec['txt'])) $val = $rec['txt'];
+                        elseif ($type === 'NS' && !empty($rec['target'])) $val = $rec['target'];
+                        elseif ($type === 'SOA') $val = ($rec['mname'] ?? '') . ' ' . ($rec['rname'] ?? '');
+                        elseif ($type === 'CAA') $val = ($rec['flags'] ?? 0) . ' ' . ($rec['tag'] ?? '') . ' "' . ($rec['value'] ?? '') . '"';
+
+                        if ($val !== '') {
+                            $records[] = [
+                                'name' => $rec['host'] ?? $clean,
+                                'type' => $type,
+                                'TTL' => $rec['ttl'] ?? 300,
+                                'data' => $val,
+                            ];
+                        }
+                    }
+                }
+            }
+        } catch (\Throwable $e) {}
+    }
+
+    if ($status === 3) {
+        return response()->json([
+            'success' => false,
+            'status' => 3,
+            'message' => 'NXDOMAIN: Domain ' . $clean . ' does not exist or has no active DNS zone.',
+            'records' => [],
+        ], 404);
+    }
+
+    return response()->json([
+        'success' => true,
+        'domain' => $clean,
+        'type' => $type,
+        'status' => $status,
+        'records' => $records,
+    ]);
+})->name('tools.api.dns_lookup');
+
 /*
 |--------------------------------------------------------------------------
 | Localized Public Routes (en, bn)

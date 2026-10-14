@@ -29,51 +29,73 @@
         <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 sm:p-8 space-y-6">
             <div class="flex flex-col sm:flex-row gap-3">
                 <input type="text" x-model="domain" @keydown.enter="lookup()" placeholder="example.com" class="flex-1 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-mono text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none">
-                <select x-model="recordType" class="px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 text-sm font-semibold">
+                <select x-model="recordType" class="px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 text-sm font-semibold focus:ring-2 focus:ring-blue-600 focus:outline-none cursor-pointer">
                     <option value="A">A (IPv4)</option>
                     <option value="AAAA">AAAA (IPv6)</option>
                     <option value="CNAME">CNAME</option>
                     <option value="MX">MX (Mail)</option>
-                    <option value="TXT">TXT / SPF</option>
+                    <option value="TXT">TXT / SPF / Verification</option>
                     <option value="NS">NS (Name Server)</option>
                     <option value="SOA">SOA</option>
                     <option value="CAA">CAA</option>
+                    <option value="PTR">PTR</option>
+                    <option value="SRV">SRV</option>
                 </select>
-                <button type="button" @click="lookup()" :disabled="loading" class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-sm transition-all flex items-center justify-center gap-2">
+                <button type="button" @click="lookup()" :disabled="loading" class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-semibold text-sm shadow-sm transition-all flex items-center justify-center gap-2">
+                    <svg x-show="loading" class="animate-spin -ml-1 mr-1.5 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
                     <span x-show="!loading">Query DNS</span>
                     <span x-show="loading">Resolving...</span>
                 </button>
             </div>
 
             <!-- Error -->
-            <div x-show="error" x-text="error" class="p-4 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900 text-rose-700 dark:text-rose-400 text-sm"></div>
-
-            <!-- DNS Records Table -->
-            <div x-show="records.length > 0" class="overflow-x-auto">
-                <table class="w-full text-left border-collapse text-xs font-mono">
-                    <thead>
-                        <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-500 uppercase">
-                            <th class="py-3 px-4">Name</th>
-                            <th class="py-3 px-4">Type</th>
-                            <th class="py-3 px-4">TTL</th>
-                            <th class="py-3 px-4">Data / Target Value</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60">
-                        <template x-for="(r, idx) in records" :key="idx">
-                            <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-950/50">
-                                <td class="py-3 px-4 font-bold text-slate-900 dark:text-slate-100" x-text="r.name"></td>
-                                <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 font-bold" x-text="recordType"></span></td>
-                                <td class="py-3 px-4 text-slate-500" x-text="r.TTL + 's'"></td>
-                                <td class="py-3 px-4 font-bold text-slate-800 dark:text-slate-200 break-all" x-text="r.data"></td>
-                            </tr>
-                        </template>
-                    </tbody>
-                </table>
+            <div x-show="error" x-cloak class="p-4 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900 text-rose-700 dark:text-rose-400 text-sm flex items-start gap-3">
+                <svg class="w-5 h-5 flex-shrink-0 text-rose-500 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span x-text="error"></span>
             </div>
 
-            <div x-show="!loading && searched && records.length === 0 && !error" class="text-center py-8 text-slate-500 text-sm">
-                No DNS records found for this domain and type.
+            <!-- DNS Records Table -->
+            <div x-show="records.length > 0" x-cloak class="space-y-3">
+                <div class="flex items-center justify-between text-xs text-slate-500 px-1">
+                    <span>Found <strong class="text-slate-900 dark:text-white" x-text="records.length"></strong> record(s)</span>
+                    <button type="button" @click="copyAll()" class="text-blue-600 dark:text-blue-400 hover:underline font-semibold flex items-center gap-1">
+                        <span x-text="copiedAll ? 'Copied!' : 'Copy All Results'"></span>
+                    </button>
+                </div>
+                <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
+                    <table class="w-full text-left border-collapse text-xs font-mono">
+                        <thead class="bg-slate-50 dark:bg-slate-950">
+                            <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-500 uppercase tracking-wider text-[11px]">
+                                <th class="py-3 px-4 font-semibold">Host / Name</th>
+                                <th class="py-3 px-4 font-semibold">Type</th>
+                                <th class="py-3 px-4 font-semibold">TTL</th>
+                                <th class="py-3 px-4 font-semibold">Target / Data Value</th>
+                                <th class="py-3 px-4 text-right font-semibold">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60 bg-white dark:bg-slate-900">
+                            <template x-for="(r, idx) in records" :key="idx">
+                                <tr class="hover:bg-slate-50/60 dark:hover:bg-slate-950/60 transition-colors">
+                                    <td class="py-3 px-4 font-bold text-slate-900 dark:text-slate-100" x-text="r.name"></td>
+                                    <td class="py-3 px-4">
+                                        <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300" x-text="r.type || recordType"></span>
+                                    </td>
+                                    <td class="py-3 px-4 text-slate-500" x-text="(r.TTL || 300) + 's'"></td>
+                                    <td class="py-3 px-4 font-bold text-slate-800 dark:text-slate-200 break-all" x-text="r.data"></td>
+                                    <td class="py-3 px-4 text-right">
+                                        <button type="button" @click="copyValue(r.data)" class="px-2.5 py-1 rounded-lg text-[11px] font-sans font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                                            Copy
+                                        </button>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div x-show="!loading && searched && records.length === 0 && !error" x-cloak class="text-center py-8 text-slate-500 text-sm">
+                No <span class="font-bold text-slate-700 dark:text-slate-300" x-text="recordType"></span> records found for this domain.
             </div>
         </div>
 
@@ -86,30 +108,44 @@
                 searched: false,
                 records: [],
                 error: null,
+                copiedAll: false,
                 init() {
                     this.lookup();
                 },
+                copyValue(val) {
+                    navigator.clipboard.writeText(val);
+                },
+                copyAll() {
+                    if (this.records.length === 0) return;
+                    const text = this.records.map(r => `${r.name}\t${r.type || this.recordType}\t${r.TTL || 300}\t${r.data}`).join('\n');
+                    navigator.clipboard.writeText(text);
+                    this.copiedAll = true;
+                    setTimeout(() => this.copiedAll = false, 2000);
+                },
                 async lookup() {
-                    if (!this.domain.trim()) return;
+                    if (!this.domain || !this.domain.trim()) return;
                     this.loading = true;
                     this.error = null;
                     this.records = [];
                     this.searched = true;
                     try {
-                        const cleanDomain = this.domain.replace(/^https?:\/\//, '').replace(/\/.*$/, '').trim();
-                        const url = 'https://dns.google/resolve?name=' + encodeURIComponent(cleanDomain) + '&type=' + this.recordType;
-                        const res = await fetch(url).then(r => r.json());
-                        if (res.Answer && Array.isArray(res.Answer)) {
-                            this.records = res.Answer;
-                        } else if (res.Status === 3) {
-                            this.error = 'NXDOMAIN: Domain does not exist.';
+                        const cleanDomain = this.domain.replace(/^https?:\/\//i, '').replace(/\/.*$/, '').trim();
+                        const url = '/api/tools/dns-lookup?name=' + encodeURIComponent(cleanDomain) + '&type=' + encodeURIComponent(this.recordType);
+                        const response = await fetch(url);
+                        const res = await response.json();
+
+                        if (response.ok && res.success) {
+                            this.records = res.records || [];
+                        } else if (res.status === 3 || response.status === 404) {
+                            this.error = res.message || 'NXDOMAIN: Domain does not exist or has no active DNS zone.';
                         } else {
-                            this.records = [];
+                            this.error = res.message || 'Unable to retrieve DNS records for this domain.';
                         }
                     } catch (e) {
-                        this.error = 'Failed to resolve DNS over HTTPS query.';
+                        this.error = 'Failed to resolve DNS query. Please check your network connection.';
+                    } finally {
+                        this.loading = false;
                     }
-                    this.loading = false;
                 }
             };
         }

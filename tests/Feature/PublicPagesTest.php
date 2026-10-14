@@ -138,6 +138,21 @@ final class PublicPagesTest extends TestCase
         $responseBn = $this->get('/bn/tools/webrtc-ip-leak-checker');
         $responseBn->assertStatus(200);
     }
+
+    public function test_dns_lookup_api_and_page_renders_successfully(): void
+    {
+        $responseEmpty = $this->getJson('/api/tools/dns-lookup');
+        $responseEmpty->assertStatus(400);
+
+        $responseInvalid = $this->getJson('/api/tools/dns-lookup?name=nodot');
+        $responseInvalid->assertStatus(422);
+
+        $responsePage = $this->get('/en/tools/dns-lookup');
+        $responsePage->assertStatus(200);
+        $responsePage->assertSee('DNS Record Lookup');
+        $responsePage->assertSee('/api/tools/dns-lookup', false);
+    }
 }
+
 
 
