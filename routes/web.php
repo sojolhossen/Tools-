@@ -742,6 +742,321 @@ Route::get('/api/tools/dns-propagation', function () {
     ]);
 })->name('tools.api.dns_propagation');
 
+// Internal SPF, DKIM & DMARC email security audit proxy endpoint (immune to CORS and client DoH blocking)
+Route::get('/api/tools/spf-dkim-dmarc', function () {
+    $domain = trim((string) request()->query('domain', request()->query('name', '')));
+    $selector = trim((string) request()->query('selector', ''));
+
+    if ($domain === '') {
+        return response()->json([
+            'success' => false,
+            'message' => 'Please provide a domain name to audit.',
+        ], 400);
+    }
+
+    $clean = preg_replace('#^https?://#i', '', $domain);
+    $clean = trim(explode('/', $clean)[0]);
+    $clean = trim(explode(':', $clean)[0]);
+    $clean = strtolower($clean);
+
+    if ($clean === '' || !str_contains($clean, '.')) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Invalid domain format. Example: example.com',
+        ], 422);
+    }
+
+    // Helper to fetch DNS records server-side with fallback
+    $lookupRecords = function (string $host, string $type = 'TXT'): array {
+        $found = [];
+
+        // 1. Google DoH
+        try {
+            $res = \Illuminate\Support\Facades\Http::timeout(5)
+                ->get('https://dns.google/resolve', ['name' => $host, 'type' => $type]);
+            if ($res->successful()) {
+                $answers = $res->json()['Answer'] ?? [];
+                if (is_array($answers)) {
+                    foreach ($answers as $ans) {
+                        if (!empty($ans['data'])) {
+                            $found[] = trim((string) $ans['data'], '"');
+                        }
+                    }
+                }
+            }
+        } catch (\Throwable $e) {}
+
+        // 2. Cloudflare DoH fallback
+        if (empty($found)) {
+            try {
+                $cfRes = \Illuminate\Support\Facades\Http::timeout(4)
+                    ->withHeaders(['Accept' => 'application/dns-json'])
+                    ->get('https://cloudflare-dns.com/dns-query', ['name' => $host, 'type' => $type]);
+                if ($cfRes->successful()) {
+                    $answers = $cfRes->json()['Answer'] ?? [];
+                    if (is_array($answers)) {
+                        foreach ($answers as $ans) {
+                            if (!empty($ans['data'])) {
+                                $found[] = trim((string) $ans['data'], '"');
+                            }
+                        }
+                    }
+                }
+            } catch (\Throwable $e) {}
+        }
+
+        // 3. PHP Native dns_get_record fallback
+        if (empty($found)) {
+            try {
+                $const = $type === 'MX' ? DNS_MX : DNS_TXT;
+                $native = @dns_get_record($host, $const);
+                if (is_array($native)) {
+                    foreach ($native as $n) {
+                        if ($type === 'MX' && !empty($n['target'])) {
+                            $found[] = ($n['pri'] ?? 10) . ' ' . $n['target'];
+                        } elseif (!empty($n['txt'])) {
+                            $found[] = $n['txt'];
+                        }
+                    }
+                }
+            } catch (\Throwable $e) {}
+        }
+
+        return $found;
+    };
+
+    // 1. SPF Inspection
+    $apexTxts = $lookupRecords($clean, 'TXT');
+    $spfRecords = [];
+    foreach ($apexTxts as $t) {
+        if (stripos($t, 'v=spf1') !== false) {
+            $spfRecords[] = $t;
+        }
+    }
+
+    $spfFound = !empty($spfRecords);
+    $rawSpf = $spfFound ? $spfRecords[0] : null;
+    $spfMultiple = count($spfRecords) > 1;
+
+    $spfDetails = [
+        'found' => $spfFound,
+        'record' => $rawSpf,
+        'multiple_records' => $spfMultiple,
+        'qualifier' => null,
+        'qualifier_label' => null,
+        'includes' => [],
+        'ips' => [],
+        'status' => 'missing',
+        'status_text' => 'No SPF record found',
+    ];
+
+    if ($spfFound && $rawSpf) {
+        $tokens = preg_split('/\s+/', trim($rawSpf));
+        foreach ($tokens as $tok) {
+            if (preg_match('/^([+~?-])?all$/i', $tok, $qm)) {
+                $q = $qm[1] ?? '+';
+                $spfDetails['qualifier'] = $tok;
+                $spfDetails['qualifier_label'] = match($q) {
+                    '-' => 'HardFail (-all): Only specified senders authorized (Recommended)',
+                    '~' => 'SoftFail (~all): Unauthorized mail accepted but tagged (Common)',
+                    '?' => 'Neutral (?all): No policy stated',
+                    '+' => 'Pass (+all): All servers authorized (Insecure)',
+                    default => 'Default',
+                };
+            } elseif (stripos($tok, 'include:') === 0) {
+                $spfDetails['includes'][] = substr($tok, 8);
+            } elseif (stripos($tok, 'ip4:') === 0 || stripos($tok, 'ip6:') === 0) {
+                $spfDetails['ips'][] = $tok;
+            }
+        }
+
+        if ($spfMultiple) {
+            $spfDetails['status'] = 'warning';
+            $spfDetails['status_text'] = 'Multiple SPF records detected (RFC 7208 violation)';
+        } elseif ($spfDetails['qualifier'] === '+all') {
+            $spfDetails['status'] = 'warning';
+            $spfDetails['status_text'] = 'Insecure policy (+all allows any sender)';
+        } else {
+            $spfDetails['status'] = 'valid';
+            $spfDetails['status_text'] = 'Valid SPF Record';
+        }
+    }
+
+    // 2. DMARC Inspection
+    $dmarcTxts = $lookupRecords('_dmarc.' . $clean, 'TXT');
+    $rawDmarc = null;
+    foreach ($dmarcTxts as $t) {
+        if (stripos($t, 'v=DMARC1') !== false) {
+            $rawDmarc = $t;
+            break;
+        }
+    }
+
+    $dmarcFound = !empty($rawDmarc);
+    $dmarcDetails = [
+        'found' => $dmarcFound,
+        'record' => $rawDmarc,
+        'policy' => 'none',
+        'policy_label' => 'No Policy',
+        'subdomain_policy' => null,
+        'percentage' => 100,
+        'rua' => null,
+        'ruf' => null,
+        'status' => 'missing',
+        'status_text' => 'No DMARC record found at _dmarc.' . $clean,
+    ];
+
+    if ($dmarcFound && $rawDmarc) {
+        $parts = array_map('trim', explode(';', $rawDmarc));
+        foreach ($parts as $p) {
+            if (str_contains($p, '=')) {
+                [$k, $v] = array_map('trim', explode('=', $p, 2));
+                $kl = strtolower($k);
+                if ($kl === 'p') {
+                    $dmarcDetails['policy'] = strtolower($v);
+                    $dmarcDetails['policy_label'] = match(strtolower($v)) {
+                        'reject' => 'Reject (Highest security - drops fraudulent emails)',
+                        'quarantine' => 'Quarantine (Directs suspicious emails to spam/junk)',
+                        'none' => 'Monitoring (Reports only, no spoofing protection)',
+                        default => $v,
+                    };
+                } elseif ($kl === 'sp') {
+                    $dmarcDetails['subdomain_policy'] = strtolower($v);
+                } elseif ($kl === 'pct') {
+                    $dmarcDetails['percentage'] = (int) $v;
+                } elseif ($kl === 'rua') {
+                    $dmarcDetails['rua'] = $v;
+                } elseif ($kl === 'ruf') {
+                    $dmarcDetails['ruf'] = $v;
+                }
+            }
+        }
+
+        if ($dmarcDetails['policy'] === 'reject') {
+            $dmarcDetails['status'] = 'protected';
+            $dmarcDetails['status_text'] = 'Enforced (p=reject)';
+        } elseif ($dmarcDetails['policy'] === 'quarantine') {
+            $dmarcDetails['status'] = 'protected';
+            $dmarcDetails['status_text'] = 'Enforced (p=quarantine)';
+        } else {
+            $dmarcDetails['status'] = 'monitoring';
+            $dmarcDetails['status_text'] = 'Monitoring Only (p=none)';
+        }
+    }
+
+    // 3. DKIM Inspection
+    $testedSelector = $selector !== '' ? $selector : null;
+    $rawDkim = null;
+    $activeSelector = null;
+    $discovered = false;
+
+    if ($testedSelector) {
+        $records = $lookupRecords($testedSelector . '._domainkey.' . $clean, 'TXT');
+        foreach ($records as $r) {
+            if (stripos($r, 'v=DKIM1') !== false || stripos($r, 'p=') !== false) {
+                $rawDkim = $r;
+                $activeSelector = $testedSelector;
+                break;
+            }
+        }
+    }
+
+    // If specified selector not found or not provided, auto-discover common selectors
+    if (!$rawDkim) {
+        $candidates = ['20230601', '20210112', '20161025', 'google', 'default', 'k1', 's1', 'selector1', 'mail', 'smtp'];
+        foreach ($candidates as $cand) {
+            if ($testedSelector && $cand === $testedSelector) continue;
+            $cRecs = $lookupRecords($cand . '._domainkey.' . $clean, 'TXT');
+            foreach ($cRecs as $cr) {
+                if (stripos($cr, 'v=DKIM1') !== false || stripos($cr, 'p=') !== false) {
+                    $rawDkim = $cr;
+                    $activeSelector = $cand;
+                    $discovered = true;
+                    break 2;
+                }
+            }
+        }
+    }
+
+    $dkimFound = !empty($rawDkim);
+    $dkimDetails = [
+        'found' => $dkimFound,
+        'record' => $rawDkim,
+        'selector' => $activeSelector ?: ($testedSelector ?: 'default'),
+        'specified_selector' => $testedSelector,
+        'auto_discovered' => $discovered,
+        'key_type' => 'rsa',
+        'public_key' => null,
+        'status' => $dkimFound ? 'valid' : 'not_found',
+        'status_text' => $dkimFound
+            ? ($discovered ? 'Discovered key with selector "' . $activeSelector . '"' : 'DKIM Key Verified')
+            : 'No DKIM public key found for selector "' . ($testedSelector ?: 'default') . '"',
+    ];
+
+    if ($dkimFound && $rawDkim) {
+        if (preg_match('/k=([^;\s]+)/i', $rawDkim, $km)) {
+            $dkimDetails['key_type'] = $km[1];
+        }
+        if (preg_match('/p=([^;\s]+)/i', $rawDkim, $pm)) {
+            $dkimDetails['public_key'] = $pm[1];
+        }
+    }
+
+    // 4. MX Inspection
+    $mxRaw = $lookupRecords($clean, 'MX');
+    $mxList = [];
+    foreach ($mxRaw as $mx) {
+        $mxParts = preg_split('/\s+/', trim($mx));
+        if (count($mxParts) >= 2) {
+            $mxList[] = [
+                'priority' => (int) $mxParts[0],
+                'host' => rtrim($mxParts[1], '.'),
+            ];
+        } elseif (!empty($mx)) {
+            $mxList[] = [
+                'priority' => 10,
+                'host' => rtrim($mx, '.'),
+            ];
+        }
+    }
+    usort($mxList, fn($a, $b) => $a['priority'] <=> $b['priority']);
+
+    // 5. Score Calculation
+    $score = 'C';
+    $gradeText = 'Moderate Protection';
+    $gradeColor = 'amber';
+
+    if ($spfDetails['status'] === 'valid' && $dmarcDetails['status'] === 'protected' && $dkimDetails['found']) {
+        $score = 'A+';
+        $gradeText = 'Excellent Email Security — Highly Protected Against Spoofing & Phishing';
+        $gradeColor = 'emerald';
+    } elseif ($spfDetails['status'] === 'valid' && $dmarcDetails['status'] === 'protected') {
+        $score = 'A';
+        $gradeText = 'Strong Email Security — DMARC Enforced & SPF Valid';
+        $gradeColor = 'emerald';
+    } elseif ($spfDetails['status'] === 'valid' && $dmarcDetails['status'] === 'monitoring') {
+        $score = 'B';
+        $gradeText = 'Partially Protected — DMARC is only in monitoring mode (p=none)';
+        $gradeColor = 'blue';
+    } elseif (!$spfDetails['found'] && !$dmarcDetails['found']) {
+        $score = 'F';
+        $gradeText = 'Vulnerable — No SPF or DMARC records configured. Domain can be spoofed!';
+        $gradeColor = 'rose';
+    }
+
+    return response()->json([
+        'success' => true,
+        'domain' => $clean,
+        'score' => $score,
+        'grade_text' => $gradeText,
+        'grade_color' => $gradeColor,
+        'spf' => $spfDetails,
+        'dmarc' => $dmarcDetails,
+        'dkim' => $dkimDetails,
+        'mx' => $mxList,
+    ]);
+})->name('tools.api.email_security');
+
 /*
 |--------------------------------------------------------------------------
 | Localized Public Routes (en, bn)

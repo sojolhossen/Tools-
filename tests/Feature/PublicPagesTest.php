@@ -190,6 +190,20 @@ final class PublicPagesTest extends TestCase
         $responsePage->assertSee('DNS Propagation Checker');
         $responsePage->assertSee('/api/tools/dns-propagation', false);
     }
+
+    public function test_spf_dkim_dmarc_api_and_page_renders_successfully(): void
+    {
+        $responseEmpty = $this->getJson('/api/tools/spf-dkim-dmarc');
+        $responseEmpty->assertStatus(400);
+
+        $responseInvalid = $this->getJson('/api/tools/spf-dkim-dmarc?domain=nodot');
+        $responseInvalid->assertStatus(422);
+
+        $responsePage = $this->get('/en/tools/spf-dkim-dmarc-checker');
+        $responsePage->assertStatus(200);
+        $responsePage->assertSee('SPF, DKIM &amp; DMARC Record Checker', false);
+        $responsePage->assertSee('/api/tools/spf-dkim-dmarc', false);
+    }
 }
 
 
