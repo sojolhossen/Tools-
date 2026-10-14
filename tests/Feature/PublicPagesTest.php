@@ -176,6 +176,20 @@ final class PublicPagesTest extends TestCase
         $responsePage->assertStatus(200);
         $responsePage->assertSee('HTTP Header Checker');
     }
+
+    public function test_dns_propagation_api_and_page_renders_successfully(): void
+    {
+        $responseEmpty = $this->getJson('/api/tools/dns-propagation');
+        $responseEmpty->assertStatus(400);
+
+        $responseInvalid = $this->getJson('/api/tools/dns-propagation?domain=nodot');
+        $responseInvalid->assertStatus(422);
+
+        $responsePage = $this->get('/en/tools/dns-propagation-checker');
+        $responsePage->assertStatus(200);
+        $responsePage->assertSee('DNS Propagation Checker');
+        $responsePage->assertSee('/api/tools/dns-propagation', false);
+    }
 }
 
 

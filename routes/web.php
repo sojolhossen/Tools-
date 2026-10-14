@@ -608,6 +608,140 @@ Route::get('/api/tools/http-headers', function () {
     }
 })->name('tools.api.http_headers');
 
+// Internal DNS Propagation Checker proxy endpoint (immune to client-side adblockers and CORS failures)
+Route::get('/api/tools/dns-propagation', function () {
+    $domain = trim((string) request()->query('domain', request()->query('name', '')));
+    $type = strtoupper(trim((string) request()->query('type', 'A')));
+    $nodeId = trim((string) request()->query('node', ''));
+
+    if ($domain === '') {
+        return response()->json([
+            'success' => false,
+            'message' => 'Please provide a domain name.',
+        ], 400);
+    }
+
+    $clean = preg_replace('#^https?://#i', '', $domain);
+    $clean = trim(explode('/', $clean)[0]);
+    $clean = trim(explode(':', $clean)[0]);
+    $clean = strtolower($clean);
+
+    if ($clean === '' || !str_contains($clean, '.')) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Invalid domain format.',
+        ], 422);
+    }
+
+    $allowedTypes = ['A', 'AAAA', 'MX', 'TXT', 'CNAME', 'NS'];
+    if (!in_array($type, $allowedTypes)) {
+        $type = 'A';
+    }
+
+    $allNodes = [
+        'us-va' => ['id' => 'us-va', 'flag' => '🇺🇸', 'location' => 'USA (Virginia)', 'name' => 'Google Public DNS', 'url' => 'https://8.8.8.8/resolve'],
+        'de-fra' => ['id' => 'de-fra', 'flag' => '🇩🇪', 'location' => 'Germany (Frankfurt)', 'name' => 'Cloudflare Edge (DE)', 'url' => 'https://1.1.1.1/dns-query'],
+        'sg-sin' => ['id' => 'sg-sin', 'flag' => '🇸🇬', 'location' => 'Singapore (Asia East)', 'name' => 'Cloudflare AP Node', 'url' => 'https://1.0.0.1/dns-query'],
+        'jp-tyo' => ['id' => 'jp-tyo', 'flag' => '🇯🇵', 'location' => 'Japan (Tokyo)', 'name' => 'AliDNS Asia Node', 'url' => 'https://dns.alidns.com/resolve'],
+        'gb-lon' => ['id' => 'gb-lon', 'flag' => '🇬🇧', 'location' => 'United Kingdom (London)', 'name' => 'Cloudflare London', 'url' => 'https://cloudflare-dns.com/dns-query'],
+        'au-syd' => ['id' => 'au-syd', 'flag' => '🇦🇺', 'location' => 'Australia (Sydney)', 'name' => 'Google Anycast (AU)', 'url' => 'https://8.8.4.4/resolve'],
+        'us-ca' => ['id' => 'us-ca', 'flag' => '🇺🇸', 'location' => 'USA (California)', 'name' => 'Google Global Core', 'url' => 'https://dns.google/resolve'],
+        'edge-isp' => ['id' => 'edge-isp', 'flag' => '🌐', 'location' => 'Authoritative ISP Edge', 'name' => 'System DNS Resolver', 'url' => 'native'],
+    ];
+
+    $checkNode = function ($node) use ($clean, $type) {
+        $t0 = microtime(true);
+        $data = '';
+        $status = 'Failed';
+
+        if ($node['url'] === 'native') {
+            $typeConstMap = [
+                'A' => DNS_A,
+                'AAAA' => DNS_AAAA,
+                'CNAME' => DNS_CNAME,
+                'MX' => DNS_MX,
+                'TXT' => DNS_TXT,
+                'NS' => DNS_NS,
+            ];
+            $const = $typeConstMap[$type] ?? DNS_A;
+            $recs = @dns_get_record($clean, $const);
+            if (is_array($recs) && !empty($recs)) {
+                $items = [];
+                foreach ($recs as $r) {
+                    if ($type === 'A' && !empty($r['ip'])) $items[] = $r['ip'];
+                    elseif ($type === 'AAAA' && !empty($r['ipv6'])) $items[] = $r['ipv6'];
+                    elseif ($type === 'CNAME' && !empty($r['target'])) $items[] = $r['target'];
+                    elseif ($type === 'MX' && !empty($r['target'])) $items[] = ($r['pri'] ?? 10) . ' ' . $r['target'];
+                    elseif ($type === 'TXT' && !empty($r['txt'])) $items[] = $r['txt'];
+                    elseif ($type === 'NS' && !empty($r['target'])) $items[] = $r['target'];
+                }
+                $data = implode(', ', array_slice($items, 0, 3));
+                $status = !empty($data) ? 'Resolved' : 'No Record';
+            } else {
+                $status = 'No Record';
+                $data = 'No answers found';
+            }
+        } else {
+            try {
+                $res = \Illuminate\Support\Facades\Http::timeout(4)
+                    ->withHeaders(['Accept' => 'application/dns-json', 'User-Agent' => 'ToolZeno-DNS/1.0'])
+                    ->get($node['url'], ['name' => $clean, 'type' => $type]);
+                if ($res->successful()) {
+                    $ans = $res->json()['Answer'] ?? [];
+                    if (!empty($ans) && is_array($ans)) {
+                        $items = [];
+                        foreach ($ans as $a) {
+                            if (!empty($a['data'])) {
+                                $items[] = (string) $a['data'];
+                            }
+                        }
+                        $data = implode(', ', array_slice($items, 0, 3));
+                        $status = !empty($data) ? 'Resolved' : 'No Record';
+                    } else {
+                        $status = 'No Record';
+                        $data = 'No answers found';
+                    }
+                }
+            } catch (\Throwable $e) {
+                $status = 'Failed';
+                $data = 'Timeout or unreachable';
+            }
+        }
+
+        $latency = round((microtime(true) - $t0) * 1000);
+
+        return [
+            'id' => $node['id'],
+            'flag' => $node['flag'],
+            'location' => $node['location'],
+            'name' => $node['name'],
+            'status' => $status,
+            'answer' => $data ?: 'No answers found',
+            'latency' => $latency,
+        ];
+    };
+
+    if ($nodeId !== '' && isset($allNodes[$nodeId])) {
+        $singleResult = $checkNode($allNodes[$nodeId]);
+        return response()->json([
+            'success' => true,
+            'node' => $singleResult,
+        ]);
+    }
+
+    $results = [];
+    foreach ($allNodes as $node) {
+        $results[] = $checkNode($node);
+    }
+
+    return response()->json([
+        'success' => true,
+        'domain' => $clean,
+        'type' => $type,
+        'nodes' => $results,
+    ]);
+})->name('tools.api.dns_propagation');
+
 /*
 |--------------------------------------------------------------------------
 | Localized Public Routes (en, bn)
