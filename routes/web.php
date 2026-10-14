@@ -467,6 +467,147 @@ Route::get('/api/tools/dns-lookup', function () {
     ]);
 })->name('tools.api.dns_lookup');
 
+// Internal Reverse DNS (rDNS / PTR) lookup endpoint (immune to CORS and browser DoH blocking)
+Route::get('/api/tools/rdns-lookup', function () {
+    $rawIp = trim((string) request()->query('ip', request()->query('query', '')));
+
+    if ($rawIp === '') {
+        return response()->json([
+            'success' => false,
+            'message' => 'Please provide an IP address to lookup.',
+        ], 400);
+    }
+
+    $cleanIp = preg_replace('#^https?://#i', '', $rawIp);
+    $cleanIp = trim(explode('/', $cleanIp)[0]);
+    $cleanIp = trim(explode(':', $cleanIp)[0]);
+
+    if (!filter_var($cleanIp, FILTER_VALIDATE_IP)) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Invalid IP address format. Please enter a valid IPv4 or IPv6 address.',
+        ], 422);
+    }
+
+    $isIpv4 = filter_var($cleanIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
+    $arpa = '';
+    $hostname = '';
+    $ttl = 300;
+
+    if ($isIpv4) {
+        $parts = explode('.', $cleanIp);
+        $arpa = implode('.', array_reverse($parts)) . '.in-addr.arpa';
+
+        // 1. Primary: Native gethostbyaddr
+        try {
+            $host = @gethostbyaddr($cleanIp);
+            if ($host && $host !== $cleanIp) {
+                $hostname = $host;
+            }
+        } catch (\Throwable $e) {}
+    } else {
+        // IPv6 reverse arpa format
+        $addr = inet_pton($cleanIp);
+        if ($addr !== false) {
+            $unpack = unpack('H*hex', $addr);
+            $hex = $unpack['hex'] ?? '';
+            $arpa = implode('.', array_reverse(str_split($hex))) . '.ip6.arpa';
+        }
+    }
+
+    // 2. Secondary: Query DoH via Google
+    if (empty($hostname) && $arpa !== '') {
+        try {
+            $res = \Illuminate\Support\Facades\Http::timeout(5)
+                ->get('https://dns.google/resolve', [
+                    'name' => $arpa,
+                    'type' => 'PTR',
+                ]);
+            if ($res->successful()) {
+                $answers = $res->json()['Answer'] ?? [];
+                if (!empty($answers) && is_array($answers)) {
+                    $hostname = rtrim($answers[0]['data'] ?? '', '.');
+                    $ttl = $answers[0]['TTL'] ?? $ttl;
+                }
+            }
+        } catch (\Throwable $e) {}
+    }
+
+    // 3. Tertiary: Cloudflare DoH
+    if (empty($hostname) && $arpa !== '') {
+        try {
+            $cfRes = \Illuminate\Support\Facades\Http::timeout(5)
+                ->withHeaders(['Accept' => 'application/dns-json'])
+                ->get('https://cloudflare-dns.com/dns-query', [
+                    'name' => $arpa,
+                    'type' => 'PTR',
+                ]);
+            if ($cfRes->successful()) {
+                $answers = $cfRes->json()['Answer'] ?? [];
+                if (!empty($answers) && is_array($answers)) {
+                    $hostname = rtrim($answers[0]['data'] ?? '', '.');
+                    $ttl = $answers[0]['TTL'] ?? $ttl;
+                }
+            }
+        } catch (\Throwable $e) {}
+    }
+
+    if (empty($hostname)) {
+        return response()->json([
+            'success' => false,
+            'ip' => $cleanIp,
+            'arpa' => $arpa,
+            'message' => 'No PTR (reverse DNS) record found for ' . $cleanIp . '.',
+        ], 404);
+    }
+
+    return response()->json([
+        'success' => true,
+        'ip' => $cleanIp,
+        'hostname' => $hostname,
+        'arpa' => $arpa,
+        'ttl' => $ttl,
+    ]);
+})->name('tools.api.rdns_lookup');
+
+// Internal HTTP Headers Inspection proxy endpoint (immune to CORS)
+Route::get('/api/tools/http-headers', function () {
+    $url = trim((string) request()->query('url', ''));
+    if ($url === '') {
+        return response()->json(['success' => false, 'message' => 'URL is required.'], 400);
+    }
+    if (!str_starts_with($url, 'http://') && !str_starts_with($url, 'https://')) {
+        $url = 'https://' . $url;
+    }
+    try {
+        $res = \Illuminate\Support\Facades\Http::timeout(7)
+            ->withHeaders(['User-Agent' => 'Mozilla/5.0 (compatible; ToolZeno-Inspector/1.0)'])
+            ->withoutRedirecting()
+            ->head($url);
+
+        $headers = [];
+        foreach ($res->headers() as $name => $values) {
+            $headers[] = [
+                'name' => strtolower($name),
+                'val' => implode(', ', (array) $values),
+            ];
+        }
+
+        return response()->json([
+            'success' => true,
+            'url' => $url,
+            'status' => $res->status(),
+            'statusText' => $res->reason() ?: 'OK',
+            'headers' => $headers,
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Unable to connect to ' . $url . ': ' . $e->getMessage(),
+        ], 502);
+    }
+})->name('tools.api.http_headers');
+
 /*
 |--------------------------------------------------------------------------
 | Localized Public Routes (en, bn)

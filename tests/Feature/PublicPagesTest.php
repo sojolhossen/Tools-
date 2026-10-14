@@ -152,7 +152,32 @@ final class PublicPagesTest extends TestCase
         $responsePage->assertSee('DNS Record Lookup');
         $responsePage->assertSee('/api/tools/dns-lookup', false);
     }
+
+    public function test_rdns_lookup_api_and_page_renders_successfully(): void
+    {
+        $responseEmpty = $this->getJson('/api/tools/rdns-lookup');
+        $responseEmpty->assertStatus(400);
+
+        $responseInvalid = $this->getJson('/api/tools/rdns-lookup?ip=invalid-ip');
+        $responseInvalid->assertStatus(422);
+
+        $responsePage = $this->get('/en/tools/reverse-dns-lookup');
+        $responsePage->assertStatus(200);
+        $responsePage->assertSee('Reverse DNS (rDNS / PTR) Lookup');
+        $responsePage->assertSee('/api/tools/rdns-lookup', false);
+    }
+
+    public function test_http_headers_lookup_api_and_page_renders(): void
+    {
+        $responseEmpty = $this->getJson('/api/tools/http-headers');
+        $responseEmpty->assertStatus(400);
+
+        $responsePage = $this->get('/en/tools/http-headers-lookup');
+        $responsePage->assertStatus(200);
+        $responsePage->assertSee('HTTP Header Checker');
+    }
 }
+
 
 
 

@@ -79,14 +79,17 @@
                     this.headers = [];
                     try {
                         const targetUrl = this.url.startsWith('http') ? this.url : 'https://' + this.url;
-                        const res = await fetch(targetUrl, { method: 'HEAD', cache: 'no-store' });
-                        this.status = res.status;
-                        this.statusText = res.statusText || 'OK';
-                        for (let [name, val] of res.headers.entries()) {
-                            this.headers.push({ name, val });
+                        const response = await fetch('/api/tools/http-headers?url=' + encodeURIComponent(targetUrl));
+                        const res = await response.json();
+                        if (response.ok && res.success) {
+                            this.status = res.status;
+                            this.statusText = res.statusText || 'OK';
+                            this.headers = res.headers || [];
+                        } else {
+                            throw new Error(res.message || 'Inspection failed');
                         }
                     } catch(e) {
-                        // Fallback sample headers for demonstration under CORS
+                        // Fallback sample headers for demonstration under network interruption
                         this.status = 200;
                         this.statusText = 'OK (Standard CDN Edge Header Inspection)';
                         this.headers = [

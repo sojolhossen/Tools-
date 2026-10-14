@@ -29,19 +29,46 @@
         <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 sm:p-8 space-y-6">
             <div class="flex flex-col sm:flex-row gap-3">
                 <input type="text" x-model="ip" @keydown.enter="lookup()" placeholder="8.8.8.8 or 1.1.1.1" class="flex-1 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-mono text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none">
-                <button type="button" @click="lookup()" :disabled="loading" class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-sm transition-all flex items-center justify-center gap-2">
+                <button type="button" @click="lookup()" :disabled="loading" class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-semibold text-sm shadow-sm transition-all flex items-center justify-center gap-2">
+                    <svg x-show="loading" class="animate-spin -ml-1 mr-1.5 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
                     <span x-show="!loading">Lookup rDNS (PTR)</span>
                     <span x-show="loading">Resolving PTR...</span>
                 </button>
             </div>
 
+            <!-- Quick presets -->
+            <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                <span>Quick Samples:</span>
+                <button type="button" @click="ip = '8.8.8.8'; lookup()" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-mono transition-colors">8.8.8.8 (Google)</button>
+                <button type="button" @click="ip = '1.1.1.1'; lookup()" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-mono transition-colors">1.1.1.1 (Cloudflare)</button>
+                <button type="button" @click="ip = '9.9.9.9'; lookup()" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-mono transition-colors">9.9.9.9 (Quad9)</button>
+                <button type="button" @click="ip = '208.67.222.222'; lookup()" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-mono transition-colors">208.67.222.222 (OpenDNS)</button>
+            </div>
+
+            <!-- Error -->
+            <div x-show="error" x-cloak class="p-4 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900 text-rose-700 dark:text-rose-400 text-sm flex items-start gap-3">
+                <svg class="w-5 h-5 flex-shrink-0 text-rose-500 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span x-text="error"></span>
+            </div>
+
             <!-- Result Card -->
-            <div x-show="hostname || error" class="p-6 rounded-xl border" :class="error ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-200 dark:border-rose-900 text-rose-700 dark:text-rose-400' : 'bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800'">
-                <div x-show="error" x-text="error" class="text-sm font-semibold"></div>
-                <div x-show="hostname" class="space-y-3">
+            <div x-show="hostname && !error" x-cloak class="p-6 rounded-2xl border bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 space-y-4">
+                <div class="flex items-center justify-between">
                     <span class="text-xs uppercase font-bold text-slate-500 tracking-wider">Resolved Hostname (PTR Record)</span>
-                    <div class="text-2xl font-mono font-bold text-blue-600 dark:text-blue-400 break-all" x-text="hostname"></div>
-                    <div class="text-xs font-mono text-slate-500" x-text="'ARPA Query: ' + arpaQuery"></div>
+                    <button type="button" @click="copyHostname()" class="text-xs text-blue-600 dark:text-blue-400 font-semibold hover:underline flex items-center gap-1">
+                        <span x-text="copied ? 'Copied!' : 'Copy Hostname'"></span>
+                    </button>
+                </div>
+                <div class="text-2xl sm:text-3xl font-mono font-bold text-blue-600 dark:text-blue-400 break-all select-all" x-text="hostname"></div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-slate-200 dark:border-slate-800/80 text-xs font-mono text-slate-500">
+                    <div>
+                        <span class="block text-slate-400 uppercase text-[10px] font-sans font-semibold">ARPA Pointer Domain</span>
+                        <span class="text-slate-700 dark:text-slate-300 break-all" x-text="arpaQuery || '-'"></span>
+                    </div>
+                    <div>
+                        <span class="block text-slate-400 uppercase text-[10px] font-sans font-semibold">Queried Target IP</span>
+                        <span class="text-slate-700 dark:text-slate-300 font-bold" x-text="queriedIp || ip"></span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -50,33 +77,43 @@
         function reverseDnsApp() {
             return {
                 ip: '8.8.8.8',
+                queriedIp: '',
                 hostname: '',
                 arpaQuery: '',
                 loading: false,
                 error: null,
+                copied: false,
                 init() {
                     this.lookup();
                 },
+                copyHostname() {
+                    if (!this.hostname) return;
+                    navigator.clipboard.writeText(this.hostname);
+                    this.copied = true;
+                    setTimeout(() => this.copied = false, 2000);
+                },
                 async lookup() {
-                    if (!this.ip.trim()) return;
+                    if (!this.ip || !this.ip.trim()) return;
                     this.loading = true;
                     this.error = null;
                     this.hostname = '';
+                    this.queriedIp = this.ip.trim();
+
                     try {
-                        const parts = this.ip.trim().split('.');
-                        if (parts.length !== 4) throw new Error('Invalid IPv4 address format.');
-                        this.arpaQuery = parts.reverse().join('.') + '.in-addr.arpa';
-                        const url = 'https://dns.google/resolve?name=' + this.arpaQuery + '&type=PTR';
-                        const res = await fetch(url).then(r => r.json());
-                        if (res.Answer && res.Answer.length > 0) {
-                            this.hostname = res.Answer[0].data;
+                        const response = await fetch('/api/tools/rdns-lookup?ip=' + encodeURIComponent(this.queriedIp));
+                        const res = await response.json();
+
+                        if (response.ok && res.success) {
+                            this.hostname = res.hostname || '';
+                            this.arpaQuery = res.arpa || '';
                         } else {
-                            this.error = 'No PTR (reverse DNS) record found for this IP address.';
+                            this.error = res.message || 'No PTR (reverse DNS) record found for this IP address.';
                         }
                     } catch (e) {
-                        this.error = e.message || 'Reverse DNS lookup failed.';
+                        this.error = 'Failed to connect to Reverse DNS service. Please check network connection.';
+                    } finally {
+                        this.loading = false;
                     }
-                    this.loading = false;
                 }
             };
         }

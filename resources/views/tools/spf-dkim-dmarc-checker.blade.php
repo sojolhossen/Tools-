@@ -84,28 +84,28 @@
                     this.spfRecord = '';
                     this.dmarcRecord = '';
                     this.dkimRecord = '';
-                    const d = this.domain.replace(/^https?:\/\//, '').replace(/\/.*$/, '').trim();
+                    const d = this.domain.replace(/^https?:\/\//i, '').replace(/\/.*$/, '').trim();
 
                     try {
                         // 1. SPF query
-                        const r1 = await fetch('https://dns.google/resolve?name=' + encodeURIComponent(d) + '&type=TXT').then(r => r.json());
-                        if (r1.Answer) {
-                            const match = r1.Answer.find(a => a.data && a.data.includes('v=spf1'));
+                        const r1 = await fetch('/api/tools/dns-lookup?name=' + encodeURIComponent(d) + '&type=TXT').then(r => r.json()).catch(() => ({}));
+                        if (r1.records && Array.isArray(r1.records)) {
+                            const match = r1.records.find(a => a.data && a.data.includes('v=spf1'));
                             if (match) this.spfRecord = match.data.replace(/"/g, '');
                         }
 
                         // 2. DMARC query
-                        const r2 = await fetch('https://dns.google/resolve?name=' + encodeURIComponent('_dmarc.' + d) + '&type=TXT').then(r => r.json());
-                        if (r2.Answer) {
-                            const match2 = r2.Answer.find(a => a.data && a.data.includes('v=DMARC1'));
+                        const r2 = await fetch('/api/tools/dns-lookup?name=' + encodeURIComponent('_dmarc.' + d) + '&type=TXT').then(r => r.json()).catch(() => ({}));
+                        if (r2.records && Array.isArray(r2.records)) {
+                            const match2 = r2.records.find(a => a.data && a.data.includes('v=DMARC1'));
                             if (match2) this.dmarcRecord = match2.data.replace(/"/g, '');
                         }
 
                         // 3. DKIM query
                         const sel = this.dkimSelector.trim() || 'default';
-                        const r3 = await fetch('https://dns.google/resolve?name=' + encodeURIComponent(sel + '._domainkey.' + d) + '&type=TXT').then(r => r.json());
-                        if (r3.Answer) {
-                            const match3 = r3.Answer.find(a => a.data && (a.data.includes('v=DKIM1') || a.data.includes('p=')));
+                        const r3 = await fetch('/api/tools/dns-lookup?name=' + encodeURIComponent(sel + '._domainkey.' + d) + '&type=TXT').then(r => r.json()).catch(() => ({}));
+                        if (r3.records && Array.isArray(r3.records)) {
+                            const match3 = r3.records.find(a => a.data && (a.data.includes('v=DKIM1') || a.data.includes('p=')));
                             if (match3) this.dkimRecord = match3.data.replace(/"/g, '');
                         }
                     } catch(e) {}
