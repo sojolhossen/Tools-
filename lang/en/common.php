@@ -117,7 +117,7 @@ return [
 
     // Footer
     'footer' => [
-        'about_text' => 'A fast, reliable, privacy-first online utilities platform designed for Bangladesh and an international audience. All tools work directly inside your modern web browser without server storage.',
+        'about_text' => 'ToolZeno is a free, high-speed, privacy-first online utilities toolkit featuring 140+ developer, network, SEO, text, and financial tools. All tools execute directly in your browser with 100% data privacy.',
         'quick_links' => 'Quick Navigation',
         'categories_title' => 'Tool Categories',
         'legal_title' => 'Legal & Information',
@@ -127,7 +127,7 @@ return [
         'terms' => 'Terms of Service',
         'disclaimer' => 'Disclaimer',
         'all_rights_reserved' => 'All rights reserved.',
-        'no_account_required' => 'No account or credit card required.',
+        'no_account_required' => '100% Free • Zero registration, installation, or tracking.',
     ],
 
     // Search modal

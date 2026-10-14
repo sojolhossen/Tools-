@@ -1,5 +1,5 @@
 <x-layouts.app
-    :title="__('common.tagline')"
+    :title="$locale === 'bn' ? 'ToolZeno — ১৪০+ ফ্রি, দ্রুত ও নিরাপদ অনলাইন টুলস' : 'ToolZeno — 140+ Free, Fast & Secure Online Tools'"
     :description="__('common.meta_description_default')"
     :schema="$schema ?? null"
 >

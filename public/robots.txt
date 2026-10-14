@@ -11,6 +11,15 @@ Allow: /build/
 Allow: /*.js$
 Allow: /*.css$
 
+User-agent: Googlebot-Image
+Allow: /
+Allow: /favicon*
+Allow: /android-chrome*
+Allow: /apple-touch-icon*
+Allow: /*.png$
+Allow: /*.svg$
+Allow: /*.ico$
+
 User-agent: Bingbot
 Allow: /
 Allow: /build/
