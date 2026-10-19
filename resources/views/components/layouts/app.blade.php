@@ -293,6 +293,13 @@
     @stack('scripts')
 
     <!-- Adsterra Social Bar -->
-    <script src="https://pl31920288.profitableratecpmnetwork.com/df/99/1b/df991bf1b4806255ba4e34b5eaccb750.js"></script>
+    <script>
+        (function() {
+            var s = document.createElement('script');
+            s.type = 'text/javascript';
+            s.src = 'https://pl31920288.profitableratecpmnetwork.com/df/99/1b/df991bf1b4806255ba4e34b5eaccb750.js';
+            document.body.appendChild(s);
+        })();
+    </script>
 </body>
 </html>

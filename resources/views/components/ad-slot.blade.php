@@ -41,8 +41,16 @@
                      data-ad-format="{{ $placement->format }}"></ins>
             @else
                 <!-- Adsterra Native Banner (4:1 Widget) -->
-                <script async="async" data-cfasync="false" src="https://pl31920286.profitableratecpmnetwork.com/8978f9d4538ebe4052f2e79a6e98249b/invoke.js"></script>
                 <div id="container-8978f9d4538ebe4052f2e79a6e98249b"></div>
+                <script>
+                    (function() {
+                        var s = document.createElement('script');
+                        s.type = 'text/javascript';
+                        s.src = 'https://pl31920286.profitableratecpmnetwork.com/8978f9d4538ebe4052f2e79a6e98249b/invoke.js';
+                        s.async = true;
+                        document.head.appendChild(s);
+                    })();
+                </script>
             @endif
         </div>
     </div>
