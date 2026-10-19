@@ -44,6 +44,13 @@ Route::get('/ads.txt', function () {
     ]);
 })->name('ads.txt');
 
+// Clear compiled view and app caches on deployment
+Route::get('/clear-cache', function () {
+    \Illuminate\Support\Facades\Artisan::call('view:clear');
+    \Illuminate\Support\Facades\Artisan::call('cache:clear');
+    return response("Cache cleared successfully! Latest blade templates recompiled.\n", 200, ['Content-Type' => 'text/plain']);
+})->name('cache.clear');
+
 // Internal IP diagnostic endpoint (bypasses adblockers, CORS, and external rate limits)
 Route::get('/api/tools/ip-info', function () {
     $rawIp = request()->header('CF-Connecting-IP') ?: (request()->header('X-Forwarded-For') ?: request()->ip());

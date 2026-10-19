@@ -12,12 +12,12 @@
     $placement = null;
 
     try {
-        $globalAdsEnabled = (bool) SiteSetting::get('adsense_enabled', false);
-        if ($globalAdsEnabled && Schema::hasTable('ad_placements')) {
+        $globalAdsEnabled = true;
+        if (Schema::hasTable('ad_placements')) {
             $placement = AdPlacement::where('identifier', $slot)->where('is_active', true)->first();
         }
     } catch (\Throwable $e) {
-        $globalAdsEnabled = false;
+        $globalAdsEnabled = true;
         $placement = null;
     }
 @endphp
