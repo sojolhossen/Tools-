@@ -35,15 +35,15 @@ final class SecurityHeadersMiddleware
         // Hardware Feature Restriction
         $response->headers->set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
 
-        // Content Security Policy (Compatible with Alpine.js, Google Analytics 4, and Google AdSense)
+        // Content Security Policy (Compatible with Alpine.js, GA4, AdSense, and Adsterra)
         $cspDirectives = [
             "default-src 'self'",
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://pagead2.googlesyndication.com https://adservice.google.com",
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://pagead2.googlesyndication.com https://adservice.google.com https://*.profitableratecpmnetwork.com https://*.highperformanceformat.com https://*.topcreativeformat.com",
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
             "font-src 'self' https://fonts.gstatic.com data:",
-            "img-src 'self' data: blob: https://www.google-analytics.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net",
-            "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://pagead2.googlesyndication.com",
-            "frame-src 'self' https://googleads.g.doubleclick.net https://tpc.googlesyndication.com",
+            "img-src 'self' data: blob: https: https://www.google-analytics.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net",
+            "connect-src 'self' https: https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://pagead2.googlesyndication.com",
+            "frame-src 'self' https: https://googleads.g.doubleclick.net https://tpc.googlesyndication.com",
             "object-src 'none'",
             "base-uri 'self'",
             "form-action 'self'",

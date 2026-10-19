@@ -22,8 +22,8 @@
     }
 @endphp
 
-@if($globalAdsEnabled && $placement)
-    <!-- Google AdSense Policy Compliant Ad Container: Strict separation & clear labeling to eliminate accidental clicks -->
+@if($globalAdsEnabled)
+    <!-- Ad Container: Clean, Policy-Compliant Labeling -->
     <div class="my-8 sm:my-10 p-4 sm:p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-900/50 text-center relative overflow-hidden transition-all {{ $class }}" role="region" aria-label="Advertisement">
         <div class="flex items-center justify-center gap-2 mb-3">
             <span class="h-px w-8 bg-slate-200 dark:bg-slate-800"></span>
@@ -32,15 +32,17 @@
             </span>
             <span class="h-px w-8 bg-slate-200 dark:bg-slate-800"></span>
         </div>
-        <div class="min-h-[100px] flex items-center justify-center text-xs text-slate-400 font-mono overflow-hidden">
-            @if(!empty($placement->slot_id))
+        <div class="min-h-[100px] flex items-center justify-center overflow-hidden">
+            @if($placement && !empty($placement->slot_id) && $placement->provider === 'adsense')
                 <ins class="adsbygoogle"
                      style="display:block"
                      data-ad-client="{{ SiteSetting::get('adsense_publisher_id', '') }}"
                      data-ad-slot="{{ $placement->slot_id }}"
                      data-ad-format="{{ $placement->format }}"></ins>
             @else
-                <span class="text-slate-400 font-sans text-xs">Ad Placement: {{ $placement->name }}</span>
+                <!-- Adsterra Native Banner (4:1 Widget) -->
+                <script async="async" data-cfasync="false" src="https://pl31920286.profitableratecpmnetwork.com/8978f9d4538ebe4052f2e79a6e98249b/invoke.js"></script>
+                <div id="container-8978f9d4538ebe4052f2e79a6e98249b"></div>
             @endif
         </div>
     </div>
